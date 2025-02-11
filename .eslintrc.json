@@ -1,0 +1,85 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/jsx-runtime",
+    "prettier",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": true,
+    "tsconfigRootDir": "./"
+  },
+  "plugins": ["@typescript-eslint", "react", "prettier", "import"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      },
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "tsconfig.json"
+      }
+    }
+  },
+  "root": true,
+  "ignorePatterns": ["dist"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      { "fixStyle": "separate-type-imports" }
+    ],
+    "@typescript-eslint/no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "react-redux",
+            "importNames": ["useSelector", "useStore", "useDispatch"],
+            "message": "Please use pre-typed versions from `src/app/hooks.ts` instead."
+          }
+        ]
+      }
+    ],
+    "prefer-template": "error",
+    "newline-before-return": "error",
+    "no-multiple-empty-lines": ["error", { "max": 1 }],
+    "padded-blocks": "off",
+    "import/named": "off",
+    "max-len": [
+      "error",
+      {
+        "code": 80,
+        "ignoreTemplateLiterals": true,
+        "ignoreStrings": true,
+        "ignoreComments": true,
+        "ignoreTrailingComments": true
+      }
+    ],
+    "no-nested-ternary": "error",
+    "prefer-const": "error",
+    "import/order": [
+      "error",
+      {
+        "groups": [["builtin", "external"], "internal"],
+        "newlines-between": "always",
+        "pathGroupsExcludedImportTypes": ["react"],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "@typescript-eslint/no-shadow": "error",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-uses-react": "off",
+    "react/self-closing-comp": ["error", { "component": true, "html": true }]
+  }
+}

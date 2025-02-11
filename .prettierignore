@@ -1,0 +1,16 @@
+node_modules/
+
+.git/
+.vscode/
+
+package.json
+package-lock.json
+*.config.js
+*.config.ts
+tsconfig.json
+tsconfig.json
+tsconfig.node.json
+vite.config.ts
+eslint.config.mjs
+
+README.md
