@@ -69,7 +69,7 @@ export const CreateCategoryModal = ({
         {onClose => (
           <Form onSubmit={handleSubmit(onCreate)}>
             <ModalHeader className="flex flex-col gap-1">
-              <h3 className="text-2xl font-semibold text-center text-006D77 mb-4">
+              <h3 className="text-2xl font-semibold text-center mb-4">
                 Создать категорию
               </h3>
             </ModalHeader>
@@ -113,7 +113,7 @@ export const CreateCategoryModal = ({
             </ModalBody>
 
             <ModalFooter className="w-full">
-              <Button color="danger" variant="light" onPress={handleCancel}>
+              <Button color="warning" variant="light" onPress={handleCancel}>
                 Отменить
               </Button>
 

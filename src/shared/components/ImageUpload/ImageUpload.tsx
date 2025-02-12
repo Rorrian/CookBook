@@ -85,7 +85,7 @@ export const ImageUpload = forwardRef(
 
     return (
       <div className="flex flex-col gap-3">
-        <label className="text-sm font-medium text-006D77">Изображение:</label>
+        <label className="text-sm font-medium text-006d77">Изображение:</label>
         <input
           className="w-full py-2 px-4 bg-EDF6F9 border-2 border-83c5be rounded-lg cursor-pointer transition-all duration-200 hover:bg-83c5be"
           type="file"

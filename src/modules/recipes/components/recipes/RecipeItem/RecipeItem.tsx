@@ -31,7 +31,7 @@ export const RecipeItem = ({ recipe }: RecipeItemProps) => {
     <Card className="w-full flex flex-col gap-4 p-4 rounded-2xl shadow-lg bg-white border border-gray-200 hover:shadow-xl transition-all duration-300">
       <Link to={`/recipe/${id}`} className="flex flex-col gap-2 h-full">
         <CardHeader className="flex justify-between items-center gap-2">
-          <h3 className="text-xl font-semibold text-006D77">{title}</h3>
+          <h3 className="text-xl font-semibold text-006d77">{title}</h3>
 
           <Button
             aria-label="Toggle favorite"

@@ -1,3 +1,12 @@
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+} from '@heroui/react'
+
 import { Macronutrients } from '@/src/types'
 
 export const NutritionFacts = ({
@@ -11,22 +20,29 @@ export const NutritionFacts = ({
     <div className="text-lg text-006d77">
       <p className="font-bold">Энергетическая ценность на порцию:</p>
 
-      <div className="grid grid-cols-4 justify-items-center gap-4">
-        <p>Калорийность</p>
-        <p>Белки</p>
-        <p>Жиры</p>
-        <p>Углеводы</p>
+      <Table removeWrapper aria-label="Энергетическая ценность">
+        <TableHeader>
+          <TableColumn>Калорийность</TableColumn>
+          <TableColumn>Белки</TableColumn>
+          <TableColumn>Жиры</TableColumn>
+          <TableColumn>Углеводы</TableColumn>
+        </TableHeader>
 
-        <p>{calories}</p>
-        <p>{proteins}</p>
-        <p>{fats}</p>
-        <p>{carbohydrates}</p>
-
-        <p>ккал</p>
-        <p>грамм</p>
-        <p>грамм</p>
-        <p>грамм</p>
-      </div>
+        <TableBody>
+          <TableRow>
+            <TableCell>{calories}</TableCell>
+            <TableCell>{proteins}</TableCell>
+            <TableCell>{fats}</TableCell>
+            <TableCell>{carbohydrates}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>ккал</TableCell>
+            <TableCell>грамм</TableCell>
+            <TableCell>грамм</TableCell>
+            <TableCell>грамм</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
     </div>
   )
 }

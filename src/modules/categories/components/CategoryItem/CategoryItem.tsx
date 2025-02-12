@@ -35,7 +35,7 @@ export const CategoryItem = ({ category }: CategoryItemProps) => {
   return (
     <div className="w-full flex flex-col gap-4 p-4 rounded-2xl shadow-lg bg-white border border-gray-200 hover:shadow-xl transition-all duration-300">
       <div className="flex justify-between items-center gap-4">
-        <h3 className="text-xl font-semibold text-006D77">{title}</h3>
+        <h3 className="text-xl font-semibold">{title}</h3>
 
         <div className="flex gap-2">
           <Button

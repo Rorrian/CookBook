@@ -37,7 +37,7 @@ export const LoginPage = () => {
   return (
     <div className="flex justify-center items-center h-full">
       <div className="flex flex-col bg-white rounded-3xl gap-4">
-        <div className="text-2xl font-semibold text-center text-006D77">
+        <div className="text-2xl font-semibold text-center text-006d77">
           Войти в аккаунт
         </div>
 

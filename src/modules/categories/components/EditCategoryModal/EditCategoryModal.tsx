@@ -74,7 +74,7 @@ export const EditCategoryModal = ({
         {onClose => (
           <Form onSubmit={handleSubmit(onUpdate)}>
             <ModalHeader className="flex flex-col gap-1">
-              <h3 className="text-2xl font-semibold text-center text-006D77 mb-4">
+              <h3 className="text-2xl font-semibold text-center mb-4">
                 Редактирование
               </h3>
             </ModalHeader>
@@ -119,7 +119,7 @@ export const EditCategoryModal = ({
             </ModalBody>
 
             <ModalFooter className="w-full">
-              <Button color="danger" variant="light" onPress={handleCancel}>
+              <Button color="warning" variant="light" onPress={handleCancel}>
                 Отменить
               </Button>
 

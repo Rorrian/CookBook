@@ -5,7 +5,7 @@ export function LKPage() {
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white rounded-xl shadow-lg border border-gray-200">
-      <h2 className="text-2xl font-semibold text-center text-006D77 mb-4">
+      <h2 className="text-2xl font-semibold text-center mb-4">
         Личный кабинет
       </h2>
 

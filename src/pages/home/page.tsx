@@ -16,7 +16,7 @@ export function HomePage() {
 
   return (
     <div className="flex flex-col gap-8 p-8">
-      <div className="flex justify-center items-center gap-2 text-2xl font-bold text-center text-006D77">
+      <div className="flex justify-center items-center gap-2 text-2xl font-bold text-center text-006d77">
         <h2 className="text-006d77 text-xl font-semibold">Рецепты</h2>
         <Button
           onPress={onOpen}

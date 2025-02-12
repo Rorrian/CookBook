@@ -60,7 +60,7 @@ export const CreateIngredientModal = ({
         {onClose => (
           <Form onSubmit={handleSubmit(onCreate)}>
             <ModalHeader className="flex flex-col gap-1">
-              <h3 className="text-2xl font-semibold text-center text-006D77 mb-4">
+              <h3 className="text-2xl font-semibold text-center mb-4">
                 Создать ингредиент
               </h3>
             </ModalHeader>
@@ -131,6 +131,7 @@ export const CreateIngredientModal = ({
                     fieldState: { error },
                   }) => (
                     <Select
+                      isRequired
                       className="w-full"
                       errorMessage={error?.message}
                       isInvalid={!!error}
@@ -153,7 +154,7 @@ export const CreateIngredientModal = ({
             </ModalBody>
 
             <ModalFooter className="w-full">
-              <Button color="danger" variant="light" onPress={onClose}>
+              <Button color="warning" variant="light" onPress={onClose}>
                 Отменить
               </Button>
 

@@ -16,7 +16,7 @@ export default {
         '83c5be': '#83c5be',
         'edf6f9': '#edf6f9',
         'ffddd2': '#ffddd2',
-        'e29578': '#e29578',
+        'e29578': '#e29572',
       },
       backgroundImage: {
         'gradient-to-r': 'linear-gradient(to right, var(--tw-gradient-stops))',

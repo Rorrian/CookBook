@@ -1,4 +1,4 @@
-import { GettingStartedPage } from './GettingStarted'
+import { GettingStartedPage } from './getting-started'
 import { HomePage } from './home'
 import { RecipePage } from './recipe'
 import { FavoritesPage } from './favorites'

@@ -63,7 +63,7 @@ export const EditStepModal = ({
         {onClose => (
           <Form onSubmit={handleSubmit(onUpdate)}>
             <ModalHeader className="flex flex-col gap-1">
-              <h3 className="text-2xl font-semibold text-center text-006D77 mb-4">
+              <h3 className="text-2xl font-semibold text-center mb-4">
                 Изменить шаг
               </h3>
             </ModalHeader>
@@ -125,7 +125,7 @@ export const EditStepModal = ({
             </ModalBody>
 
             <ModalFooter className="w-full">
-              <Button color="danger" variant="light" onPress={onClose}>
+              <Button color="warning" variant="light" onPress={onClose}>
                 Отменить
               </Button>
 
