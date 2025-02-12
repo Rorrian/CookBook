@@ -1,15 +1,20 @@
 import { MdAdd } from 'react-icons/md'
 import { Button, useDisclosure } from '@nextui-org/react'
 
-import { RecipesList } from '@modules/recipes'
+import { RecipesList, CreateRecipeModal } from '@modules/recipes'
 import { useGetRecipesQuery } from '@shared/store/api'
 import { Loader } from '@shared/components'
-import { CreateRecipeModal } from '@modules/recipes/components'
+import { useSearch, SearchForm } from '@modules/search'
 
 export function HomePage() {
-  const { data: recipes, isLoading, isError } = useGetRecipesQuery()
-
+  const { searchTerm, setSearchTerm } = useSearch('')
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+
+  const {
+    data: recipes,
+    isLoading,
+    isError,
+  } = useGetRecipesQuery({ search: searchTerm })
 
   if (isLoading) return <Loader />
   if (isError) return <div>Error loading recipes</div>
@@ -28,7 +33,15 @@ export function HomePage() {
         </Button>
       </div>
 
-      <RecipesList recipes={recipes || []} />
+      <SearchForm searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+
+      {recipes?.length ? (
+        <RecipesList recipes={recipes} />
+      ) : (
+        <p className="text-center text-gray-500">
+          Рецептов по данному поисковому запросу не найдено
+        </p>
+      )}
 
       {isOpen && (
         <CreateRecipeModal isOpen={isOpen} onOpenChange={onOpenChange} />

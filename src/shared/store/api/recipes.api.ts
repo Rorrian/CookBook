@@ -6,9 +6,11 @@ import { handleError } from '@shared/utils/handleError'
 
 export const recipesApi = api.injectEndpoints({
   endpoints: builder => ({
-    getRecipes: builder.query<Recipe[], void>({
-      query: () => ({
-        url: `/rpc/get_recipes_with_categories`,
+    getRecipes: builder.query<Recipe[], { search?: string }>({
+      query: ({ search = '' }) => ({
+        //   url: `/rpc/get_recipes_with_categories`,
+        url: `/rpc/get_recipes_with_categories_search`,
+        params: search ? { search_param: search } : {},
       }),
       providesTags: ['Recipes'],
     }),

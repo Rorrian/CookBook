@@ -25,7 +25,13 @@ const persistedReducer = persistReducer(persistConfig, reducers)
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(api.middleware),
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Для решения ошибки с несериализемым значением(методом)
+        ignoredActions: ['persist/PERSIST'],
+        ignoredPaths: ['register'],
+      },
+    }).concat(api.middleware),
   devTools: process.env.NODE_ENV !== 'production',
 })
 
