@@ -4,3 +4,5 @@ export const DEFAULT_MACRONUTRIENTS = {
   fats: 0,
   carbohydrates: 0,
 }
+
+export const MAX_COMPLEXITY_LEVEL = 5

@@ -1,16 +1,34 @@
 import { Macronutrients, NewRecipe, Recipe, UpdatedRecipe } from '@/src/types'
 import { supabase } from '@libs/supabase'
+import { handleError } from '@shared/utils/handleError'
 
 import { api } from './api'
-import { handleError } from '@shared/utils/handleError'
 
 export const recipesApi = api.injectEndpoints({
   endpoints: builder => ({
-    getRecipes: builder.query<Recipe[], { search?: string }>({
-      query: ({ search = '' }) => ({
-        //   url: `/rpc/get_recipes_with_categories`,
-        url: `/rpc/get_recipes_with_categories_search`,
-        params: search ? { search_param: search } : {},
+    // getRecipes: builder.query<Recipe[], { search?: string }>({
+    // query: () => ({
+    //   url: `/rpc/get_recipes_with_categories`,
+    // С поиском:
+    // query: ({ search = '' }) => ({
+    // url: `/rpc/get_recipes_with_categories_search`,
+    // params: search ? { search_param: search } : {},
+    // С поиском и фильтрацией:
+    getRecipes: builder.query<
+      Recipe[],
+      {
+        search?: string
+        category?: string
+        complexity_level?: string
+      }
+    >({
+      query: ({ search = '', category, complexity_level }) => ({
+        url: `/rpc/get_recipes_with_filters_v2`,
+        params: {
+          search: search ? `title*${search}*` : undefined,
+          category,
+          complexity_level,
+        },
       }),
       providesTags: ['Recipes'],
     }),

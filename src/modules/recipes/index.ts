@@ -7,7 +7,7 @@ import {
   IngredientsList,
   StepsList,
 } from './components'
-import { DEFAULT_MACRONUTRIENTS } from './utils/constants'
+import { DEFAULT_MACRONUTRIENTS, MAX_COMPLEXITY_LEVEL } from './utils/constants'
 
 export {
   RecipeItem,
@@ -18,4 +18,5 @@ export {
   IngredientsList,
   StepsList,
   DEFAULT_MACRONUTRIENTS,
+  MAX_COMPLEXITY_LEVEL,
 }

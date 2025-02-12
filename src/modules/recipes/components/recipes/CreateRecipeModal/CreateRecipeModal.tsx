@@ -28,6 +28,7 @@ import {
 import { ImageUpload } from '@shared/components'
 import { CreateCategoryModal } from '@modules/categories'
 import { MdAdd } from 'react-icons/md'
+import { getComplexityLevels } from '@shared/utils/complexityLevels'
 
 interface CreateRecipeModalProps {
   isOpen: boolean
@@ -187,37 +188,40 @@ export const CreateRecipeModal = ({
                     onPress={onOpenCreateCategoryModal}
                     color="primary"
                     className="h-auto bg-006d77 text-white hover:bg-83c5be transition"
-                    startContent={<MdAdd />}
-                  />
+                  >
+                    <MdAdd />
+                  </Button>
                 </div>
 
                 <Controller
                   name="complexity"
                   control={control}
-                  rules={{
-                    min: {
-                      value: 1,
-                      message: 'Сложность рецепта не может быть меньше 1',
-                    },
-                    max: {
-                      value: 5,
-                      message: 'Сложность рецепта не может быть больше 5',
-                    },
-                  }}
-                  defaultValue={1}
-                  render={({ field }) => (
-                    <Input
-                      {...field}
+                  rules={{ required: 'Выберите сложность' }}
+                  render={({
+                    field: { value, onChange },
+                    fieldState: { error },
+                  }) => (
+                    <Select
                       className="w-full"
-                      errorMessage={errors.complexity?.message}
-                      isClearable
-                      isInvalid={!!errors.complexity?.message}
+                      errorMessage={error?.message}
+                      isInvalid={!!error}
                       label="Сложность рецепта"
-                      placeholder="Введите сложность"
-                      type="number"
-                      variant="bordered"
-                      onClear={() => reset({ complexity: '' })}
-                    />
+                      placeholder="Выберите сложность"
+                      selectedKeys={value ? new Set([value]) : new Set()}
+                      onSelectionChange={keys =>
+                        onChange([...keys][0] as string)
+                      }
+                    >
+                      {getComplexityLevels().map(({ value, label }) => (
+                        <SelectItem
+                          key={value}
+                          value={value}
+                          textValue={value.toString()}
+                        >
+                          {label}
+                        </SelectItem>
+                      ))}
+                    </Select>
                   )}
                 />
 

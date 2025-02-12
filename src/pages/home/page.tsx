@@ -5,16 +5,24 @@ import { RecipesList, CreateRecipeModal } from '@modules/recipes'
 import { useGetRecipesQuery } from '@shared/store/api'
 import { Loader } from '@shared/components'
 import { useSearch, SearchForm } from '@modules/search'
+import { FiltersForm, useFilters } from '@modules/filters'
 
 export function HomePage() {
+  const { filters, updateFilter, resetFilters } = useFilters()
   const { searchTerm, setSearchTerm } = useSearch('')
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+
+  // TODO: одновременное использование поиска и фильтров?
 
   const {
     data: recipes,
     isLoading,
     isError,
-  } = useGetRecipesQuery({ search: searchTerm })
+  } = useGetRecipesQuery({
+    search: searchTerm || undefined,
+    category: filters.category || undefined,
+    complexity_level: filters.complexity || undefined,
+  })
 
   if (isLoading) return <Loader />
   if (isError) return <div>Error loading recipes</div>
@@ -34,6 +42,11 @@ export function HomePage() {
       </div>
 
       <SearchForm searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <FiltersForm
+        filters={filters}
+        updateFilter={updateFilter}
+        resetFilters={resetFilters}
+      />
 
       {recipes?.length ? (
         <RecipesList recipes={recipes} />
