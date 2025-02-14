@@ -11,7 +11,7 @@ import {
 
 import {
   useDeleteRecipeMutation,
-  useGetIngredientsQuery,
+  useGetRecipeIngredientsQuery,
   useGetRecipeQuery,
   useGetStepsQuery,
 } from '@shared/store/api'
@@ -37,7 +37,7 @@ export function RecipePage() {
     isError: isRecipeError,
   } = useGetRecipeQuery(id)
   const { data: ingredients, isLoading: isIngredientsLoading } =
-    useGetIngredientsQuery(id)
+    useGetRecipeIngredientsQuery(id)
   const { data: steps, isLoading: isStepsLoading } = useGetStepsQuery(id)
   const [deleteRecipe] = useDeleteRecipeMutation()
 

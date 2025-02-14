@@ -7,7 +7,7 @@ import { api } from './api'
 export const categoriesApi = api.injectEndpoints({
   endpoints: builder => ({
     getCategories: builder.query<Category[], void>({
-      query: () => `/categories`,
+      query: () => '/categories',
       providesTags: [{ type: 'Categories' }],
     }),
 
@@ -91,10 +91,6 @@ export const categoriesApi = api.injectEndpoints({
     }),
 
     deleteCategory: builder.mutation<null, string>({
-      //   query: id => ({
-      //     url: `/categories?id=eq.${id}`,
-      //     method: 'DELETE',
-      //   }),
       async queryFn(id, api, extraOptions, baseQuery) {
         try {
           const { data: categoryData } = (await baseQuery({

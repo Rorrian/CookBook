@@ -5,7 +5,7 @@ import { api } from './api'
 export const unitsApi = api.injectEndpoints({
   endpoints: builder => ({
     getUnits: builder.query<Unit[], void>({
-      query: () => `/units`,
+      query: () => '/units',
       providesTags: ['Units'],
     }),
 

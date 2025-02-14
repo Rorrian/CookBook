@@ -1,10 +1,21 @@
-import { Ingredient, NewIngredient, UpdatedIngredient } from '@/src/types'
+import { Ingredient, NewIngredient } from '@/src/types'
 
 import { api } from './api'
 
 export const ingredientsApi = api.injectEndpoints({
   endpoints: builder => ({
-    getIngredients: builder.query<Ingredient[], string>({
+    getAllRecipeIngredientsOfCurrentUser: builder.query<
+      { name: string }[],
+      string
+    >({
+      query: current_user_id => ({
+        url: '/rpc/get_ingredients_for_user',
+        params: { current_user_id },
+      }),
+      providesTags: (result, error, id) => [{ type: 'Ingredients' }],
+    }),
+
+    getRecipeIngredients: builder.query<Ingredient[], string>({
       query: id => ({
         url: `/rpc/get_ingredients_with_units`,
         method: 'POST',
@@ -61,7 +72,8 @@ export const ingredientsApi = api.injectEndpoints({
 })
 
 export const {
-  useGetIngredientsQuery,
+  useGetAllRecipeIngredientsOfCurrentUserQuery,
+  useGetRecipeIngredientsQuery,
   // useGetIngredient,
   useCreateIngredientMutation,
   useEditIngredientMutation,

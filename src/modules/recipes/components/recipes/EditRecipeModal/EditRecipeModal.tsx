@@ -127,6 +127,7 @@ export const EditRecipeModal = ({
                   render={({ field }) => (
                     <Input
                       {...field}
+                      autoFocus
                       isRequired
                       className="w-full"
                       errorMessage={errors.title?.message}

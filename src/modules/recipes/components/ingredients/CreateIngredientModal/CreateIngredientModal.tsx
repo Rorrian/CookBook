@@ -80,6 +80,7 @@ export const CreateIngredientModal = ({
                 render={({ field }) => (
                   <Input
                     {...field}
+                    autoFocus
                     isRequired
                     className="w-full"
                     errorMessage={errors.name?.message}

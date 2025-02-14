@@ -6,37 +6,38 @@ import { api } from './api'
 
 export const recipesApi = api.injectEndpoints({
   endpoints: builder => ({
-    // getRecipes: builder.query<Recipe[], { search?: string }>({
-    // query: () => ({
-    //   url: `/rpc/get_recipes_with_categories`,
-    // С поиском:
-    // query: ({ search = '' }) => ({
-    // url: `/rpc/get_recipes_with_categories_search`,
-    // params: search ? { search_param: search } : {},
-    // С поиском и фильтрацией:
     getRecipes: builder.query<
       Recipe[],
       {
         search?: string
         category?: string
         complexity_level?: string
+        selected_ingredients?: string
+        is_use_union?: boolean
       }
     >({
-      query: ({ search = '', category, complexity_level }) => ({
-        url: `/rpc/get_recipes_with_filters_v2`,
+      query: ({
+        search = '',
+        category,
+        complexity_level,
+        selected_ingredients,
+        is_use_union,
+      }) => ({
+        url: '/rpc/get_recipes_with_filters_v3',
         params: {
-          search: search ? `title*${search}*` : undefined,
+          search_param: search ? `title*${search}*` : undefined,
           category,
           complexity_level,
+          selected_ingredients: selected_ingredients?.toLowerCase(),
+          is_use_union: !!is_use_union,
         },
       }),
       providesTags: ['Recipes'],
     }),
 
     getRecipe: builder.query<Recipe, string>({
-      // query: id => `/recipes?id=eq.${id}`,
       query: id => ({
-        url: `/rpc/get_recipe_with_category`,
+        url: '/rpc/get_recipe_with_category',
         method: 'POST',
         body: { input_recipe_id: id },
       }),
@@ -45,11 +46,6 @@ export const recipesApi = api.injectEndpoints({
     }),
 
     createRecipe: builder.mutation<null, NewRecipe>({
-      // query: newRecipe => ({
-      //   url: '/recipes',
-      //   method: 'POST',
-      // 		body: newRecipe,
-      // }),
       async queryFn(newRecipe, api, extraOptions, baseQuery) {
         try {
           const recipeResponse = (await baseQuery({
@@ -173,11 +169,6 @@ export const recipesApi = api.injectEndpoints({
     }),
 
     editRecipe: builder.mutation<null, UpdatedRecipe>({
-      // query: recipe => ({
-      //   url: `/recipes?id=eq.${recipe.id}`,
-      //   method: 'PATCH',
-      //   body: recipe,
-      // }),
       async queryFn(updatedRecipe, api, extraOptions, baseQuery) {
         try {
           const recipeResponse = (await baseQuery({
@@ -257,10 +248,6 @@ export const recipesApi = api.injectEndpoints({
     }),
 
     deleteRecipe: builder.mutation<null, string>({
-      //   query: id => ({
-      //     url: `/recipes?id=eq.${id}`,
-      //     method: 'DELETE',
-      //   }),
       async queryFn(id, api, extraOptions, baseQuery) {
         try {
           const { data: recipeData } = (await baseQuery({

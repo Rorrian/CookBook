@@ -110,6 +110,7 @@ export const CreateStepModal = ({
                 render={({ field }) => (
                   <Input
                     {...field}
+                    autoFocus
                     isRequired
                     className="w-full"
                     errorMessage={errors.description?.message}

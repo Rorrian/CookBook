@@ -1,4 +1,8 @@
 import { FiltersForm } from './components/FiltersForm'
-import { useFilters } from './hooks/useFilters'
+import {
+  useFilters,
+  IngredientSelectionMode,
+  DEFAULT_FILTERS,
+} from './hooks/useFilters'
 
-export { FiltersForm, useFilters }
+export { FiltersForm, useFilters, IngredientSelectionMode, DEFAULT_FILTERS }

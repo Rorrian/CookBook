@@ -24,7 +24,6 @@ export type Ingredient = {
   recipe_id: string
 }
 export type NewIngredient = Omit<Ingredient, 'id' | 'unit_name'>
-export type UpdatedIngredient = Omit<Ingredient, 'recipe_id' | 'unit_name'>
 
 export type Step = {
   id: string

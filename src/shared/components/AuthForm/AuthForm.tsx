@@ -48,6 +48,7 @@ export const AuthForm = ({ title, handleClick }: AuthFormProps) => {
           render={({ field }) => (
             <Input
               {...field}
+              autoFocus
               isRequired
               className="w-full"
               isClearable

@@ -89,6 +89,7 @@ export const CreateCategoryModal = ({
                 render={({ field }) => (
                   <Input
                     {...field}
+                    autoFocus
                     isRequired
                     className="w-full"
                     errorMessage={errors.title?.message}

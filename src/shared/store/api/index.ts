@@ -16,7 +16,8 @@ import {
   useDeleteRecipeMutation,
 } from './recipes.api'
 import {
-  useGetIngredientsQuery,
+  useGetAllRecipeIngredientsOfCurrentUserQuery,
+  useGetRecipeIngredientsQuery,
   useCreateIngredientMutation,
   useEditIngredientMutation,
   useDeleteIngredientMutation,
@@ -44,7 +45,8 @@ export {
   useDeleteRecipeImageMutation,
   useEditRecipeMutation,
   useDeleteRecipeMutation,
-  useGetIngredientsQuery,
+  useGetAllRecipeIngredientsOfCurrentUserQuery,
+  useGetRecipeIngredientsQuery,
   useCreateIngredientMutation,
   useEditIngredientMutation,
   useDeleteIngredientMutation,
