@@ -5,36 +5,46 @@ import { Recipe } from '@/src/types'
 import { RootState } from '../store'
 
 interface FavoritesState {
-  favorites: Recipe[]
+  favorites: { [userId: string]: Recipe[] }
 }
 
 const initialState: FavoritesState = {
-  favorites: [],
+  favorites: {},
 }
 
 export const favoritesSlice = createSlice({
   name: 'favorites',
   initialState,
   reducers: {
-    toggleToFavorites: (state, action: PayloadAction<Recipe>) => {
-      const recipe = action.payload
-      const isExist = state.favorites.some(
+    toggleToFavorites: (
+      state,
+      action: PayloadAction<{ userId: string; recipe: Recipe }>,
+    ) => {
+      const { userId, recipe } = action.payload
+      const userFavorites = state.favorites[userId] || []
+      const isExist = userFavorites.some(
         recipeItem => recipeItem.id === recipe.id,
       )
 
       if (isExist) {
-        state.favorites = state.favorites.filter(item => item.id !== recipe.id)
+        state.favorites[userId] = userFavorites.filter(
+          item => item.id !== recipe.id,
+        )
       } else {
-        state.favorites.push(recipe)
+        state.favorites[userId] = [...userFavorites, recipe]
       }
     },
   },
 })
 
-export const selectFavorites = (state: RootState) => state.favorites.favorites
+export const selectFavorites = (state: RootState, userId: string) =>
+  state.favorites.favorites[userId] || []
 
 export const selectIsInFavorites = createSelector(
-  [selectFavorites, (_, id: string) => id],
+  [
+    (state: RootState, userId: string) => selectFavorites(state, userId),
+    (_, __, id: string) => id,
+  ],
   (favorites, id) => favorites.some((item: Recipe) => item.id === id),
 )
 

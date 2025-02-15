@@ -37,7 +37,7 @@ export const IngredientsFilter = ({
     ? filteredIngredients
     : filteredIngredients.slice(0, MAX_VISIBLE_LIST_ITEMS)
 
-  console.log(ingredients)
+  // console.log(ingredients)
 
   return (
     <div className="border p-4 border-divider rounded-medium">

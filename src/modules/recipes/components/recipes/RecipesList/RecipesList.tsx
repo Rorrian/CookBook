@@ -14,11 +14,8 @@ export const RecipesList = memo(({ recipes }: RecipesListProps) => {
       {recipes.map((recipe: Recipe) => (
         <li
           key={recipe.id}
-          className="w-full max-w-full min-w-[225px] h-full flex items-center overflow-hidden"
+          className="w-full max-w-xs h-full flex items-center overflow-hidden"
         >
-          {/* <div className="w-full h-full flex flex-col justify-between">
-            <RecipeItem recipe={recipe} />
-          </div> */}
           <RecipeItem recipe={recipe} />
         </li>
       ))}

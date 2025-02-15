@@ -10,16 +10,17 @@ import { RootState } from '@shared/store/store'
 
 import { useTypedSelector } from './useTypedSelector'
 
-export const useFavorites = () => {
+export const useFavorites = (userId: string) => {
   const dispatch = useDispatch()
-  const favorites = useTypedSelector(selectFavorites)
+  const favorites = useTypedSelector(state => selectFavorites(state, userId))
 
-  const toggleFavorite = (recipe: Recipe) => {
-    dispatch(toggleToFavorites(recipe))
-  }
+  const toggleFavorite = (recipe: Recipe) =>
+    dispatch(toggleToFavorites({ userId, recipe }))
 
-  const isInFavorites = (id: string) =>
-    useTypedSelector((state: RootState) => selectIsInFavorites(state, id))
+  const isInFavorites = (userId: string, recipeId: string) =>
+    useTypedSelector((state: RootState) =>
+      selectIsInFavorites(state, userId, recipeId),
+    )
 
   return {
     favorites,

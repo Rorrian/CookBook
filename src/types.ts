@@ -51,6 +51,7 @@ export interface Recipe {
   preparation_time?: string
   servings_count?: number
   macronutrients?: Macronutrients
+  user_id: string
 }
 export type NewRecipe = Omit<Recipe, 'id' | 'category_title'>
 export type UpdatedRecipe = Omit<Recipe, 'category_title'>

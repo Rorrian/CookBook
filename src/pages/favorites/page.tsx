@@ -1,17 +1,21 @@
 import { RecipesList } from '@modules/recipes'
-import { useFavorites } from '@shared/hooks'
+import { useAuth, useFavorites } from '@shared/hooks'
 
 export function FavoritesPage() {
-  const { favorites } = useFavorites()
-  // console.log(favorites)
+  const { uid } = useAuth()
+  const { favorites } = useFavorites(uid!)
 
-  if (!favorites.length) return <div>No favorites</div>
+  // console.log(favorites)
 
   return (
     <div className="flex flex-col gap-8 p-8">
-      <h2 className="text-2xl font-bold text-center text-006d77">Favorites</h2>
+      <h2 className="text-2xl font-bold text-center text-006d77">Избранное</h2>
 
-      <RecipesList recipes={favorites} />
+      {!!favorites.length ? (
+        <RecipesList recipes={favorites} />
+      ) : (
+        <p>Вы еще не добавили ни одного рецепта в избранное</p>
+      )}
     </div>
   )
 }

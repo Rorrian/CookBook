@@ -11,12 +11,10 @@ interface RecipeItemProps {
 }
 
 export const RecipeItem = ({ recipe }: RecipeItemProps) => {
-  const { id, title, description, category_title, image_url } = recipe
+  const { id, title, description, category_title, image_url, user_id } = recipe
 
-  const { toggleFavorite, isInFavorites } = useFavorites()
-
-  // console.log(`recipe ===`)
-  // console.log(recipe)
+  const { toggleFavorite, isInFavorites } = useFavorites(user_id)
+  const isFavorite = isInFavorites(user_id, recipe.id)
 
   const handleFavoriteClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -40,7 +38,7 @@ export const RecipeItem = ({ recipe }: RecipeItemProps) => {
             color="danger"
             onClick={handleFavoriteClick}
           >
-            {isInFavorites(id) ? (
+            {isFavorite ? (
               <MdFavorite size={24} />
             ) : (
               <MdFavoriteBorder size={24} />
@@ -65,6 +63,7 @@ export const RecipeItem = ({ recipe }: RecipeItemProps) => {
         {image_url && (
           <Image
             isBlurred
+            removeWrapper
             alt="Recipe Image"
             className="w-full h-48 object-cover rounded-xl border-4 border-83C5BE shadow-md"
             src={image_url}
