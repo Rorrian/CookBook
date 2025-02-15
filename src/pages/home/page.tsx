@@ -10,12 +10,14 @@ import {
   IngredientSelectionMode,
   useFilters,
 } from '@modules/filters'
+import { useAuth } from '@shared/hooks'
 
 // TODO: одновременное использование поиска и фильтров
 
 // TODO: разделить запросы для списка рецептов и для страницы конкретного рецепта или - повод попробовать GraphQL ?
 
 export function HomePage() {
+  const { uid } = useAuth()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const { filters, updateFilter, resetFilters } = useFilters()
   const { searchTerm, setSearchTerm } = useSearch('')
@@ -25,6 +27,7 @@ export function HomePage() {
     isLoading,
     isError,
   } = useGetRecipesQuery({
+    userId: uid!,
     search: searchTerm || undefined,
     category: filters.category || undefined,
     complexity_level: filters.complexity || undefined,

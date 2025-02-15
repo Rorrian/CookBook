@@ -6,10 +6,10 @@ import { api } from './api'
 
 export const recipesApi = api.injectEndpoints({
   endpoints: builder => ({
-    // TODO: При входе за 1 юзера, логауте, входе за 2 юзера - на странице рецептов все еще отображаются рецепты 1 юзера, после обновления страницы - уже второго
     getRecipes: builder.query<
       Recipe[],
       {
+        userId: string
         search?: string
         category?: string
         complexity_level?: string
@@ -33,7 +33,9 @@ export const recipesApi = api.injectEndpoints({
           is_use_union: !!is_use_union,
         },
       }),
-      providesTags: ['Recipes'],
+      providesTags: (result, error, { userId }) => [
+        { type: 'Recipes', userId },
+      ],
     }),
 
     getRecipe: builder.query<Recipe, string>({
