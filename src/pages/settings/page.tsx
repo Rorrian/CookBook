@@ -18,19 +18,19 @@ export function SettingsPage() {
           title="Данные профиля"
           startContent={<FaUserCircle />}
         >
-          <h3 className="text-xl font-semibold mb-4">
-            Данные текущего пользователя:
-          </h3>
+          <div className="mb-8">
+            <h3 className="text-lg font-semibold mb-4">
+              Данные текущего пользователя:
+            </h3>
 
-          <div className="flex flex-col gap-4">
-            <p className="text-xl text-gray-800">ID: {uid}</p>
-            <p className="text-xl text-gray-800">Email: {email}</p>
+            <div className="flex flex-col gap-4">
+              <p className="text-lg text-gray-800">ID: {uid}</p>
+              <p className="text-lg text-gray-800">Email: {email}</p>
+            </div>
           </div>
-          <br />
 
-          <h3 className="text-xl font-semibold mb-4">Изменение пароля</h3>
-          {/* TODO: добавить поле "Старый пароль" на форму на странице Настройки */}
-          <ChangePasswordForm />
+          <h3 className="text-lg font-semibold mb-4">Изменение пароля</h3>
+          <ChangePasswordForm isOldPasswordCheckRequired />
         </AccordionItem>
       </Accordion>
     </div>

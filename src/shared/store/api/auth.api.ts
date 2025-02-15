@@ -4,13 +4,25 @@ import { BASE_URL } from '@shared/utils/constants'
 import { RoutePaths } from '@shared/utils/navigation'
 
 export const authApi = {
-  async signIn({ email, password }: AuthCredentials) {
+  async signIn(
+    { email, password }: AuthCredentials,
+    validateCurrentPassword = false,
+  ) {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
 
-    if (error) throw error
+    if (error) {
+      if (error.message === 'Invalid login credentials') {
+        if (validateCurrentPassword) {
+          throw new Error('Текущий пароль указан неверный!')
+        } else {
+          throw new Error('Почта или пароль не верны!')
+        }
+      }
+      throw error
+    }
 
     return data
   },

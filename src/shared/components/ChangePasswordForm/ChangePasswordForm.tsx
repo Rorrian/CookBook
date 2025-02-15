@@ -7,24 +7,29 @@ import { useDispatch } from 'react-redux'
 
 import { authApi } from '@shared/store/api'
 import { RoutePaths } from '@shared/utils/navigation'
-import { updateSession, usePasswordVisibility } from '@shared/hooks'
+import { updateSession, useAuth, usePasswordVisibility } from '@shared/hooks'
 
 const MIN_PASSWORD_LENGTH = 6
 
 interface ChangePasswordFormInputs {
+  currentPassword?: string
   password: string
   passwordConfirmation: string
 }
 
 interface ChangePasswordFormProps {
+  isOldPasswordCheckRequired?: boolean
   onSuccessRedirect?: boolean
 }
 
 export const ChangePasswordForm = ({
+  isOldPasswordCheckRequired,
   onSuccessRedirect,
 }: ChangePasswordFormProps) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const { email } = useAuth()
   const {
     control,
     handleSubmit,
@@ -38,7 +43,21 @@ export const ChangePasswordForm = ({
 
   const handleUpdatePassword = async (data: FieldValues) => {
     try {
-      await authApi.updatePassword(data.password)
+      if (isOldPasswordCheckRequired) {
+        const { user, session } = await authApi.signIn(
+          {
+            email: email!,
+            password: data.currentPassword,
+          },
+          true,
+        )
+
+        if (user && session) {
+          await authApi.updatePassword(data.password)
+        }
+      } else {
+        await authApi.updatePassword(data.password)
+      }
 
       toast.success('Пароль успешно обновлен!')
       if (onSuccessRedirect) {
@@ -49,13 +68,45 @@ export const ChangePasswordForm = ({
       }
     } catch (error) {
       console.error(error)
-      toast.error('Не удалось восстановить доступ')
+      const errorMessage =
+        error instanceof Error ? error.message : 'Неизвестная ошибка'
+      toast.error(`Не удалось восстановить доступ: ${errorMessage}`)
     }
   }
 
   return (
     <Card className="w-96 shadow-lg bg-white rounded-3xl">
       <CardBody className="flex flex-col gap-4">
+        {isOldPasswordCheckRequired && (
+          <Controller
+            name="currentPassword"
+            control={control}
+            rules={{
+              required: 'Пароль обязателен',
+              minLength: {
+                value: MIN_PASSWORD_LENGTH,
+                message: `Пароль должен содержать минимум ${MIN_PASSWORD_LENGTH} символов`,
+              },
+            }}
+            defaultValue=""
+            render={({ field }) => (
+              <Input
+                {...field}
+                autoFocus
+                isRequired
+                className="w-full"
+                fullWidth
+                errorMessage={errors.currentPassword?.message}
+                isInvalid={!!errors.currentPassword?.message}
+                label="Текущий пароль"
+                placeholder="Введите текущий пароль"
+                type="text"
+                variant="bordered"
+              />
+            )}
+          />
+        )}
+
         <Controller
           name="password"
           control={control}
@@ -70,7 +121,6 @@ export const ChangePasswordForm = ({
           render={({ field }) => (
             <Input
               {...field}
-              autoFocus
               isRequired
               className="w-full"
               fullWidth

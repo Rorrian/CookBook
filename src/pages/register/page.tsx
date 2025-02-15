@@ -28,9 +28,12 @@ export function RegisterPage() {
         toast.success('Успешная регистрация!')
         navigate(RoutePaths.GETTING_STARTED)
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error(error)
-      toast.error(error.message || 'Не удалось зарегистрироваться')
+
+      const errorMessage =
+        error instanceof Error ? error.message : 'Неизвестная ошибка'
+      toast.error(`Не удалось зарегистрироваться: ${errorMessage}`)
     }
   }
 

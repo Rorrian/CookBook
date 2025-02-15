@@ -28,9 +28,12 @@ export const LoginPage = () => {
         toast.success('Успешный вход!')
         navigate(RoutePaths.HOME)
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error(error)
-      toast.error(error.message || 'Не удалось войти в систему')
+
+      const errorMessage =
+        error instanceof Error ? error.message : 'Неизвестная ошибка'
+      toast.error(`Не удалось войти в систему: ${errorMessage}`)
     }
   }
 
