@@ -1,5 +1,5 @@
 export const BASE_URL =
-  process.env.NODE_ENV === 'production' ? 'none' : 'http://localhost:3001'
+  process.env.NODE_ENV === 'production' ? 'none' : 'http://localhost:5173'
 
 export const PROJECT_NAME = 'CookBook'
 

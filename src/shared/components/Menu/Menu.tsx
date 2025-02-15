@@ -21,6 +21,8 @@ const filterMenuItems = (items: MenuItem[], isAuth: boolean): MenuItem[] => {
   return items.filter(item => {
     if (item.path === RoutePaths.RECIPE) return false
 
+    if (item.isHideInHeaderMenu) return false
+
     if (isAuth) {
       return !item.onlyForUnauth
     }

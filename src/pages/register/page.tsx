@@ -37,12 +37,12 @@ export function RegisterPage() {
   return (
     <div className="flex justify-center items-center h-full">
       <div className="flex flex-col bg-white rounded-3xl gap-4">
-        <div className="text-2xl font-semibold text-center text-006d77">
+        <h2 className="text-2xl font-semibold text-center text-006d77">
           Зарегистрироваться
-        </div>
+        </h2>
 
         <div className="flex flex-col gap-4">
-          <AuthForm title="Войти" handleClick={handleRegister} />
+          <AuthForm title="Зарегистрироваться" handleClick={handleRegister} />
 
           <Spacer y={1} />
 

@@ -55,30 +55,30 @@ export function HomePage() {
         </Button>
       </div>
 
-      <SearchForm
-        placeholder="Поиск рецептов..."
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-      />
-
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-6">
-        <div className="col-span-1 lg:col-span-1">
-          <FiltersForm
-            filters={filters}
-            updateFilter={updateFilter}
-            resetFilters={resetFilters}
+      {!recipes?.length ? (
+        <p className="text-center text-gray-500">Рецептов не найдено</p>
+      ) : (
+        <>
+          <SearchForm
+            placeholder="Поиск рецептов..."
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
           />
-        </div>
-        <div className="col-span-3 lg:col-span-3">
-          {recipes?.length ? (
-            <RecipesList recipes={recipes} />
-          ) : (
-            <p className="text-center text-gray-500">
-              Рецептов по данному поисковому запросу не найдено
-            </p>
-          )}
-        </div>
-      </div>
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-6">
+            <div className="col-span-1 lg:col-span-1">
+              <FiltersForm
+                filters={filters}
+                updateFilter={updateFilter}
+                resetFilters={resetFilters}
+              />
+            </div>
+
+            <div className="col-span-3 lg:col-span-3">
+              <RecipesList recipes={recipes} />
+            </div>
+          </div>
+        </>
+      )}
 
       {isOpen && (
         <CreateRecipeModal isOpen={isOpen} onOpenChange={onOpenChange} />

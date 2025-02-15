@@ -37,9 +37,9 @@ export const LoginPage = () => {
   return (
     <div className="flex justify-center items-center h-full">
       <div className="flex flex-col bg-white rounded-3xl gap-4">
-        <div className="text-2xl font-semibold text-center text-006d77">
+        <h2 className="text-2xl font-semibold text-center text-006d77">
           Войти в аккаунт
-        </div>
+        </h2>
 
         <div className="flex flex-col gap-4">
           <AuthForm title="Войти" handleClick={handleLogin} />
@@ -47,6 +47,16 @@ export const LoginPage = () => {
           <Spacer y={1} />
 
           <div className="text-center">
+            <div>
+              Забыли пароль?{' '}
+              <Link
+                to={RoutePaths.ACCOUNT_RECOVERY}
+                className="text-primary-500 hover:text-primary-600"
+              >
+                Восстановить доступ к аккаунту
+              </Link>
+            </div>
+            <Spacer y={4} />
             <div>
               Нет аккаунта?{' '}
               <Link

@@ -9,6 +9,8 @@ import {
   CategoriesPage,
   RecipePage,
   GettingStartedPage,
+  AccountRecoveryPage,
+  ResetPasswordPage,
 } from '../../pages'
 
 export interface IRoute {
@@ -17,17 +19,20 @@ export interface IRoute {
   element: ReactNode
   isAuth: boolean
   onlyForUnauth?: boolean
+  isHideInHeaderMenu?: boolean
 }
 
 export enum RoutePaths {
-  CATEGORIES = '/categories',
   REGISTER = '/register',
   LOGIN = '/login',
+  ACCOUNT_RECOVERY = '/account-recovery',
+  RESET_PASSWORD = 'reset-password',
+  CATEGORIES = '/categories',
   GETTING_STARTED = '/getting-started',
   HOME = '/',
+  RECIPE = '/recipe/:id',
   FAVORITES = '/favorites',
   LK = '/lk',
-  RECIPE = '/recipe/:id',
 }
 
 export const routes: IRoute[] = [
@@ -44,6 +49,22 @@ export const routes: IRoute[] = [
     element: <LoginPage />,
     isAuth: false,
     onlyForUnauth: true,
+  },
+  {
+    path: RoutePaths.ACCOUNT_RECOVERY,
+    title: 'Восстановление аккаунта',
+    element: <AccountRecoveryPage />,
+    isAuth: false,
+    onlyForUnauth: true,
+    isHideInHeaderMenu: true,
+  },
+  {
+    path: RoutePaths.RESET_PASSWORD,
+    title: 'Сброс пароля',
+    element: <ResetPasswordPage />,
+    isAuth: false,
+    onlyForUnauth: true,
+    isHideInHeaderMenu: true,
   },
   {
     path: RoutePaths.GETTING_STARTED,

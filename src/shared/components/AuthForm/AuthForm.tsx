@@ -4,17 +4,12 @@ import {
   SubmitHandler,
   useForm,
 } from 'react-hook-form'
-import {
-  Button,
-  Input,
-  Card,
-  CardBody,
-  CardFooter,
-  Spinner,
-} from '@nextui-org/react'
+import { Button, Input, Card, CardBody, CardFooter } from '@nextui-org/react'
 import { MdOutlineMail } from 'react-icons/md'
 
 import { AuthCredentials } from '@/src/types'
+import { useState } from 'react'
+import { IoMdEye, IoMdEyeOff } from 'react-icons/io'
 
 interface AuthFormProps {
   title: string
@@ -28,6 +23,9 @@ export const AuthForm = ({ title, handleClick }: AuthFormProps) => {
     formState: { errors },
     reset,
   } = useForm()
+
+  const [showPasswords, setShowPasswords] = useState(false)
+  const togglePasswordsVisibility = () => setShowPasswords(prev => !prev)
 
   const handleSubmitClick: SubmitHandler<FieldValues> = data => {
     const credentials: AuthCredentials = {
@@ -82,30 +80,41 @@ export const AuthForm = ({ title, handleClick }: AuthFormProps) => {
               {...field}
               isRequired
               className="w-full"
+              endContent={
+                <button
+                  aria-label="toggle password visibility"
+                  className="focus:outline-none"
+                  onClick={togglePasswordsVisibility}
+                >
+                  {showPasswords ? (
+                    <IoMdEyeOff className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <IoMdEye className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              }
               errorMessage={errors.password?.message}
-              isClearable
               isInvalid={!!errors.password?.message}
               fullWidth
               label="Пароль"
               placeholder="Введите ваш пароль"
-              type="password"
+              type={showPasswords ? 'text' : 'password'}
               variant="bordered"
-              onClear={() => reset({ password: '' })}
             />
           )}
         />
-
-        <CardFooter className="flex justify-center">
-          <Button
-            autoFocus
-            className="w-full py-2 text-lg font-medium bg-gradient-to-r from-[#006D77] via-[#83C5BE] to-[#EDF6F9] hover:from-[#006D77] hover:via-[#83C5BE] hover:to-[#E29578]"
-            color="primary"
-            onClick={handleSubmit(handleSubmitClick)}
-          >
-            {title}
-          </Button>
-        </CardFooter>
       </CardBody>
+
+      <CardFooter className="flex justify-center">
+        <Button
+          autoFocus
+          className="w-full py-2 text-lg font-medium bg-gradient-to-r from-[#006D77] via-[#83C5BE] to-[#EDF6F9] hover:from-[#006D77] hover:via-[#83C5BE] hover:to-[#E29578]"
+          color="primary"
+          onClick={handleSubmit(handleSubmitClick)}
+        >
+          {title}
+        </Button>
+      </CardFooter>
     </Card>
   )
 }

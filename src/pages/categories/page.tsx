@@ -13,7 +13,6 @@ export function CategoriesPage() {
 
   if (isLoading) return <Loader />
   if (isError) return <div>Error loading recipes</div>
-  if (!categories?.length) return <div>No categories found</div>
 
   return (
     <div className="flex flex-col gap-8 p-8">
