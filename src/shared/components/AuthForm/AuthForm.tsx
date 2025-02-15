@@ -6,17 +6,17 @@ import {
 } from 'react-hook-form'
 import { Button, Input, Card, CardBody, CardFooter } from '@nextui-org/react'
 import { MdOutlineMail } from 'react-icons/md'
-
-import { AuthCredentials } from '@/src/types'
-import { useState } from 'react'
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io'
 
+import { AuthCredentials } from '@/src/types'
+import { usePasswordVisibility } from '@shared/hooks'
+
 interface AuthFormProps {
-  title: string
+  buttonTitle: string
   handleClick: (credentials: AuthCredentials) => void
 }
 
-export const AuthForm = ({ title, handleClick }: AuthFormProps) => {
+export const AuthForm = ({ buttonTitle, handleClick }: AuthFormProps) => {
   const {
     control,
     handleSubmit,
@@ -24,8 +24,7 @@ export const AuthForm = ({ title, handleClick }: AuthFormProps) => {
     reset,
   } = useForm()
 
-  const [showPasswords, setShowPasswords] = useState(false)
-  const togglePasswordsVisibility = () => setShowPasswords(prev => !prev)
+  const { showPasswords, togglePasswordVisibility } = usePasswordVisibility()
 
   const handleSubmitClick: SubmitHandler<FieldValues> = data => {
     const credentials: AuthCredentials = {
@@ -84,7 +83,7 @@ export const AuthForm = ({ title, handleClick }: AuthFormProps) => {
                 <button
                   aria-label="toggle password visibility"
                   className="focus:outline-none"
-                  onClick={togglePasswordsVisibility}
+                  onClick={togglePasswordVisibility}
                 >
                   {showPasswords ? (
                     <IoMdEyeOff className="text-2xl text-default-400 pointer-events-none" />
@@ -112,7 +111,7 @@ export const AuthForm = ({ title, handleClick }: AuthFormProps) => {
           color="primary"
           onClick={handleSubmit(handleSubmitClick)}
         >
-          {title}
+          {buttonTitle}
         </Button>
       </CardFooter>
     </Card>

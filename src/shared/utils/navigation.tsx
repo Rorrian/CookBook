@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 import {
   HomePage,
   FavoritesPage,
-  LKPage,
+  SettingsPage,
   LoginPage,
   RegisterPage,
   CategoriesPage,
@@ -32,7 +32,7 @@ export enum RoutePaths {
   HOME = '/',
   RECIPE = '/recipe/:id',
   FAVORITES = '/favorites',
-  LK = '/lk',
+  SETTINGS = '/settings',
 }
 
 export const routes: IRoute[] = [
@@ -97,9 +97,9 @@ export const routes: IRoute[] = [
     isAuth: true,
   },
   {
-    path: RoutePaths.LK,
-    title: 'Профиль',
-    element: <LKPage />,
+    path: RoutePaths.SETTINGS,
+    title: 'Настройки',
+    element: <SettingsPage />,
     isAuth: true,
   },
 ]

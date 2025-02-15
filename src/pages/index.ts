@@ -2,7 +2,7 @@ import { GettingStartedPage } from './getting-started'
 import { HomePage } from './home'
 import { RecipePage } from './recipe'
 import { FavoritesPage } from './favorites'
-import { LKPage } from './lk'
+import { SettingsPage } from './settings'
 import { LoginPage } from './login'
 import { RegisterPage } from './register'
 import { Error404 } from './Error404'
@@ -15,7 +15,7 @@ export {
   HomePage,
   RecipePage,
   FavoritesPage,
-  LKPage,
+  SettingsPage,
   LoginPage,
   RegisterPage,
   Error404,

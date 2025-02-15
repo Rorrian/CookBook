@@ -1,24 +1,34 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
 
 import { supabase } from '@libs/supabase'
 
 import { login, logout } from '../store/users/users.slice'
 import { useAuth } from './useAuth'
 
+export const updateSession = async (
+  dispatch: Function,
+  isAuth: boolean = true,
+) => {
+  try {
+    const { data: sessionData } = await supabase.auth.getSession()
+    if (sessionData?.session && isAuth) {
+      const { user, access_token } = sessionData.session
+      dispatch(login({ uid: user.id, email: user.email, token: access_token }))
+    }
+  } catch (error) {
+    console.error(error)
+    toast.error('Не удалось обновить сессию')
+  }
+}
+
 export const useAuthListener = () => {
   const dispatch = useDispatch()
   const { isAuth } = useAuth()
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session && isAuth) {
-        const { user, access_token } = session
-        dispatch(
-          login({ uid: user.id, email: user.email, token: access_token }),
-        )
-      }
-    })
+    updateSession(dispatch, isAuth)
 
     const {
       data: { subscription },

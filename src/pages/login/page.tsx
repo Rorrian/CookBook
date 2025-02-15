@@ -42,7 +42,7 @@ export const LoginPage = () => {
         </h2>
 
         <div className="flex flex-col gap-4">
-          <AuthForm title="Войти" handleClick={handleLogin} />
+          <AuthForm buttonTitle="Войти" handleClick={handleLogin} />
 
           <Spacer y={1} />
 

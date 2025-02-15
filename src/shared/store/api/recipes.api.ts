@@ -6,6 +6,7 @@ import { api } from './api'
 
 export const recipesApi = api.injectEndpoints({
   endpoints: builder => ({
+    // TODO: При входе за 1 юзера, логауте, входе за 2 юзера - на странице рецептов все еще отображаются рецепты 1 юзера, после обновления страницы - уже второго
     getRecipes: builder.query<
       Recipe[],
       {

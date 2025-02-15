@@ -42,7 +42,10 @@ export function RegisterPage() {
         </h2>
 
         <div className="flex flex-col gap-4">
-          <AuthForm title="Зарегистрироваться" handleClick={handleRegister} />
+          <AuthForm
+            buttonTitle="Зарегистрироваться"
+            handleClick={handleRegister}
+          />
 
           <Spacer y={1} />
 
