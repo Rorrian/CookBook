@@ -51,10 +51,10 @@ export const ImageUpload = forwardRef(
       setIsImageUploading(true)
       try {
         const imageUrl = await uploadHandler(file)
-        setUpdatedImage(imageUrl)
-        setUploadedImagePath(extractRelativePath(imageUrl))
+        setUpdatedImage(imageUrl.data)
+        setUploadedImagePath(extractRelativePath(imageUrl.data))
 
-        onImageUploaded(imageUrl)
+        onImageUploaded(imageUrl.data)
       } catch (error) {
         console.error(error)
         toast.error('Ошибка при загрузке изображения')
