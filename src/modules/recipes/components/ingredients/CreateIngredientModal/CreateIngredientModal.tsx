@@ -27,7 +27,7 @@ interface CreateIngredientModalProps {
   onOpenChange: () => void
 }
 
-export const CreateIngredientModal = ({
+const CreateIngredientModal = ({
   recipe_id,
   isOpen,
   onOpenChange,
@@ -114,7 +114,9 @@ export const CreateIngredientModal = ({
                     isInvalid={!!errors.quantity?.message}
                     label="Количество"
                     placeholder="Введите количество"
-                    type="number"
+                    type="text"
+                    value={field.value ? field.value.toString() : ''}
+                    onChange={e => field.onChange(Number(e.target.value))}
                     variant="bordered"
                     onClear={() => reset({ quantity: 0 })}
                   />
@@ -143,7 +145,7 @@ export const CreateIngredientModal = ({
                         onChange([...keys][0] as string)
                       }
                     >
-                      {units?.map(unit => (
+                      {(units || []).map(unit => (
                         <SelectItem key={unit.id} value={unit.id}>
                           {unit.name}
                         </SelectItem>
@@ -173,3 +175,5 @@ export const CreateIngredientModal = ({
     </Modal>
   )
 }
+
+export default CreateIngredientModal

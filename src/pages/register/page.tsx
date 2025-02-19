@@ -10,6 +10,7 @@ import { login } from '@shared/store/users/users.slice'
 import { RoutePaths } from '@shared/utils/navigation'
 import { AuthCredentials } from '@/src/types'
 import { DEFAULT_PAGE_ANIMATION } from '@shared/utils/constants'
+import { log } from 'console'
 
 export function RegisterPage() {
   const dispatch = useAppDispatch()

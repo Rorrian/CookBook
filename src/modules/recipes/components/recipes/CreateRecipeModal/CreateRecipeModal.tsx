@@ -1,5 +1,5 @@
 import { Controller, useForm } from 'react-hook-form'
-import { useRef, useState } from 'react'
+import { lazy, Suspense, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import {
   Input,
@@ -28,15 +28,20 @@ import {
   useUploadRecipeImageMutation,
 } from '@shared/store/api'
 import { ImageUpload } from '@shared/components'
-import { CreateCategoryModal } from '@modules/categories'
 import { getComplexityLevels } from '@shared/utils/complexityLevels'
+
+const CreateCategoryModal = lazy(() =>
+  import('@modules/categories').then(module => ({
+    default: module.CreateCategoryModal,
+  })),
+)
 
 interface CreateRecipeModalProps {
   isOpen: boolean
   onOpenChange: () => void
 }
 
-export const CreateRecipeModal = ({
+const CreateRecipeModal = ({
   isOpen,
   onOpenChange,
 }: CreateRecipeModalProps) => {
@@ -60,7 +65,10 @@ export const CreateRecipeModal = ({
     onOpenChange: onOpenChangeCreateCategoryModal,
   } = useDisclosure()
 
-  const imageUploadRef = useRef<{ cancel: () => Promise<void> } | null>(null)
+  const imageUploadRef = useRef<{
+    cancel: () => Promise<void>
+    deletePrevPic: () => Promise<void>
+  } | null>(null)
   const [isImageUploading, setIsImageUploading] = useState(false)
 
   const onCreate = async (data: NewRecipe) => {
@@ -183,7 +191,7 @@ export const CreateRecipeModal = ({
                                 onChange([...keys][0] as string)
                               }
                             >
-                              {categories?.map(category => (
+                              {(categories || []).map(category => (
                                 <SelectItem
                                   key={category.id}
                                   value={category.id}
@@ -205,6 +213,7 @@ export const CreateRecipeModal = ({
                       </Button>
                     </div>
 
+                    {/* FIXME: Настроить отображене звезд в селекте ? */}
                     <Controller
                       name="complexity"
                       control={control}
@@ -214,6 +223,7 @@ export const CreateRecipeModal = ({
                         fieldState: { error },
                       }) => (
                         <Select
+                          isRequired
                           className="w-full"
                           errorMessage={error?.message}
                           isInvalid={!!error}
@@ -269,10 +279,10 @@ export const CreateRecipeModal = ({
                       rules={{
                         min: {
                           value: 1,
-                          message: 'Сложность рецепта не может быть меньше 1',
+                          message: 'Количество порций не может быть меньше 1',
                         },
                       }}
-                      defaultValue={0}
+                      defaultValue={undefined}
                       render={({ field }) => (
                         <Input
                           {...field}
@@ -282,7 +292,9 @@ export const CreateRecipeModal = ({
                           isInvalid={!!errors.servings_count?.message}
                           label="Количество порций"
                           placeholder="Введите количество порций"
-                          type="number"
+                          type="text"
+                          value={field.value ? field.value.toString() : ''}
+                          onChange={e => field.onChange(Number(e.target.value))}
                           variant="bordered"
                           onClear={() => reset({ servings_count: 1 })}
                         />
@@ -326,7 +338,8 @@ export const CreateRecipeModal = ({
                             className="w-full"
                             isClearable
                             label="Калорийность"
-                            type="number"
+                            type="text"
+                            value={field.value ? field.value.toString() : ''}
                             variant="bordered"
                             errorMessage={error?.message}
                             isInvalid={!!error}
@@ -353,10 +366,11 @@ export const CreateRecipeModal = ({
                             className="w-full"
                             isClearable
                             label="Белки"
-                            type="number"
                             variant="bordered"
                             errorMessage={error?.message}
                             isInvalid={!!error}
+                            type="text"
+                            value={field.value ? field.value.toString() : ''}
                             onChange={handleNumberChange(field.onChange)}
                             onClear={() => field.onChange(0)}
                           />
@@ -380,7 +394,8 @@ export const CreateRecipeModal = ({
                             className="w-full"
                             isClearable
                             label="Жиры"
-                            type="number"
+                            type="text"
+                            value={field.value ? field.value.toString() : ''}
                             variant="bordered"
                             errorMessage={error?.message}
                             isInvalid={!!error}
@@ -407,7 +422,8 @@ export const CreateRecipeModal = ({
                             className="w-full"
                             isClearable
                             label="Углеводы"
-                            type="number"
+                            type="text"
+                            value={field.value ? field.value.toString() : ''}
                             variant="bordered"
                             errorMessage={error?.message}
                             isInvalid={!!error}
@@ -445,11 +461,15 @@ export const CreateRecipeModal = ({
       </Modal>
 
       {isOpenCreateCategoryModal && (
-        <CreateCategoryModal
-          isOpen={isOpenCreateCategoryModal}
-          onOpenChange={onOpenChangeCreateCategoryModal}
-        />
+        <Suspense fallback={<div>Загрузка модалки...</div>}>
+          <CreateCategoryModal
+            isOpen={isOpenCreateCategoryModal}
+            onOpenChange={onOpenChangeCreateCategoryModal}
+          />
+        </Suspense>
       )}
     </>
   )
 }
+
+export default CreateRecipeModal

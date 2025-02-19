@@ -55,3 +55,9 @@ export interface Recipe {
 }
 export type NewRecipe = Omit<Recipe, 'id' | 'category_title'>
 export type UpdatedRecipe = Omit<Recipe, 'category_title'>
+
+export interface SupabaseResponseError extends Error {
+  data: {
+    code?: string
+  }
+}

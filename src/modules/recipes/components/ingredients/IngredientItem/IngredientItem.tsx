@@ -1,10 +1,13 @@
 import { MdEdit, MdDelete } from 'react-icons/md'
 import { Button, Card, CardHeader, useDisclosure } from '@nextui-org/react'
+import { lazy, Suspense } from 'react'
 
 import { Ingredient } from '@/src/types'
 import { useDeleteIngredientMutation } from '@shared/store/api'
 
-import { EditIngredientModal } from '../EditIngredientModal/EditIngredientModal'
+const EditIngredientModal = lazy(
+  () => import('../EditIngredientModal/EditIngredientModal'),
+)
 
 interface IngredientItemProps {
   ingredient: Ingredient
@@ -59,11 +62,13 @@ export const IngredientItem = ({ ingredient }: IngredientItemProps) => {
       </CardHeader>
 
       {isOpen && (
-        <EditIngredientModal
-          ingredient={ingredient}
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-        />
+        <Suspense fallback={<div>Загрузка модалки...</div>}>
+          <EditIngredientModal
+            ingredient={ingredient}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+          />
+        </Suspense>
       )}
     </Card>
   )

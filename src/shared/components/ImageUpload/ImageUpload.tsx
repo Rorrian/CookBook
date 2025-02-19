@@ -9,8 +9,8 @@ interface ImageUploadProps {
   isImageUploading: boolean
   setIsImageUploading: (value: boolean) => void
   // FIXME: types
-  uploadHandler: (file: File) => Promise<string>
-  deleteHandler: (imageUrl: string) => Promise<void>
+  uploadHandler: (file: File) => any
+  deleteHandler: (imageUrl: string) => any
   onImageUploaded: (imageUrl: string) => void
 }
 
@@ -44,13 +44,13 @@ export const ImageUpload = forwardRef(
       if (!file) return
 
       if (!isValidFileSize(file)) {
-        toast.error(`Размер файла не должен превышать ${MAX_FILE_SIZE_MB} МБ`)
+        toast.error(`Размер файла не должен превышать ${MAX_FILE_SIZE} МБ`)
         return
       }
 
       setIsImageUploading(true)
       try {
-        const imageUrl = await uploadHandler(file).unwrap()
+        const imageUrl = await uploadHandler(file)
         setUpdatedImage(imageUrl)
         setUploadedImagePath(extractRelativePath(imageUrl))
 
@@ -68,7 +68,7 @@ export const ImageUpload = forwardRef(
       if (!path) return
 
       try {
-        await deleteHandler(path).unwrap()
+        await deleteHandler(path)
       } catch (error) {
         console.error(error)
         toast.error('Ошибка при удалении изображения')
@@ -96,6 +96,7 @@ export const ImageUpload = forwardRef(
     return (
       <div className={clsx('flex flex-col gap-3', className)}>
         <label className="text-sm font-medium text-006d77">Изображение:</label>
+        {/* TODO: Переделать на Input из nextui с type="file" */}
         <input
           className="w-full py-2 px-4 bg-EDF6F9 border-2 border-83c5be rounded-lg cursor-pointer transition-all duration-200 hover:bg-83c5be"
           type="file"

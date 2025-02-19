@@ -1,6 +1,5 @@
 import { AuthCredentials } from '@/src/types'
 import { supabase } from '@libs/supabase'
-import { BASE_URL } from '@shared/utils/constants'
 import { RoutePaths } from '@shared/utils/navigation'
 
 export const authApi = {
@@ -31,10 +30,11 @@ export const authApi = {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        emailRedirectTo: BASE_URL,
-      },
     })
+
+    if (data && data?.user) {
+      await supabase.from('users').insert({ id: data.user.id })
+    }
 
     if (error) throw error
 

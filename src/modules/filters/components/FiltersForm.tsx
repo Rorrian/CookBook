@@ -98,11 +98,11 @@ export const FiltersForm = ({
             selectedKeys={new Set([selectedCategory])}
             variant="bordered"
             onSelectionChange={keys => {
-              const selectedKey = [...keys][0] || ''
+              const selectedKey = String([...keys][0] || '')
               updateFilter('category', selectedKey)
             }}
           >
-            {categories?.map(category => (
+            {(categories || []).map(category => (
               <SelectItem key={category.id} value={category.id}>
                 {category.title}
               </SelectItem>
@@ -116,7 +116,7 @@ export const FiltersForm = ({
             selectedKeys={new Set([selectedComplexity])}
             variant="bordered"
             onSelectionChange={keys => {
-              const selectedKey = Array.from(keys)[0] || ''
+              const selectedKey = String(Array.from(keys)[0] || '')
               updateFilter('complexity', selectedKey)
             }}
           >
@@ -131,7 +131,7 @@ export const FiltersForm = ({
             ))}
           </Select>
 
-          {ingredients?.length && (
+          {!!ingredients?.length && (
             <IngredientsFilter
               ingredients={ingredients}
               ingredientSelectionMode={filters.ingredientSelectionMode}

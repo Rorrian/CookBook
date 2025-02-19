@@ -12,7 +12,7 @@ import {
 } from '@nextui-org/react'
 
 import { useCreateStepMutation } from '@shared/store/api'
-import { NewStep } from '@/src/types'
+import { NewStep, SupabaseResponseError } from '@/src/types'
 
 interface CreateStepModalProps {
   lastStepNumber: number
@@ -21,7 +21,7 @@ interface CreateStepModalProps {
   onOpenChange: () => void
 }
 
-export const CreateStepModal = ({
+const CreateStepModal = ({
   lastStepNumber,
   recipe_id,
   isOpen,
@@ -36,8 +36,6 @@ export const CreateStepModal = ({
 
   const [createStep] = useCreateStepMutation()
 
-  // const [newStepNumber, setNewStepNumber] = useState(lastStepNumber)
-
   const onCreate = async (data: NewStep) => {
     try {
       const newStep: NewStep = { ...data, recipe_id }
@@ -49,7 +47,8 @@ export const CreateStepModal = ({
     } catch (error) {
       console.error(error)
 
-      if (error.data.code === '23505') {
+      const supabaseError = error as SupabaseResponseError
+      if (supabaseError?.data?.code === '23505') {
         toast.error('Шаг с таким номером уже существует!')
       } else {
         toast.error(`Ошибка при обновлении шага: ${error}`)
@@ -90,7 +89,9 @@ export const CreateStepModal = ({
                     isInvalid={!!errors.step_number?.message}
                     label="Номер шага"
                     placeholder="Введите новый номер шага"
-                    type="number"
+                    type="text"
+                    value={field.value ? field.value.toString() : ''}
+                    onChange={e => field.onChange(Number(e.target.value))}
                     variant="bordered"
                     onClear={() => reset({ step_number: 1 })}
                   />
@@ -144,3 +145,5 @@ export const CreateStepModal = ({
     </Modal>
   )
 }
+
+export default CreateStepModal

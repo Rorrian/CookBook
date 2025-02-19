@@ -21,6 +21,7 @@ export const SearchForm = ({
         startContent={
           <MdSearch className="text-lg text-default-400 pointer-events-none flex-shrink-0" />
         }
+        type="search"
         value={searchTerm}
         onChange={e => setSearchTerm(e.target.value)}
         onClear={() => setSearchTerm('')}

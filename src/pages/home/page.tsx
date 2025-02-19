@@ -1,8 +1,9 @@
 import { MdAdd } from 'react-icons/md'
 import { Button, useDisclosure } from '@nextui-org/react'
 import { motion as m } from 'framer-motion'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 
-import { RecipesList, CreateRecipeModal } from '@modules/recipes'
+import { RecipesList } from '@modules/recipes'
 import { useGetRecipesWithSearchAndFiltersQuery } from '@shared/store/api'
 import { Loader } from '@shared/components'
 import { useSearch, SearchForm } from '@modules/search'
@@ -14,7 +15,11 @@ import {
 import { useAuth } from '@shared/hooks'
 import { DEFAULT_PAGE_ANIMATION } from '@shared/utils/constants'
 
-// TODO: одновременное использование поиска и фильтров
+const CreateRecipeModal = lazy(() =>
+  import('@modules/recipes').then(module => ({
+    default: module.CreateRecipeModal,
+  })),
+)
 
 // TODO: разделить запросы для списка рецептов и для страницы конкретного рецепта или - повод попробовать GraphQL ?
 
@@ -23,6 +28,8 @@ export function HomePage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const { filters, updateFilter, resetFilters } = useFilters()
   const { searchTerm, setSearchTerm } = useSearch('')
+
+  const [hasRecipes, setHasRecipes] = useState<boolean | null>(null)
 
   const {
     data: recipes,
@@ -43,8 +50,16 @@ export function HomePage() {
       : undefined,
   })
 
+  useEffect(() => {
+    if (hasRecipes === null || !hasRecipes) {
+      setHasRecipes(!!recipes?.length)
+    }
+  }, [recipes])
+
   if (isLoading) return <Loader />
   if (isError) return <div>Error loading recipes</div>
+
+  const hasFilteredResults = recipes && recipes.length > 0
 
   return (
     <m.div className="flex flex-col gap-4 p-4" {...DEFAULT_PAGE_ANIMATION}>
@@ -63,41 +78,50 @@ export function HomePage() {
         </Button>
       </div>
 
-      <SearchForm
-        placeholder="Поиск рецептов..."
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-      />
+      {hasRecipes ? (
+        <>
+          <SearchForm
+            placeholder="Поиск рецептов..."
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+          />
 
-      <>
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-          <div className="col-span-1 lg:col-span-1">
-            <FiltersForm
-              filters={filters}
-              updateFilter={updateFilter}
-              resetFilters={resetFilters}
-            />
-          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            <div className="col-span-1 lg:col-span-1">
+              <FiltersForm
+                filters={filters}
+                updateFilter={updateFilter}
+                resetFilters={resetFilters}
+              />
+            </div>
 
-          <div className="col-span-3 lg:col-span-3">
-            {!recipes?.length ? (
-              <div className="w-full mt-8 text-2xl text-center text-gray-800">
-                <img
-                  alt=""
-                  className="mx-auto mb-4 w-36 h-auto"
-                  src="/no-food.gif"
-                />
-                Рецептов не найдено
-              </div>
-            ) : (
-              <RecipesList recipes={recipes} />
-            )}
+            <div className="col-span-3 lg:col-span-3">
+              {hasFilteredResults ? (
+                <RecipesList recipes={recipes || []} />
+              ) : (
+                <div className="w-full mt-8 text-2xl text-center text-gray-800">
+                  <img
+                    alt=""
+                    className="mx-auto mb-4 w-36 h-auto"
+                    src="/no-food.gif"
+                  />
+                  Не найдено рецептов по заданным фильтрам или поиску
+                </div>
+              )}
+            </div>
           </div>
+        </>
+      ) : (
+        <div className="w-full mt-8 text-2xl text-center text-gray-800">
+          <img alt="" className="mx-auto mb-4 w-36 h-auto" src="/new.gif" />
+          Рецепты пока не добавлены. Начните с создания первого рецепта!
         </div>
-      </>
+      )}
 
       {isOpen && (
-        <CreateRecipeModal isOpen={isOpen} onOpenChange={onOpenChange} />
+        <Suspense fallback={<div>Загрузка модалки...</div>}>
+          <CreateRecipeModal isOpen={isOpen} onOpenChange={onOpenChange} />
+        </Suspense>
       )}
     </m.div>
   )

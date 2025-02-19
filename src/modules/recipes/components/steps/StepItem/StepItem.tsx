@@ -1,10 +1,11 @@
 import { MdEdit, MdDelete } from 'react-icons/md'
 import { Button, Card, CardHeader, useDisclosure } from '@nextui-org/react'
+import { lazy, Suspense } from 'react'
 
 import { Step } from '@/src/types'
 import { useDeleteStepMutation } from '@shared/store/api'
 
-import { EditStepModal } from '../EditStepModal/EditStepModal'
+const EditStepModal = lazy(() => import('../EditStepModal/EditStepModal'))
 
 interface StepItemProps {
   step: Step
@@ -57,11 +58,13 @@ export const StepItem = ({ step }: StepItemProps) => {
       </CardHeader>
 
       {isOpen && (
-        <EditStepModal
-          step={step}
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-        />
+        <Suspense fallback={<div>Загрузка модалки...</div>}>
+          <EditStepModal
+            step={step}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+          />
+        </Suspense>
       )}
     </Card>
   )

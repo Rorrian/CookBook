@@ -26,7 +26,7 @@ interface CreateCategoryModalProps {
   onOpenChange: () => void
 }
 
-export const CreateCategoryModal = ({
+const CreateCategoryModal = ({
   isOpen,
   onOpenChange,
 }: CreateCategoryModalProps) => {
@@ -42,7 +42,10 @@ export const CreateCategoryModal = ({
   const [uploadCategoryImage] = useUploadCategoryImageMutation()
   const [deleteCategoryImage] = useDeleteCategoryImageMutation()
 
-  const imageUploadRef = useRef<{ cancel: () => Promise<void> } | null>(null)
+  const imageUploadRef = useRef<{
+    cancel: () => Promise<void>
+    deletePrevPic: () => Promise<void>
+  } | null>(null)
   const [isImageUploading, setIsImageUploading] = useState(false)
 
   const onCreate = async (data: NewCategory) => {
@@ -137,3 +140,5 @@ export const CreateCategoryModal = ({
     </Modal>
   )
 }
+
+export default CreateCategoryModal

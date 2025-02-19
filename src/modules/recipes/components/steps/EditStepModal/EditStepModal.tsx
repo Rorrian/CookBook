@@ -11,7 +11,7 @@ import {
   Form,
 } from '@nextui-org/react'
 
-import { Step } from '@/src/types'
+import { Step, SupabaseResponseError } from '@/src/types'
 import { useEditStepMutation } from '@shared/store/api'
 
 interface EditStepModalProps {
@@ -20,11 +20,7 @@ interface EditStepModalProps {
   onOpenChange: () => void
 }
 
-export const EditStepModal = ({
-  step,
-  isOpen,
-  onOpenChange,
-}: EditStepModalProps) => {
+const EditStepModal = ({ step, isOpen, onOpenChange }: EditStepModalProps) => {
   const {
     control,
     handleSubmit,
@@ -46,7 +42,8 @@ export const EditStepModal = ({
     } catch (error) {
       console.error(error)
 
-      if (error.data.code === '23505') {
+      const supabaseError = error as SupabaseResponseError
+      if (supabaseError?.data?.code === '23505') {
         toast.error('Шаг с таким номером уже существует!')
       } else {
         toast.error(`Ошибка при обновлении шага: ${error}`)
@@ -88,8 +85,12 @@ export const EditStepModal = ({
                     isInvalid={!!errors.step_number?.message}
                     label="Номер шага"
                     placeholder="Введите новый номер шага"
-                    type="number"
                     variant="bordered"
+                    // Особенности компонента Input из nextui
+                    // type="number"
+                    type="text"
+                    value={field.value ? field.value.toString() : ''}
+                    onChange={e => field.onChange(Number(e.target.value))}
                     onClear={() => reset({ step_number: 1 })}
                   />
                 )}
@@ -141,3 +142,5 @@ export const EditStepModal = ({
     </Modal>
   )
 }
+
+export default EditStepModal

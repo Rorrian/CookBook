@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { lazy, Suspense, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import {
@@ -28,8 +28,13 @@ import {
   useUploadRecipeImageMutation,
 } from '@shared/store/api'
 import { ImageUpload } from '@shared/components'
-import { CreateCategoryModal } from '@modules/categories'
 import { getComplexityLevels } from '@shared/utils/complexityLevels'
+
+const CreateCategoryModal = lazy(() =>
+  import('@modules/categories').then(module => ({
+    default: module.CreateCategoryModal,
+  })),
+)
 
 interface EditRecipeModalProps {
   recipe: Recipe
@@ -37,7 +42,7 @@ interface EditRecipeModalProps {
   onOpenChange: () => void
 }
 
-export const EditRecipeModal = ({
+const EditRecipeModal = ({
   recipe,
   isOpen,
   onOpenChange,
@@ -204,7 +209,7 @@ export const EditRecipeModal = ({
                                 onChange([...keys][0] as string)
                               }
                             >
-                              {categories?.map(category => (
+                              {(categories || []).map(category => (
                                 <SelectItem
                                   key={category.id}
                                   value={category.id}
@@ -230,12 +235,13 @@ export const EditRecipeModal = ({
                       name="complexity"
                       control={control}
                       rules={{ required: 'Выберите сложность' }}
-                      defaultValue={complexity?.toString()}
+                      defaultValue={complexity}
                       render={({
                         field: { value, onChange },
                         fieldState: { error },
                       }) => (
                         <Select
+                          isRequired
                           className="w-full"
                           errorMessage={error?.message}
                           isInvalid={!!error}
@@ -304,7 +310,9 @@ export const EditRecipeModal = ({
                           isInvalid={!!errors.servings_count?.message}
                           label="Количество порций"
                           placeholder="Введите количество порций"
-                          type="number"
+                          type="text"
+                          value={field.value ? field.value.toString() : ''}
+                          onChange={e => field.onChange(Number(e.target.value))}
                           variant="bordered"
                           onClear={() => reset({ servings_count: 1 })}
                         />
@@ -349,7 +357,8 @@ export const EditRecipeModal = ({
                             className="w-full"
                             isClearable
                             label="Калорийность"
-                            type="number"
+                            type="text"
+                            value={field.value ? field.value.toString() : ''}
                             variant="bordered"
                             errorMessage={error?.message}
                             isInvalid={!!error}
@@ -376,7 +385,8 @@ export const EditRecipeModal = ({
                             className="w-full"
                             isClearable
                             label="Белки"
-                            type="number"
+                            type="text"
+                            value={field.value ? field.value.toString() : ''}
                             variant="bordered"
                             errorMessage={error?.message}
                             isInvalid={!!error}
@@ -403,7 +413,8 @@ export const EditRecipeModal = ({
                             className="w-full"
                             isClearable
                             label="Жиры"
-                            type="number"
+                            type="text"
+                            value={field.value ? field.value.toString() : ''}
                             variant="bordered"
                             errorMessage={error?.message}
                             isInvalid={!!error}
@@ -430,7 +441,8 @@ export const EditRecipeModal = ({
                             className="w-full"
                             isClearable
                             label="Углеводы"
-                            type="number"
+                            type="text"
+                            value={field.value ? field.value.toString() : ''}
                             variant="bordered"
                             errorMessage={error?.message}
                             isInvalid={!!error}
@@ -468,11 +480,15 @@ export const EditRecipeModal = ({
       </Modal>
 
       {isOpenCreateCategoryModal && (
-        <CreateCategoryModal
-          isOpen={isOpenCreateCategoryModal}
-          onOpenChange={onOpenChangeCreateCategoryModal}
-        />
+        <Suspense fallback={<div>Загрузка модалки...</div>}>
+          <CreateCategoryModal
+            isOpen={isOpenCreateCategoryModal}
+            onOpenChange={onOpenChangeCreateCategoryModal}
+          />
+        </Suspense>
       )}
     </>
   )
 }
+
+export default EditRecipeModal

@@ -8,11 +8,14 @@ import {
   Image,
   useDisclosure,
 } from '@nextui-org/react'
+import { lazy, Suspense } from 'react'
 
 import { Category } from '@/src/types'
 import { useDeleteCategoryMutation } from '@shared/store/api'
 
-import { EditCategoryModal } from '../EditCategoryModal/EditCategoryModal'
+const EditCategoryModal = lazy(
+  () => import('../EditCategoryModal/EditCategoryModal'),
+)
 
 interface CategoryItemProps {
   category: Category
@@ -75,11 +78,13 @@ export const CategoryItem = ({ category }: CategoryItemProps) => {
       </CardBody>
 
       {isOpen && (
-        <EditCategoryModal
-          category={category}
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-        />
+        <Suspense fallback={<div>Загрузка модалки...</div>}>
+          <EditCategoryModal
+            category={category}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+          />
+        </Suspense>
       )}
     </Card>
   )

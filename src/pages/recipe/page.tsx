@@ -3,6 +3,7 @@ import { MdEdit, MdDelete } from 'react-icons/md'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Image, useDisclosure } from '@nextui-org/react'
 import { motion as m } from 'framer-motion'
+import { lazy, Suspense } from 'react'
 
 import {
   useDeleteRecipeMutation,
@@ -10,15 +11,16 @@ import {
   useGetRecipeQuery,
   useGetStepsQuery,
 } from '@shared/store/api'
-import {
-  EditRecipeModal,
-  IngredientsList,
-  NutritionFacts,
-  StepsList,
-} from '@modules/recipes'
+import { IngredientsList, NutritionFacts, StepsList } from '@modules/recipes'
 import { RoutePaths } from '@shared/utils/navigation'
 import { Loader, StarRating } from '@shared/components'
 import { DEFAULT_PAGE_ANIMATION } from '@shared/utils/constants'
+
+const EditRecipeModal = lazy(() =>
+  import('@modules/recipes').then(module => ({
+    default: module.EditRecipeModal,
+  })),
+)
 
 export function RecipePage() {
   const navigate = useNavigate()
@@ -152,6 +154,11 @@ export function RecipePage() {
               </div>
             )}
 
+            {macronutrients &&
+              Object.values(macronutrients).every(value => value > 0) && (
+                <NutritionFacts macronutrients={macronutrients} />
+              )}
+
             <div className="clear-both"></div>
           </div>
         </div>
@@ -162,11 +169,13 @@ export function RecipePage() {
       <StepsList steps={steps ?? []} recipe_id={id!} />
 
       {isOpen && (
-        <EditRecipeModal
-          recipe={recipe}
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-        />
+        <Suspense fallback={<div>Загрузка модалки...</div>}>
+          <EditRecipeModal
+            recipe={recipe}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+          />
+        </Suspense>
       )}
     </m.div>
   )

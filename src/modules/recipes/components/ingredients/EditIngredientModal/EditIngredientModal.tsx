@@ -23,7 +23,7 @@ interface EditIngredientProps {
   onOpenChange: () => void
 }
 
-export const EditIngredientModal = ({
+const EditIngredientModal = ({
   ingredient,
   isOpen,
   onOpenChange,
@@ -113,7 +113,9 @@ export const EditIngredientModal = ({
                     isInvalid={!!errors.quantity?.message}
                     label="Количество"
                     placeholder="Введите количество"
-                    type="number"
+                    type="text"
+                    value={field.value ? field.value.toString() : ''}
+                    onChange={e => field.onChange(Number(e.target.value))}
                     variant="bordered"
                     onClear={() => reset({ quantity: 0 })}
                   />
@@ -143,7 +145,7 @@ export const EditIngredientModal = ({
                         onChange([...keys][0] as string)
                       }
                     >
-                      {units?.map(unit => (
+                      {(units || []).map(unit => (
                         <SelectItem key={unit.id} value={unit.id}>
                           {unit.name}
                         </SelectItem>
@@ -173,3 +175,5 @@ export const EditIngredientModal = ({
     </Modal>
   )
 }
+
+export default EditIngredientModal

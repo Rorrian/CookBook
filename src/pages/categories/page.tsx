@@ -38,15 +38,16 @@ export function CategoriesPage() {
       )}
 
       <ul className="flex flex-wrap gap-4 justify-between">
-        {!!categories?.length &&
-          categories.map((category: Category) => (
-            <li
-              key={category.id}
-              className="w-full max-w-64 h-full flex justify-center transition-all duration-300 hover:-translate-y-2 hover:shadow-md"
-            >
-              <CategoryItem category={category} />
-            </li>
-          ))}
+        {!!categories?.length
+          ? categories.map((category: Category) => (
+              <li
+                key={category.id}
+                className="w-full max-w-64 h-full flex justify-center transition-all duration-300 hover:-translate-y-2 hover:shadow-md"
+              >
+                <CategoryItem category={category} />
+              </li>
+            ))
+          : 'Категорий не найдено'}
       </ul>
     </m.div>
   )

@@ -27,7 +27,7 @@ interface EditCategoryFormProps {
   onOpenChange: () => void
 }
 
-export const EditCategoryModal = ({
+const EditCategoryModal = ({
   category,
   isOpen,
   onOpenChange,
@@ -146,3 +146,5 @@ export const EditCategoryModal = ({
     </Modal>
   )
 }
+
+export default EditCategoryModal

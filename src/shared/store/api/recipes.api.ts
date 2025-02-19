@@ -26,7 +26,8 @@ export const recipesApi = api.injectEndpoints({
       }) => ({
         url: '/rpc/get_recipes_with_filters_v3',
         params: {
-          search_param: search ? `title*${search}*` : undefined,
+          // search_param: search ? `title*${search}*` : undefined,
+          search_param: search ?? undefined,
           category,
           complexity_level,
           selected_ingredients: selected_ingredients?.toLowerCase(),

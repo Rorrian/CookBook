@@ -6,11 +6,13 @@ import {
   CardHeader,
   useDisclosure,
 } from '@nextui-org/react'
+import { lazy, Suspense } from 'react'
 
 import { Step } from '@/src/types'
 
 import { StepItem } from '../StepItem/StepItem'
-import { CreateStepModal } from '../CreateStepModal/CreateStepModal'
+
+const CreateStepModal = lazy(() => import('../CreateStepModal/CreateStepModal'))
 
 interface StepsListProps {
   steps: Step[]
@@ -78,12 +80,14 @@ export const StepsList = ({ steps, recipe_id }: StepsListProps) => {
       </CardBody>
 
       {isOpen && (
-        <CreateStepModal
-          lastStepNumber={lastStepNumber}
-          recipe_id={recipe_id}
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-        />
+        <Suspense fallback={<div>Загрузка модалки...</div>}>
+          <CreateStepModal
+            lastStepNumber={lastStepNumber}
+            recipe_id={recipe_id}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+          />
+        </Suspense>
       )}
     </Card>
   )

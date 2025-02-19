@@ -93,7 +93,7 @@ export const AuthForm = ({ buttonTitle, handleClick }: AuthFormProps) => {
                   )}
                 </button>
               }
-              errorMessage={errors.password?.message}
+              errorMessage={errors.password?.message?.toString()}
               isInvalid={!!errors.password?.message}
               fullWidth
               size="lg"

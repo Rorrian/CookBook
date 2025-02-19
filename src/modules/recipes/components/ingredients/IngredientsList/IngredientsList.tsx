@@ -6,11 +6,15 @@ import {
   CardHeader,
   useDisclosure,
 } from '@nextui-org/react'
+import { lazy, Suspense } from 'react'
 
 import { Ingredient } from '@/src/types'
 
 import { IngredientItem } from '../IngredientItem/IngredientItem'
-import { CreateIngredientModal } from '../CreateIngredientModal/CreateIngredientModal'
+
+const CreateIngredientModal = lazy(
+  () => import('../CreateIngredientModal/CreateIngredientModal'),
+)
 
 interface IngredientsListProps {
   ingredients: Ingredient[]
@@ -58,11 +62,13 @@ export const IngredientsList = ({
       </CardBody>
 
       {isOpen && (
-        <CreateIngredientModal
-          recipe_id={recipe_id}
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-        />
+        <Suspense fallback={<div>Загрузка модалки...</div>}>
+          <CreateIngredientModal
+            recipe_id={recipe_id}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+          />
+        </Suspense>
       )}
     </Card>
   )

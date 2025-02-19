@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface AuthState {
-  uid: string | null
-  email: string | null
-  token: string | null
+  uid: string | undefined
+  email: string | undefined
+  token: string | undefined
 }
 
 const initialState: AuthState = {
-  uid: null,
-  email: null,
-  token: null,
+  uid: undefined,
+  email: undefined,
+  token: undefined,
 }
 
 export const usersSlice = createSlice({
@@ -23,9 +23,9 @@ export const usersSlice = createSlice({
     },
 
     logout: state => {
-      state.uid = null
-      state.email = null
-      state.token = null
+      state.uid = undefined
+      state.email = undefined
+      state.token = undefined
     },
   },
 })
