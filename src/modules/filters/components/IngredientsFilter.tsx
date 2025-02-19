@@ -41,24 +41,30 @@ export const IngredientsFilter = ({
 
   return (
     <div className="border p-4 border-divider rounded-medium">
-      <p className="text-sm text-gray-500 mb-2">Подбор ингредиентов:</p>
+      <p className="text-lg mb-2">Подбор ингредиентов:</p>
 
-      <div className="flex flex-col gap-y-2 text-sm">
-        <RadioGroup
-          className="border p-2 border-divider rounded-medium"
-          label="Текущий режим подбора рецептов:"
-          value={ingredientSelectionMode}
-          onValueChange={value =>
-            updateFilter('ingredientSelectionMode', value)
-          }
-        >
-          <Radio value={IngredientSelectionMode.ALL} size="sm">
-            В рецепте должны быть все указанные ингредиенты
-          </Radio>
-          <Radio value={IngredientSelectionMode.ANY} size="sm">
-            В рецепте должен быть хотя бы один из указанных ингредиентов
-          </Radio>
-        </RadioGroup>
+      <div className="flex flex-col gap-y-2 text-md">
+        {!isExpanded && (
+          <RadioGroup
+            className="border p-2 border-divider rounded-medium"
+            label="Текущий режим подбора рецептов:"
+            value={ingredientSelectionMode}
+            onValueChange={value =>
+              updateFilter('ingredientSelectionMode', value)
+            }
+          >
+            <Radio value={IngredientSelectionMode.ALL} size="md" color="danger">
+              В рецепте должны быть все указанные ингредиенты
+            </Radio>
+            <Radio
+              value={IngredientSelectionMode.ANY}
+              size="md"
+              color="success"
+            >
+              В рецепте должен быть хотя бы один из указанных ингредиентов
+            </Radio>
+          </RadioGroup>
+        )}
 
         <SearchForm
           searchTerm={searchTerm}
@@ -70,7 +76,7 @@ export const IngredientsFilter = ({
       <div
         className={clsx(
           'flex flex-col gap-3 mt-4 transition-all',
-          isExpanded ? 'max-h-96 overflow-y-scroll' : 'max-h-24',
+          isExpanded ? 'max-h-72 overflow-y-scroll' : 'max-h-24',
         )}
       >
         {visibleIngredients.map(ingredient => {
@@ -82,7 +88,7 @@ export const IngredientsFilter = ({
               isSelected={isSelected}
               onValueChange={newValue => onSelect(ingredient.name, newValue)}
             >
-              <span className="text-sm">{ingredient.name}</span>
+              <span className="text-md">{ingredient.name}</span>
             </Checkbox>
           )
         })}

@@ -1,21 +1,28 @@
 import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardHeader } from '@nextui-org/react'
+import { motion as m } from 'framer-motion'
 
 import { RoutePaths } from '@shared/utils/navigation'
+import { DEFAULT_PAGE_ANIMATION } from '@shared/utils/constants'
 
 export const Error404 = () => (
-  <div className="flex justify-center items-center h-screen p-8">
+  <m.div
+    className="flex justify-center items-center h-screen p-8"
+    {...DEFAULT_PAGE_ANIMATION}
+  >
     <Card className="max-w-md mx-auto p-6 shadow-lg border border-83c5be bg-edf6f9 rounded-3xl text-center">
       <CardHeader>
-        <h1 className="text-4xl font-semibold text-006d77">
+        <h2 className="text-4xl font-semibold text-006d77">
           404 - Page Not Found
-        </h1>
+        </h2>
       </CardHeader>
 
       <CardBody className="flex flex-col gap-4">
-        <p className="text-xl text-006d77">
+        <div className="w-full mt-8 text-2xl text-center text-gray-800">
+          <img alt="" className="mx-auto mb-4 w-36 h-auto" src="/error.gif" />
           The page you are looking for does not exist.
-        </p>
+        </div>
+
         <div>
           <Button
             as={Link}
@@ -28,5 +35,5 @@ export const Error404 = () => (
         </div>
       </CardBody>
     </Card>
-  </div>
+  </m.div>
 )

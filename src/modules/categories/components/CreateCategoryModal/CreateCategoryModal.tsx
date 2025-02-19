@@ -64,7 +64,7 @@ export const CreateCategoryModal = ({
   }
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+    <Modal isOpen={isOpen} onOpenChange={handleCancel}>
       <ModalContent>
         {onClose => (
           <Form onSubmit={handleSubmit(onCreate)}>

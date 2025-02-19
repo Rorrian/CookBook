@@ -13,7 +13,7 @@ export const SearchForm = ({
   setSearchTerm,
 }: SearchFormProps) => {
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center border border-gray-500 rounded-xl">
       <Input
         isClearable
         className="w-full"

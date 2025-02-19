@@ -6,7 +6,7 @@ import { api } from './api'
 
 export const recipesApi = api.injectEndpoints({
   endpoints: builder => ({
-    getRecipes: builder.query<
+    getRecipesWithSearchAndFilters: builder.query<
       Recipe[],
       {
         userId: string
@@ -36,6 +36,22 @@ export const recipesApi = api.injectEndpoints({
       providesTags: (result, error, { userId }) => [
         { type: 'Recipes', userId },
       ],
+    }),
+
+    getRecipesByIds: builder.query<Recipe[], string[]>({
+      query: recipeIds => ({
+        url: '/rpc/get_recipes_by_ids',
+        params: {
+          recipe_ids: recipeIds.join(','),
+        },
+      }),
+      providesTags: (result, error, recipeIds) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'Recipes' as const, id })),
+              { type: 'Recipes' as const, id: 'LIST' },
+            ]
+          : [{ type: 'Recipes' as const, id: 'LIST' }],
     }),
 
     getRecipe: builder.query<Recipe, string>({
@@ -307,7 +323,8 @@ export const recipesApi = api.injectEndpoints({
 })
 
 export const {
-  useGetRecipesQuery,
+  useGetRecipesWithSearchAndFiltersQuery,
+  useGetRecipesByIdsQuery,
   useGetRecipeQuery,
   useCreateRecipeMutation,
   useUploadRecipeImageMutation,

@@ -31,25 +31,27 @@ export const IngredientItem = ({ ingredient }: IngredientItemProps) => {
   if (!ingredient) return <div>No ingredient data</div>
 
   return (
-    <Card className="bg-white shadow-md rounded-xl border border-83c5be">
-      <CardHeader className="flex justify-between items-center bg-edf6f9 p-3 rounded-t-xl">
+    <Card className="bg-white shadow-md rounded-xl">
+      <CardHeader className="flex justify-between items-center p-3 rounded-t-xl">
         <p className="text-006d77 font-medium">
           {name} - {quantity} {unit_name}
         </p>
 
         <div className="flex gap-2">
           <Button
-            isIconOnly
-            onPress={onOpen}
             className="bg-white text-83c5be hover:text-006d77 transition"
+            isIconOnly
+            size="sm"
+            onPress={onOpen}
           >
             <MdEdit size={20} />
           </Button>
 
           <Button
-            isIconOnly
-            onPress={() => onDelete(id)}
             className="bg-white text-e29578 hover:text-red-600 transition"
+            isIconOnly
+            size="sm"
+            onPress={() => onDelete(id)}
           >
             <MdDelete size={20} />
           </Button>

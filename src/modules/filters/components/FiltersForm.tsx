@@ -62,15 +62,15 @@ export const FiltersForm = ({
     return <div>Ошибка загрузки данных</div>
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 p-2 rounded-2xl shadow-lg bg-white/70">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold text-006d77">Фильтры</h3>
+        <h3 className="text-2xl font-semibold text-006d77">Фильтры</h3>
 
         <div className="flex gap-y-1">
           {showResetButton && (
             <Button
               size="sm"
-              className="bg-edf6f9 hover:text-e29578 transition-all"
+              className="text-md bg-edf6f9 hover:text-e29578 transition-all"
               onPress={resetFilters}
             >
               Сбросить <MdCancel />
@@ -80,7 +80,7 @@ export const FiltersForm = ({
           {isMobile && (
             <Button
               size="sm"
-              className="bg-edf6f9 hover:text-e29578 transition-all"
+              className="text-md bg-edf6f9 hover:text-e29578 transition-all"
               onPress={() => setIsVisible(prev => !prev)}
             >
               {isVisible ? 'Скрыть' : 'Показать'}
@@ -90,8 +90,9 @@ export const FiltersForm = ({
       </div>
 
       {isVisible && (
-        <div className="space-y-4">
+        <div className="text-heading space-y-2">
           <Select
+            size="lg"
             label="Категория"
             placeholder="Выберите категорию"
             selectedKeys={new Set([selectedCategory])}
@@ -109,6 +110,7 @@ export const FiltersForm = ({
           </Select>
 
           <Select
+            size="lg"
             label="Сложность"
             placeholder="Выберите сложность"
             selectedKeys={new Set([selectedComplexity])}

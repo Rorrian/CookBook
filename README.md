@@ -13,9 +13,9 @@ _Кулинарная книга_
 - Redux
 - RTK
 - TS
-<!-- - Tailwind -->
-<!-- - Heroui(nextui) -->
-<!-- - Framer-Motion -->
+- Tailwind
+- Heroui(nextui)
+- Framer-Motion
 - Supabase
 <!-- - Jest -->
 

@@ -7,7 +7,8 @@ import {
   useDeleteStepMutation,
 } from './steps.api'
 import {
-  useGetRecipesQuery,
+  useGetRecipesWithSearchAndFiltersQuery,
+  useGetRecipesByIdsQuery,
   useGetRecipeQuery,
   useCreateRecipeMutation,
   useUploadRecipeImageMutation,
@@ -38,7 +39,8 @@ export {
   useCreateStepMutation,
   useEditStepMutation,
   useDeleteStepMutation,
-  useGetRecipesQuery,
+  useGetRecipesWithSearchAndFiltersQuery,
+  useGetRecipesByIdsQuery,
   useGetRecipeQuery,
   useCreateRecipeMutation,
   useUploadRecipeImageMutation,

@@ -34,9 +34,6 @@ export const EditStepModal = ({
 
   const { id, step_number, description, recipe_id } = step
 
-  // console.log(`step === `)
-  // console.log(step)
-
   const [editStep] = useEditStepMutation()
 
   const onUpdate = async (data: Step) => {

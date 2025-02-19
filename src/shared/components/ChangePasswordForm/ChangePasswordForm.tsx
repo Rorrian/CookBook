@@ -4,6 +4,7 @@ import { IoMdEye, IoMdEyeOff } from 'react-icons/io'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
+import clsx from 'clsx'
 
 import { authApi } from '@shared/store/api'
 import { RoutePaths } from '@shared/utils/navigation'
@@ -18,11 +19,13 @@ interface ChangePasswordFormInputs {
 }
 
 interface ChangePasswordFormProps {
+  className?: string
   isOldPasswordCheckRequired?: boolean
   onSuccessRedirect?: boolean
 }
 
 export const ChangePasswordForm = ({
+  className,
   isOldPasswordCheckRequired,
   onSuccessRedirect,
 }: ChangePasswordFormProps) => {
@@ -75,7 +78,7 @@ export const ChangePasswordForm = ({
   }
 
   return (
-    <Card className="w-96 shadow-lg bg-white rounded-3xl">
+    <Card className={clsx('shadow-lg bg-white rounded-3xl', className)}>
       <CardBody className="flex flex-col gap-4">
         {isOldPasswordCheckRequired && (
           <Controller
@@ -96,6 +99,7 @@ export const ChangePasswordForm = ({
                 isRequired
                 className="w-full"
                 fullWidth
+                size={isOldPasswordCheckRequired ? 'md' : 'lg'}
                 errorMessage={errors.currentPassword?.message}
                 isInvalid={!!errors.currentPassword?.message}
                 label="Текущий пароль"
@@ -137,6 +141,7 @@ export const ChangePasswordForm = ({
                   )}
                 </button>
               }
+              size={isOldPasswordCheckRequired ? 'md' : 'lg'}
               errorMessage={errors.password?.message}
               isInvalid={!!errors.password?.message}
               label="Пароль"

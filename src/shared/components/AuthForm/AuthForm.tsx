@@ -36,7 +36,7 @@ export const AuthForm = ({ buttonTitle, handleClick }: AuthFormProps) => {
   }
 
   return (
-    <Card className="w-96 shadow-lg bg-white rounded-3xl">
+    <Card className="w-96 shadow-lg bg-white/70 rounded-3xl">
       <CardBody className="flex flex-col gap-4">
         <Controller
           name="email"
@@ -50,6 +50,7 @@ export const AuthForm = ({ buttonTitle, handleClick }: AuthFormProps) => {
               className="w-full"
               isClearable
               fullWidth
+              size="lg"
               errorMessage={({ validationDetails, validationErrors }) => {
                 if (validationDetails.typeMismatch) {
                   return 'Введите корректный email'
@@ -95,6 +96,7 @@ export const AuthForm = ({ buttonTitle, handleClick }: AuthFormProps) => {
               errorMessage={errors.password?.message}
               isInvalid={!!errors.password?.message}
               fullWidth
+              size="lg"
               label="Пароль"
               placeholder="Введите ваш пароль"
               type={showPasswords ? 'text' : 'password'}

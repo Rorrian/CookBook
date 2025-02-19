@@ -22,9 +22,8 @@ export default {
         'gradient-to-r': 'linear-gradient(to right, var(--tw-gradient-stops))',
       },
       fontFamily: {
-        sans: ['Roboto', 'Helvetica', 'Arial', 'sans-serif'],
-        heading: ['Poppins', 'sans-serif'],
-        body: ['Open Sans', 'sans-serif'],
+        heading: ['Neucha', 'sans-serif'],
+        body: ['Caveat', 'sans-serif'],
       },
 		},
   },

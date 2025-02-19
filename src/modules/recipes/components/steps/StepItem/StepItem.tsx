@@ -31,8 +31,8 @@ export const StepItem = ({ step }: StepItemProps) => {
   if (!step) return <div>No step data</div>
 
   return (
-    <Card className="bg-white shadow-md rounded-xl border border-83c5be">
-      <CardHeader className="flex justify-between items-center bg-edf6f9 p-3 rounded-t-xl">
+    <Card className="bg-white shadow-md rounded-xl">
+      <CardHeader className="flex justify-between items-center p-3 rounded-t-xl">
         <p className="text-006d77 font-medium">
           {step_number}. {description}
         </p>

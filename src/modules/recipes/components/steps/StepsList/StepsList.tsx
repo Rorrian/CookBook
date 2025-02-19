@@ -44,9 +44,12 @@ export const StepsList = ({ steps, recipe_id }: StepsListProps) => {
   // TODO: Изменение порядка шагов их перетаскиванием
 
   return (
-    <Card className="bg-edf6f9 shadow-lg rounded-2xl p-4">
+    <Card className="bg-edf6f9/70 shadow-lg rounded-2xl p-4">
       <CardHeader className="flex justify-between items-center border-b border-83c5be pb-2">
-        <h3 className="text-006d77 text-xl font-semibold">Приготовление:</h3>
+        <h3 className="text-006d77 font-bold text-xl uppercase">
+          Приготовление:
+        </h3>
+
         <Button
           onPress={onOpen}
           color="primary"
@@ -59,11 +62,11 @@ export const StepsList = ({ steps, recipe_id }: StepsListProps) => {
 
       <CardBody>
         {sortedSteps.length ? (
-          <ul className="flex flex-col gap-2 mt-4">
+          <ul className="flex flex-col gap-2 mt-4 text-xl">
             {sortedSteps.map((step: Step) => (
               <li
                 key={step.id}
-                className="p-3 border border-83c5be rounded-md shadow-md bg-white"
+                // className="p-3 border border-83c5be rounded-md shadow-md bg-white"
               >
                 <StepItem step={step} />
               </li>

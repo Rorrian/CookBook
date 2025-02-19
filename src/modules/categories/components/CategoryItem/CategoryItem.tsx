@@ -1,6 +1,13 @@
 import { toast } from 'react-toastify'
 import { MdEdit, MdDelete } from 'react-icons/md'
-import { Button, Image, useDisclosure } from '@nextui-org/react'
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Image,
+  useDisclosure,
+} from '@nextui-org/react'
 
 import { Category } from '@/src/types'
 import { useDeleteCategoryMutation } from '@shared/store/api'
@@ -33,9 +40,9 @@ export const CategoryItem = ({ category }: CategoryItemProps) => {
   if (!category) return <div>No category data</div>
 
   return (
-    <div className="w-full flex flex-col gap-4 p-4 rounded-2xl shadow-lg bg-white border border-gray-200 hover:shadow-xl transition-all duration-300">
-      <div className="flex justify-between items-center gap-4">
-        <h3 className="text-xl font-semibold">{title}</h3>
+    <Card className="w-full h-full flex flex-col gap-2 p-2 rounded-2xl bg-white/70 border border-gray-200">
+      <CardHeader className="flex justify-between items-center gap-2 p-2">
+        <h3 className="text-2xl font-semibold text-006d77 truncate">{title}</h3>
 
         <div className="flex gap-2">
           <Button
@@ -53,17 +60,19 @@ export const CategoryItem = ({ category }: CategoryItemProps) => {
             <MdDelete size={20} />
           </Button>
         </div>
-      </div>
+      </CardHeader>
 
-      {image_url && (
-        <Image
-          isBlurred
-          removeWrapper
-          className="w-full h-48 object-cover rounded-xl border-4 border-83C5BE shadow-md"
-          alt="Category Image"
-          src={image_url}
-        />
-      )}
+      <CardBody className="flex flex-col gap-2 p-2 justify-between">
+        {image_url && (
+          <Image
+            alt="Категория"
+            className="w-full max-w-72 h-48 object-cover rounded-xl border-4 border-83C5BE shadow-md"
+            isBlurred
+            removeWrapper
+            src={image_url}
+          />
+        )}
+      </CardBody>
 
       {isOpen && (
         <EditCategoryModal
@@ -72,6 +81,6 @@ export const CategoryItem = ({ category }: CategoryItemProps) => {
           onOpenChange={onOpenChange}
         />
       )}
-    </div>
+    </Card>
   )
 }

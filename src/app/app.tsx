@@ -1,7 +1,7 @@
-import { ToastContainer } from "react-toastify"
+import { ToastContainer } from 'react-toastify'
 
-import { Navigation } from "@components/index"
-import { useAuthListener } from "@hooks/useAuthListener"
+import { Navigation } from '@components/index'
+import { useAuthListener } from '@hooks/useAuthListener'
 
 export function App() {
   useAuthListener()

@@ -27,14 +27,17 @@ export const IngredientsList = ({
   // console.log(ingredients)
 
   return (
-    <Card className="bg-edf6f9 shadow-lg rounded-2xl p-2 flex-grow">
-      <CardHeader className="flex justify-between items-center border-b border-83c5be pb-2">
-        <h3 className="text-006d77 text-xl font-semibold">Ингредиенты:</h3>
+    <Card className="bg-edf6f9/50 shadow-lg rounded-2xl p-2 flex-grow xl:max-w-xs 2xl:max-w-2xl border border-006d77/50">
+      <CardHeader className="flex gap-2 justify-between items-center border-b border-006d77/50 pb-2">
+        <h3 className="text-006d77 font-bold text-xl uppercase">
+          Ингредиенты:
+        </h3>
+
         <Button
-          onPress={onOpen}
+          className="bg-006d77 text-white text-md hover:bg-83c5be transition"
           color="primary"
-          className="bg-006d77 text-white hover:bg-83c5be transition"
           startContent={<MdAdd />}
+          onPress={onOpen}
         >
           Добавить
         </Button>
@@ -42,12 +45,9 @@ export const IngredientsList = ({
 
       <CardBody>
         {ingredients.length ? (
-          <ul className="flex flex-col gap-2 mt-4">
+          <ul className="flex flex-col gap-2 mt-4 text-xl">
             {ingredients.map((ingredient: Ingredient) => (
-              <li
-                key={ingredient.id}
-                className="p-3 border border-83c5be rounded-md shadow-md bg-white"
-              >
+              <li key={ingredient.id}>
                 <IngredientItem ingredient={ingredient} />
               </li>
             ))}

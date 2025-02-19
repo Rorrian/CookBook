@@ -1,13 +1,8 @@
 import { toast } from 'react-toastify'
 import { MdEdit, MdDelete } from 'react-icons/md'
 import { useNavigate, useParams } from 'react-router-dom'
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  useDisclosure,
-} from '@nextui-org/react'
+import { Button, Image, useDisclosure } from '@nextui-org/react'
+import { motion as m } from 'framer-motion'
 
 import {
   useDeleteRecipeMutation,
@@ -23,6 +18,7 @@ import {
 } from '@modules/recipes'
 import { RoutePaths } from '@shared/utils/navigation'
 import { Loader, StarRating } from '@shared/components'
+import { DEFAULT_PAGE_ANIMATION } from '@shared/utils/constants'
 
 export function RecipePage() {
   const navigate = useNavigate()
@@ -73,90 +69,92 @@ export function RecipePage() {
   }
 
   return (
-    <div className="flex flex-col gap-8 p-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="bg-white shadow-md rounded-xl border border-83c5be transition-all">
-          <CardHeader className="flex justify-between items-center bg-edf6f9 p-4 rounded-t-xl">
-            <h2 className="font-bold text-2xl text-006d77 min-w-0 truncate">
+    <m.div
+      className="flex flex-col gap-4 p-[1rem_1rem_1rem_2.5rem]"
+      {...DEFAULT_PAGE_ANIMATION}
+    >
+      <div className="flex gap-4">
+        <div className="flex-grow">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-2 items-start">
+            <h2 className="text-3xl text-center font-bold font-heading uppercase text-gray-700 min-w-0">
               {title}
             </h2>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 justify-end">
               <Button
+                className="bg-white/70 text-83c5be hover:text-006d77 transition-all"
                 isIconOnly
+                size="sm"
                 onPress={onOpen}
-                className="bg-white text-83c5be hover:text-006d77 transition-all"
               >
                 <MdEdit size={20} />
               </Button>
               <Button
+                className="bg-white/70 text-e29578 hover:text-red-600 transition-all"
                 isIconOnly
+                size="sm"
                 onPress={() => onDeleteRecipe(id)}
-                className="bg-white text-e29578 hover:text-red-600 transition-all"
               >
                 <MdDelete size={20} />
               </Button>
             </div>
-          </CardHeader>
+          </div>
 
-          <CardBody className="flex flex-col gap-6 p-4">
+          <div className="relative p-2 bg-white/60 rounded-xl border-2 border-83C5BE text-xl text-006d77">
             {image_url && (
-              <img
-                src={image_url}
+              <Image
                 alt="Рецепт"
-                className="w-full md:w-auto max-h-96 object-cover rounded-lg shadow-md"
+                className="float-right m-4 w-full lg:max-w-[300px] xl:max-w-[400px] 2xl:max-w-[400px] h-64 2xl:h-96 object-cover rounded-xl border-2 border-83C5BE shadow-md"
+                isBlurred
+                removeWrapper
+                src={image_url}
               />
             )}
 
-            <div className="flex flex-col gap-4">
-              <div className="text-lg text-006d77">
-                <p>
-                  <b>Описание:</b>
-                </p>
-                {description}
-              </div>
-
-              <div className="text-lg text-006d77">
-                <p>
-                  <b>Категория:</b>
-                </p>
-                {category_title}
-              </div>
-
-              {complexity && (
-                <div className="text-lg text-006d77">
-                  <p>
-                    <b>Сложность:</b>
-                  </p>
-                  <StarRating rating={complexity} />
-                </div>
-              )}
-
-              {preparation_time && (
-                <div className="text-lg text-006d77">
-                  <p>
-                    <b>Общее время приготовления:</b>
-                  </p>
-                  {preparation_time}
-                </div>
-              )}
-
-              {servings_count && (
-                <div className="text-lg text-006d77">
-                  <p>
-                    <b>Количество порций:</b>
-                  </p>
-                  {servings_count}
-                </div>
-              )}
-
-              {macronutrients &&
-                Object.values(macronutrients).every(value => value > 0) && (
-                  <NutritionFacts macronutrients={macronutrients} />
-                )}
+            <div className="mb-4 max-w-xs">
+              <p>
+                <b>Описание:</b>
+              </p>
+              {description}
             </div>
-          </CardBody>
-        </Card>
+
+            <div className="mb-4">
+              <p>
+                <b>Категория:</b>
+              </p>
+              {category_title}
+            </div>
+
+            {complexity && (
+              <div className="mb-4">
+                <p>
+                  <b>Сложность:</b>
+                </p>
+                <StarRating rating={complexity} />
+              </div>
+            )}
+
+            {preparation_time && (
+              <div className="mb-4">
+                <p>
+                  <b>Общее время приготовления:</b>
+                </p>
+                {preparation_time}
+              </div>
+            )}
+
+            {servings_count && (
+              <div className="mb-4">
+                <p>
+                  <b>Количество порций:</b>
+                </p>
+                {servings_count}
+              </div>
+            )}
+
+            <div className="clear-both"></div>
+          </div>
+        </div>
 
         <IngredientsList ingredients={ingredients ?? []} recipe_id={id!} />
       </div>
@@ -170,6 +168,6 @@ export function RecipePage() {
           onOpenChange={onOpenChange}
         />
       )}
-    </div>
+    </m.div>
   )
 }

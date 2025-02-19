@@ -5,7 +5,7 @@ import { RoutePaths } from '@shared/utils/navigation'
 
 export const Footer = () => {
   return (
-    <footer className="flex flex-col md:flex-row justify-between items-center gap-4 p-4 bg-004b54">
+    <footer className="flex flex-col md:flex-row justify-between items-center gap-2 p-2 bg-004b54 mt-4">
       <p className="text-sm text-edf6f9">
         🍽️ {APP_INFO.name} | v{APP_INFO.version}
       </p>

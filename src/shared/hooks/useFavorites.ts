@@ -1,29 +1,31 @@
 import { useDispatch } from 'react-redux'
 
 import {
-  selectFavorites,
+  selectFavoriteIds,
   selectIsInFavorites,
   toggleToFavorites,
 } from '@shared/store/favorites/favorites.slice'
-import { Recipe } from '@/src/types'
 import { RootState } from '@shared/store/store'
 
 import { useTypedSelector } from './useTypedSelector'
 
 export const useFavorites = (userId: string) => {
   const dispatch = useDispatch()
-  const favorites = useTypedSelector(state => selectFavorites(state, userId))
 
-  const toggleFavorite = (recipe: Recipe) =>
-    dispatch(toggleToFavorites({ userId, recipe }))
+  const favoriteIds = useTypedSelector(state =>
+    selectFavoriteIds(state, userId),
+  )
 
-  const isInFavorites = (userId: string, recipeId: string) =>
+  const toggleFavorite = (recipeId: string) =>
+    dispatch(toggleToFavorites({ userId, recipeId }))
+
+  const isInFavorites = (recipeId: string) =>
     useTypedSelector((state: RootState) =>
       selectIsInFavorites(state, userId, recipeId),
     )
 
   return {
-    favorites,
+    favoriteIds,
     toggleFavorite,
     isInFavorites,
   }

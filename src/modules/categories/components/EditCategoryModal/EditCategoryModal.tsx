@@ -46,7 +46,10 @@ export const EditCategoryModal = ({
 
   const { id, title, image_url } = category
 
-  const imageUploadRef = useRef<{ cancel: () => Promise<void> } | null>(null)
+  const imageUploadRef = useRef<{
+    cancel: () => Promise<void>
+    deletePrevPic: () => Promise<void>
+  } | null>(null)
   const [isImageUploading, setIsImageUploading] = useState(false)
 
   const onUpdate = async (data: Category) => {
@@ -54,6 +57,7 @@ export const EditCategoryModal = ({
       const updatedCategory: Category = { ...data, id }
       await editCategory(updatedCategory).unwrap()
       toast.success('Категория успешно обновлена!')
+      imageUploadRef.current?.deletePrevPic()
       reset()
       onOpenChange()
     } catch (error) {
@@ -69,7 +73,7 @@ export const EditCategoryModal = ({
   }
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+    <Modal isOpen={isOpen} onOpenChange={handleCancel}>
       <ModalContent>
         {onClose => (
           <Form onSubmit={handleSubmit(onUpdate)}>

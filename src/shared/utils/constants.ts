@@ -13,3 +13,13 @@ export const FOOTER_LINKS = [
   { title: 'Telegram', href: 'https://t.me/RorrianR' },
   { title: 'LinkedIn', href: 'https://www.linkedin.com/in/rorrian/' },
 ]
+
+export const DEFAULT_PAGE_ANIMATION = {
+  variants: {
+    initial: { opacity: 0 },
+    animate: { opacity: 1, transition: { duration: 0.3 } },
+  },
+  initial: 'initial',
+  animate: 'animate',
+  exit: 'initial',
+}

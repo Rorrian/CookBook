@@ -16,7 +16,9 @@ import {
   Accordion,
   AccordionItem,
   useDisclosure,
+  Textarea,
 } from '@nextui-org/react'
+import { MdAdd } from 'react-icons/md'
 
 import { Recipe, UpdatedRecipe } from '@/src/types'
 import {
@@ -26,7 +28,6 @@ import {
   useUploadRecipeImageMutation,
 } from '@shared/store/api'
 import { ImageUpload } from '@shared/components'
-import { MdAdd } from 'react-icons/md'
 import { CreateCategoryModal } from '@modules/categories'
 import { getComplexityLevels } from '@shared/utils/complexityLevels'
 
@@ -73,14 +74,19 @@ export const EditRecipeModal = ({
     onOpenChange: onOpenChangeCreateCategoryModal,
   } = useDisclosure()
 
-  const imageUploadRef = useRef<{ cancel: () => Promise<void> } | null>(null)
+  const imageUploadRef = useRef<{
+    cancel: () => Promise<void>
+    deletePrevPic: () => Promise<void>
+  } | null>(null)
   const [isImageUploading, setIsImageUploading] = useState(false)
 
   const onUpdate = async (data: UpdatedRecipe) => {
     try {
       const updatedRecipe: UpdatedRecipe = { ...data, id }
       await editRecipe(updatedRecipe).unwrap()
+      // FIXME: Переделать тосты на исп. в heroui ?
       toast.success('Рецепт успешно обновлен!')
+      imageUploadRef.current?.deletePrevPic()
       reset()
       onOpenChange()
     } catch (error) {
@@ -102,198 +108,223 @@ export const EditRecipeModal = ({
 
   return (
     <>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={handleCancel}
+        backdrop="blur"
+        size="3xl"
+      >
         <ModalContent>
           {onClose => (
-            <Form onSubmit={handleSubmit(onUpdate)}>
-              <ModalHeader className="flex flex-col gap-1">
-                <h3 className="text-2xl font-semibold text-center mb-4">
+            <Form className="h-full" onSubmit={handleSubmit(onUpdate)}>
+              <ModalHeader className="w-full flex flex-col gap-1 pb-2">
+                <h3 className="text-2xl font-semibold text-center">
                   Изменение рецепта
                 </h3>
               </ModalHeader>
 
               <ModalBody className="w-full">
-                <Controller
-                  name="title"
-                  control={control}
-                  rules={{
-                    required: 'Название рецепта обязательно',
-                    pattern: {
-                      value: /^(?!\d+$).+/,
-                      message: 'Название не может содержать только цифры',
-                    },
-                  }}
-                  defaultValue={title}
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      autoFocus
-                      isRequired
-                      className="w-full"
-                      errorMessage={errors.title?.message}
-                      isClearable
-                      isInvalid={!!errors.title?.message}
-                      label="Название рецепта"
-                      placeholder="Введите название"
-                      variant="bordered"
-                      onClear={() => reset({ title: '' })}
-                    />
-                  )}
-                />
-
-                <Controller
-                  name="description"
-                  control={control}
-                  rules={{
-                    pattern: {
-                      value: /^(?!\d+$).+/,
-                      message: 'Описание не может содержать только цифры',
-                    },
-                  }}
-                  defaultValue={description}
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      className="w-full"
-                      errorMessage={errors.description?.message}
-                      isClearable
-                      isInvalid={!!errors.description?.message}
-                      label="Описание рецепта"
-                      placeholder="Введите описание"
-                      variant="bordered"
-                      onClear={() => reset({ description: '' })}
-                    />
-                  )}
-                />
-
-                <div className="flex gap-x-2">
-                  {isCategoriesLoading ? (
-                    <Spinner size="sm" color="primary" />
-                  ) : (
+                <div className="flex justify-between gap-4">
+                  <div className="w-[50%] flex flex-col gap-2">
                     <Controller
-                      name="category_id"
+                      name="title"
                       control={control}
-                      rules={{ required: 'Выберите категорию' }}
-                      defaultValue={category_id}
+                      rules={{
+                        required: 'Название рецепта обязательно',
+                        pattern: {
+                          value: /^(?!\d+$).+/,
+                          message: 'Название не может содержать только цифры',
+                        },
+                      }}
+                      defaultValue={title}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          autoFocus
+                          isRequired
+                          className="w-full"
+                          errorMessage={errors.title?.message}
+                          isClearable
+                          isInvalid={!!errors.title?.message}
+                          label="Название рецепта"
+                          placeholder="Введите название"
+                          variant="bordered"
+                          onClear={() => reset({ title: '' })}
+                        />
+                      )}
+                    />
+
+                    <Controller
+                      name="description"
+                      control={control}
+                      rules={{
+                        pattern: {
+                          value: /^(?!\d+$).+/,
+                          message: 'Описание не может содержать только цифры',
+                        },
+                      }}
+                      defaultValue={description}
+                      render={({ field }) => (
+                        <Textarea
+                          {...field}
+                          className="w-full"
+                          errorMessage={errors.description?.message}
+                          isClearable
+                          isInvalid={!!errors.description?.message}
+                          label="Описание рецепта"
+                          placeholder="Введите описание"
+                          variant="bordered"
+                          onClear={() => reset({ description: '' })}
+                        />
+                      )}
+                    />
+
+                    <div className="flex gap-x-2">
+                      {isCategoriesLoading ? (
+                        <Spinner size="sm" color="primary" />
+                      ) : (
+                        <Controller
+                          name="category_id"
+                          control={control}
+                          rules={{ required: 'Выберите категорию' }}
+                          defaultValue={category_id}
+                          render={({
+                            field: { value, onChange },
+                            fieldState: { error },
+                          }) => (
+                            <Select
+                              isRequired
+                              className="w-full"
+                              errorMessage={error?.message}
+                              isInvalid={!!error}
+                              label="Категория"
+                              placeholder="Выберите категорию"
+                              selectedKeys={value ? [value] : []}
+                              onSelectionChange={keys =>
+                                onChange([...keys][0] as string)
+                              }
+                            >
+                              {categories?.map(category => (
+                                <SelectItem
+                                  key={category.id}
+                                  value={category.id}
+                                >
+                                  {category.title}
+                                </SelectItem>
+                              ))}
+                            </Select>
+                          )}
+                        />
+                      )}
+                      <Button
+                        isIconOnly
+                        onPress={onOpenCreateCategoryModal}
+                        color="primary"
+                        className="h-auto bg-006d77 text-white hover:bg-83c5be transition"
+                      >
+                        <MdAdd />
+                      </Button>
+                    </div>
+
+                    <Controller
+                      name="complexity"
+                      control={control}
+                      rules={{ required: 'Выберите сложность' }}
+                      defaultValue={complexity?.toString()}
                       render={({
                         field: { value, onChange },
                         fieldState: { error },
                       }) => (
                         <Select
-                          isRequired
                           className="w-full"
                           errorMessage={error?.message}
                           isInvalid={!!error}
-                          label="Категория"
-                          placeholder="Выберите категорию"
-                          selectedKeys={value ? [value] : []}
+                          label="Сложность рецепта"
+                          placeholder="Выберите сложность"
+                          selectedKeys={value ? new Set([value]) : new Set()}
                           onSelectionChange={keys =>
                             onChange([...keys][0] as string)
                           }
                         >
-                          {categories?.map(category => (
-                            <SelectItem key={category.id} value={category.id}>
-                              {category.title}
+                          {getComplexityLevels().map(({ value, label }) => (
+                            <SelectItem
+                              key={value}
+                              value={value}
+                              textValue={value.toString()}
+                            >
+                              {label}
                             </SelectItem>
                           ))}
                         </Select>
                       )}
                     />
-                  )}
-                  <Button
-                    isIconOnly
-                    onPress={onOpenCreateCategoryModal}
-                    color="primary"
-                    className="h-auto bg-006d77 text-white hover:bg-83c5be transition"
-                  >
-                    <MdAdd />
-                  </Button>
+
+                    <Controller
+                      name="preparation_time"
+                      control={control}
+                      rules={{
+                        pattern: {
+                          value: /^(?!\d+$).+/,
+                          message:
+                            'Время приготовления не может содержать только цифры',
+                        },
+                      }}
+                      defaultValue={preparation_time}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          className="w-full"
+                          errorMessage={errors.preparation_time?.message}
+                          isClearable
+                          isInvalid={!!errors.preparation_time?.message}
+                          label="Время приготовления рецепта"
+                          placeholder="Введите время приготовления рецепта"
+                          variant="bordered"
+                          onClear={() => reset({ preparation_time: '' })}
+                        />
+                      )}
+                    />
+
+                    <Controller
+                      name="servings_count"
+                      control={control}
+                      rules={{
+                        min: {
+                          value: 1,
+                          message: 'Сложность рецепта не может быть меньше 1',
+                        },
+                      }}
+                      defaultValue={servings_count}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          className="w-full"
+                          errorMessage={errors.servings_count?.message}
+                          isClearable
+                          isInvalid={!!errors.servings_count?.message}
+                          label="Количество порций"
+                          placeholder="Введите количество порций"
+                          type="number"
+                          variant="bordered"
+                          onClear={() => reset({ servings_count: 1 })}
+                        />
+                      )}
+                    />
+                  </div>
+
+                  <ImageUpload
+                    className="w-[50%]"
+                    ref={imageUploadRef}
+                    initialValue={image_url}
+                    isImageUploading={isImageUploading}
+                    setIsImageUploading={setIsImageUploading}
+                    uploadHandler={uploadRecipeImage}
+                    deleteHandler={deleteRecipeImage}
+                    onImageUploaded={imageUrl =>
+                      setValue('image_url', imageUrl)
+                    }
+                  />
                 </div>
-
-                <Controller
-                  name="complexity"
-                  control={control}
-                  rules={{ required: 'Выберите сложность' }}
-                  defaultValue={complexity?.toString()}
-                  render={({
-                    field: { value, onChange },
-                    fieldState: { error },
-                  }) => (
-                    <Select
-                      className="w-full"
-                      errorMessage={error?.message}
-                      isInvalid={!!error}
-                      label="Сложность рецепта"
-                      placeholder="Выберите сложность"
-                      selectedKeys={value ? new Set([value]) : new Set()}
-                      onSelectionChange={keys =>
-                        onChange([...keys][0] as string)
-                      }
-                    >
-                      {getComplexityLevels().map(({ value, label }) => (
-                        <SelectItem
-                          key={value}
-                          value={value}
-                          textValue={value.toString()}
-                        >
-                          {label}
-                        </SelectItem>
-                      ))}
-                    </Select>
-                  )}
-                />
-
-                <Controller
-                  name="preparation_time"
-                  control={control}
-                  rules={{
-                    pattern: {
-                      value: /^(?!\d+$).+/,
-                      message:
-                        'Время приготовления не может содержать только цифры',
-                    },
-                  }}
-                  defaultValue={preparation_time}
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      className="w-full"
-                      errorMessage={errors.preparation_time?.message}
-                      isClearable
-                      isInvalid={!!errors.preparation_time?.message}
-                      label="Время приготовления рецепта"
-                      placeholder="Введите время приготовления рецепта"
-                      variant="bordered"
-                      onClear={() => reset({ preparation_time: '' })}
-                    />
-                  )}
-                />
-
-                <Controller
-                  name="servings_count"
-                  control={control}
-                  rules={{
-                    min: {
-                      value: 1,
-                      message: 'Сложность рецепта не может быть меньше 1',
-                    },
-                  }}
-                  defaultValue={servings_count}
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      className="w-full"
-                      errorMessage={errors.servings_count?.message}
-                      isClearable
-                      isInvalid={!!errors.servings_count?.message}
-                      label="Количество порций"
-                      placeholder="Введите количество порций"
-                      type="number"
-                      variant="bordered"
-                      onClear={() => reset({ servings_count: 1 })}
-                    />
-                  )}
-                />
 
                 <Accordion variant="bordered">
                   <AccordionItem
@@ -301,11 +332,11 @@ export const EditRecipeModal = ({
                     aria-label="Энергетическая ценность на порцию:"
                     title="Энергетическая ценность на порцию:"
                   >
-                    <div className="flex flex-col gap-y-2">
+                    <div className="flex gap-2">
                       <Controller
                         name="macronutrients.calories"
                         control={control}
-                        defaultValue={macronutrients.calories || 0}
+                        defaultValue={macronutrients?.calories || 0}
                         rules={{
                           min: {
                             value: 0,
@@ -318,7 +349,6 @@ export const EditRecipeModal = ({
                             className="w-full"
                             isClearable
                             label="Калорийность"
-                            placeholder="Введите калорийность"
                             type="number"
                             variant="bordered"
                             errorMessage={error?.message}
@@ -328,6 +358,7 @@ export const EditRecipeModal = ({
                           />
                         )}
                       />
+
                       <Controller
                         name="macronutrients.proteins"
                         control={control}
@@ -338,14 +369,13 @@ export const EditRecipeModal = ({
                               'Количество белков не может быть отрицательным',
                           },
                         }}
-                        defaultValue={macronutrients.proteins || 0}
+                        defaultValue={macronutrients?.proteins || 0}
                         render={({ field, fieldState: { error } }) => (
                           <Input
                             {...field}
                             className="w-full"
                             isClearable
-                            label="Количество белков"
-                            placeholder="Введите количество белков"
+                            label="Белки"
                             type="number"
                             variant="bordered"
                             errorMessage={error?.message}
@@ -355,6 +385,7 @@ export const EditRecipeModal = ({
                           />
                         )}
                       />
+
                       <Controller
                         name="macronutrients.fats"
                         control={control}
@@ -365,14 +396,13 @@ export const EditRecipeModal = ({
                               'Количество жиров не может быть отрицательным',
                           },
                         }}
-                        defaultValue={macronutrients.fats || 0}
+                        defaultValue={macronutrients?.fats || 0}
                         render={({ field, fieldState: { error } }) => (
                           <Input
                             {...field}
                             className="w-full"
                             isClearable
-                            label="Количество жиров"
-                            placeholder="Введите количество жиров"
+                            label="Жиры"
                             type="number"
                             variant="bordered"
                             errorMessage={error?.message}
@@ -382,6 +412,7 @@ export const EditRecipeModal = ({
                           />
                         )}
                       />
+
                       <Controller
                         name="macronutrients.carbohydrates"
                         control={control}
@@ -392,14 +423,13 @@ export const EditRecipeModal = ({
                               'Количество углеводов не может быть отрицательным',
                           },
                         }}
-                        defaultValue={macronutrients.carbohydrates || 0}
+                        defaultValue={macronutrients?.carbohydrates || 0}
                         render={({ field, fieldState: { error } }) => (
                           <Input
                             {...field}
                             className="w-full"
                             isClearable
-                            label="Количество углеводов"
-                            placeholder="Введите количество углеводов"
+                            label="Углеводы"
                             type="number"
                             variant="bordered"
                             errorMessage={error?.message}
@@ -412,15 +442,6 @@ export const EditRecipeModal = ({
                     </div>
                   </AccordionItem>
                 </Accordion>
-
-                <ImageUpload
-                  ref={imageUploadRef}
-                  isImageUploading={isImageUploading}
-                  setIsImageUploading={setIsImageUploading}
-                  uploadHandler={uploadRecipeImage}
-                  deleteHandler={deleteRecipeImage}
-                  onImageUploaded={imageUrl => setValue('image_url', imageUrl)}
-                />
               </ModalBody>
 
               <ModalFooter className="w-full">
