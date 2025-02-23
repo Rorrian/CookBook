@@ -1,3 +1,3 @@
-import { CategoryItem, CreateCategoryModal } from './components'
+import { CategoryItem } from './components'
 
-export { CategoryItem, CreateCategoryModal }
+export { CategoryItem }

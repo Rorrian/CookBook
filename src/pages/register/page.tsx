@@ -1,6 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import { Spacer } from '@nextui-org/react'
+import { addToast, Spacer } from '@heroui/react'
 import { motion as m } from 'framer-motion'
 
 import { AuthForm } from '@shared/components'
@@ -10,7 +9,6 @@ import { login } from '@shared/store/users/users.slice'
 import { RoutePaths } from '@shared/utils/navigation'
 import { AuthCredentials } from '@/src/types'
 import { DEFAULT_PAGE_ANIMATION } from '@shared/utils/constants'
-import { log } from 'console'
 
 export function RegisterPage() {
   const dispatch = useAppDispatch()
@@ -28,7 +26,10 @@ export function RegisterPage() {
             token: session.access_token,
           }),
         )
-        toast.success('Успешная регистрация!')
+        addToast({
+          title: 'Успешная регистрация!',
+          color: 'success',
+        })
         navigate(RoutePaths.GETTING_STARTED)
       }
     } catch (error) {
@@ -36,7 +37,12 @@ export function RegisterPage() {
 
       const errorMessage =
         error instanceof Error ? error.message : 'Неизвестная ошибка'
-      toast.error(`Не удалось зарегистрироваться: ${errorMessage}`)
+      addToast({
+        title: 'Не удалось зарегистрироваться:',
+        description: errorMessage,
+        color: 'danger',
+        timeout: 5000,
+      })
     }
   }
 

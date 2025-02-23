@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
 import {
   Input,
   Button,
@@ -11,7 +10,8 @@ import {
   ModalFooter,
   ModalHeader,
   Form,
-} from '@nextui-org/react'
+  addToast,
+} from '@heroui/react'
 
 import { NewCategory } from '@/src/types'
 import {
@@ -51,12 +51,20 @@ const CreateCategoryModal = ({
   const onCreate = async (data: NewCategory) => {
     try {
       await createCategory(data).unwrap()
-      toast.success('Категория успешно создана!')
+      addToast({
+        title: 'Категория успешно обновлен!',
+        color: 'success',
+      })
       reset()
       onOpenChange()
     } catch (error) {
       console.error(error)
-      toast.error(`Ошибка при создании категории: ${error}`)
+      addToast({
+        title: 'Ошибка при создании категории:',
+        description: error?.toString(),
+        color: 'danger',
+        timeout: 5000,
+      })
     }
   }
 
@@ -69,7 +77,7 @@ const CreateCategoryModal = ({
   return (
     <Modal isOpen={isOpen} onOpenChange={handleCancel}>
       <ModalContent>
-        {onClose => (
+        {() => (
           <Form onSubmit={handleSubmit(onCreate)}>
             <ModalHeader className="flex flex-col gap-1">
               <h3 className="text-2xl font-semibold text-center mb-4">

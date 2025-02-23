@@ -1,6 +1,5 @@
 import { lazy, Suspense, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
 import {
   Input,
   Button,
@@ -17,8 +16,8 @@ import {
   AccordionItem,
   useDisclosure,
   Textarea,
-} from '@nextui-org/react'
-import { MdAdd } from 'react-icons/md'
+  addToast,
+} from '@heroui/react'
 
 import { Recipe, UpdatedRecipe } from '@/src/types'
 import {
@@ -29,9 +28,10 @@ import {
 } from '@shared/store/api'
 import { ImageUpload } from '@shared/components'
 import { getComplexityLevels } from '@shared/utils/complexityLevels'
+import { AddIcon } from '@shared/icons'
 
 const CreateCategoryModal = lazy(() =>
-  import('@modules/categories').then(module => ({
+  import('@modules/categories/lazy').then(module => ({
     default: module.CreateCategoryModal,
   })),
 )
@@ -89,14 +89,23 @@ const EditRecipeModal = ({
     try {
       const updatedRecipe: UpdatedRecipe = { ...data, id }
       await editRecipe(updatedRecipe).unwrap()
-      // FIXME: Переделать тосты на исп. в heroui ?
-      toast.success('Рецепт успешно обновлен!')
+
+      addToast({
+        title: 'Рецепт успешно обновлен!',
+        color: 'success',
+      })
+
       imageUploadRef.current?.deletePrevPic()
       reset()
       onOpenChange()
     } catch (error) {
       console.error(error)
-      toast.error(`Ошибка при обновлении рецепта: ${error}`)
+      addToast({
+        title: 'Ошибка при обновлении рецепта:',
+        description: error?.toString(),
+        color: 'danger',
+        timeout: 5000,
+      })
     }
   }
 
@@ -120,7 +129,7 @@ const EditRecipeModal = ({
         size="3xl"
       >
         <ModalContent>
-          {onClose => (
+          {() => (
             <Form className="h-full" onSubmit={handleSubmit(onUpdate)}>
               <ModalHeader className="w-full flex flex-col gap-1 pb-2">
                 <h3 className="text-2xl font-semibold text-center">
@@ -212,7 +221,7 @@ const EditRecipeModal = ({
                               {(categories || []).map(category => (
                                 <SelectItem
                                   key={category.id}
-                                  value={category.id}
+                                  textValue={category.title}
                                 >
                                   {category.title}
                                 </SelectItem>
@@ -227,7 +236,7 @@ const EditRecipeModal = ({
                         color="primary"
                         className="h-auto bg-006d77 text-white hover:bg-83c5be transition"
                       >
-                        <MdAdd />
+                        <AddIcon width={20} />
                       </Button>
                     </div>
 
@@ -235,7 +244,7 @@ const EditRecipeModal = ({
                       name="complexity"
                       control={control}
                       rules={{ required: 'Выберите сложность' }}
-                      defaultValue={complexity}
+                      defaultValue={complexity ?? 1}
                       render={({
                         field: { value, onChange },
                         fieldState: { error },
@@ -247,15 +256,38 @@ const EditRecipeModal = ({
                           isInvalid={!!error}
                           label="Сложность рецепта"
                           placeholder="Выберите сложность"
-                          selectedKeys={value ? new Set([value]) : new Set()}
-                          onSelectionChange={keys =>
-                            onChange([...keys][0] as string)
+                          selectedKeys={
+                            value ? new Set([value.toString()]) : new Set()
                           }
+                          onSelectionChange={keys => {
+                            const selectedValue = [...keys][0]
+                            onChange(
+                              selectedValue ? Number(selectedValue) : undefined,
+                            )
+                          }}
+                          renderValue={items => {
+                            if (!items.length) return 'Выберите сложность'
+
+                            const selectedItem = items[0]
+                            const selectedValue = selectedItem.key
+
+                            const level = getComplexityLevels().find(
+                              item => item.value === selectedValue,
+                            )
+
+                            return level ? (
+                              <span>{level.label}</span>
+                            ) : (
+                              <span>
+                                {selectedValue?.toString() ??
+                                  'Неизвестное значение'}
+                              </span>
+                            )
+                          }}
                         >
                           {getComplexityLevels().map(({ value, label }) => (
                             <SelectItem
                               key={value}
-                              value={value}
                               textValue={value.toString()}
                             >
                               {label}

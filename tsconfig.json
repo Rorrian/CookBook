@@ -3,6 +3,7 @@
     "baseUrl": "./",
     "paths": {
       "@app/*": ["src/app/*"],
+      "@assets/*": ["src/assets/*"],
       "@modules/*": ["src/modules/*"],
       "@libs/*": ["src/libs/*"],
       "@pages/*": ["src/pages/*"],
@@ -29,10 +30,15 @@
     "skipLibCheck": true,
     "esModuleInterop": false,
     "isolatedModules": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
     "noEmit": true,
-    "types": ["vitest/globals"],
+    "types": ["vitest/globals", "vite-plugin-svgr/client"],
     "incremental": true
   },
-  "include": ["src"],
+  "include": [
+		"src/**/*",
+		"src/vite-env.d.ts"
+	],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -1,5 +1,4 @@
 import { Controller, useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
 import {
   Input,
   Button,
@@ -9,7 +8,8 @@ import {
   ModalFooter,
   ModalHeader,
   Form,
-} from '@nextui-org/react'
+  addToast,
+} from '@heroui/react'
 
 import { useCreateStepMutation } from '@shared/store/api'
 import { NewStep, SupabaseResponseError } from '@/src/types'
@@ -41,7 +41,6 @@ const CreateStepModal = ({
       const newStep: NewStep = { ...data, recipe_id }
 
       await createStep(newStep).unwrap()
-      toast.success('Шаг успешно создан!')
       reset()
       onOpenChange()
     } catch (error) {
@@ -49,9 +48,18 @@ const CreateStepModal = ({
 
       const supabaseError = error as SupabaseResponseError
       if (supabaseError?.data?.code === '23505') {
-        toast.error('Шаг с таким номером уже существует!')
+        addToast({
+          title: 'Шаг с таким номером уже существует!',
+          color: 'danger',
+          timeout: 5000,
+        })
       } else {
-        toast.error(`Ошибка при обновлении шага: ${error}`)
+        addToast({
+          title: 'Ошибка при создании шага:',
+          description: error?.toString(),
+          color: 'danger',
+          timeout: 5000,
+        })
       }
     }
   }

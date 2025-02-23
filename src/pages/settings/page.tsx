@@ -1,10 +1,10 @@
-import { Accordion, AccordionItem } from '@nextui-org/react'
-import { FaUserCircle } from 'react-icons/fa'
+import { Accordion, AccordionItem } from '@heroui/react'
 import { motion as m } from 'framer-motion'
 
 import { useAuth } from '@shared/hooks'
 import { ChangePasswordForm } from '@shared/components'
 import { DEFAULT_PAGE_ANIMATION } from '@shared/utils/constants'
+import { UserIcon } from '@shared/icons'
 
 export function SettingsPage() {
   const { uid, email } = useAuth()
@@ -22,7 +22,7 @@ export function SettingsPage() {
           aria-label="Данные профиля"
           title="Данные профиля"
           HeadingComponent={'h3'}
-          startContent={<FaUserCircle />}
+          startContent={<UserIcon width={24} height={24} />}
         >
           <div className="text-lg mb-4">
             <h4 className="font-semibold mb-4">

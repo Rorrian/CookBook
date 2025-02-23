@@ -1,7 +1,5 @@
-import { toast } from 'react-toastify'
-import { MdEdit, MdDelete } from 'react-icons/md'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Button, Image, useDisclosure } from '@nextui-org/react'
+import { addToast, Button, Image, useDisclosure } from '@heroui/react'
 import { motion as m } from 'framer-motion'
 import { lazy, Suspense } from 'react'
 
@@ -15,9 +13,10 @@ import { IngredientsList, NutritionFacts, StepsList } from '@modules/recipes'
 import { RoutePaths } from '@shared/utils/navigation'
 import { Loader, StarRating } from '@shared/components'
 import { DEFAULT_PAGE_ANIMATION } from '@shared/utils/constants'
+import { EditIcon, DeleteIcon } from '@shared/icons'
 
 const EditRecipeModal = lazy(() =>
-  import('@modules/recipes').then(module => ({
+  import('@modules/recipes/lazy').then(module => ({
     default: module.EditRecipeModal,
   })),
 )
@@ -62,11 +61,19 @@ export function RecipePage() {
   const onDeleteRecipe = async (id: string) => {
     try {
       await deleteRecipe(id).unwrap()
-      toast.success('Рецепт успешно удален!')
+      addToast({
+        title: 'Рецепт успешно удален!',
+        color: 'success',
+      })
 
       navigate(RoutePaths.HOME)
     } catch (error) {
-      console.error('Ошибка при удалении рецепта:', error)
+      addToast({
+        title: 'Ошибка при удалении рецепта:',
+        description: error?.toString(),
+        color: 'danger',
+        timeout: 5000,
+      })
     }
   }
 
@@ -89,7 +96,7 @@ export function RecipePage() {
                 size="sm"
                 onPress={onOpen}
               >
-                <MdEdit size={20} />
+                <EditIcon width={20} />
               </Button>
               <Button
                 className="bg-white/70 text-e29578 hover:text-red-600 transition-all"
@@ -97,7 +104,7 @@ export function RecipePage() {
                 size="sm"
                 onPress={() => onDeleteRecipe(id)}
               >
-                <MdDelete size={20} />
+                <DeleteIcon width={20} />
               </Button>
             </div>
           </div>
@@ -155,7 +162,7 @@ export function RecipePage() {
             )}
 
             {macronutrients &&
-              Object.values(macronutrients).every(value => value > 0) && (
+              Object.values(macronutrients).some(value => value > 0) && (
                 <NutritionFacts macronutrients={macronutrients} />
               )}
 

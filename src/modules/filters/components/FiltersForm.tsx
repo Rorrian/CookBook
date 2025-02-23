@@ -1,5 +1,4 @@
-import { Button, Select, SelectItem } from '@nextui-org/react'
-import { MdCancel } from 'react-icons/md'
+import { Button, Select, SelectItem } from '@heroui/react'
 import { useState } from 'react'
 import { isMobile } from 'react-device-detect'
 
@@ -10,6 +9,7 @@ import {
 import { Loader } from '@shared/components'
 import { getComplexityLevels } from '@shared/utils/complexityLevels'
 import { useAuth } from '@shared/hooks'
+import { CancelIcon } from '@shared/icons'
 
 import { DEFAULT_FILTERS, Filters } from '../hooks/useFilters'
 import { IngredientsFilter } from './IngredientsFilter'
@@ -73,7 +73,7 @@ export const FiltersForm = ({
               className="text-md bg-edf6f9 hover:text-e29578 transition-all"
               onPress={resetFilters}
             >
-              Сбросить <MdCancel />
+              Сбросить <CancelIcon width={20} />
             </Button>
           )}
 
@@ -95,15 +95,15 @@ export const FiltersForm = ({
             size="lg"
             label="Категория"
             placeholder="Выберите категорию"
-            selectedKeys={new Set([selectedCategory])}
             variant="bordered"
+            selectedKeys={new Set([selectedCategory])}
             onSelectionChange={keys => {
-              const selectedKey = String([...keys][0] || '')
-              updateFilter('category', selectedKey)
+              const selectedValue = String([...keys][0] || '')
+              updateFilter('category', selectedValue)
             }}
           >
             {(categories || []).map(category => (
-              <SelectItem key={category.id} value={category.id}>
+              <SelectItem key={category.id} textValue={category.title}>
                 {category.title}
               </SelectItem>
             ))}
@@ -113,19 +113,33 @@ export const FiltersForm = ({
             size="lg"
             label="Сложность"
             placeholder="Выберите сложность"
-            selectedKeys={new Set([selectedComplexity])}
             variant="bordered"
+            selectedKeys={new Set([selectedComplexity])}
             onSelectionChange={keys => {
-              const selectedKey = String(Array.from(keys)[0] || '')
-              updateFilter('complexity', selectedKey)
+              const selectedValue = String(Array.from(keys)[0] || '')
+              updateFilter('complexity', selectedValue)
+            }}
+            renderValue={items => {
+              if (!items.length) return 'Выберите сложность'
+
+              const selectedItem = items[0]
+              const selectedValue = selectedItem.key
+
+              const level = getComplexityLevels().find(
+                item => item.value === selectedValue,
+              )
+
+              return level ? (
+                <span>{level.label}</span>
+              ) : (
+                <span>
+                  {selectedValue?.toString() ?? 'Неизвестное значение'}
+                </span>
+              )
             }}
           >
             {getComplexityLevels().map(({ value, label }) => (
-              <SelectItem
-                key={value}
-                value={value}
-                textValue={value.toString()}
-              >
+              <SelectItem key={value} textValue={value}>
                 {label}
               </SelectItem>
             ))}

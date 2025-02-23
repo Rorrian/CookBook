@@ -1,6 +1,5 @@
-import { MdStar, MdStarBorder } from 'react-icons/md'
-
 import { MAX_COMPLEXITY_LEVEL } from '@modules/recipes'
+import { StarFillIcon, StarBlankIcon } from '@shared/icons'
 
 interface StarRatingProps {
   rating: number
@@ -15,7 +14,11 @@ export const StarRating = ({
     <div className="flex items-center gap-1 text-yellow-500">
       {[...Array(maxRating)].map((_, index) => (
         <span key={index}>
-          {index < rating ? <MdStar size={20} /> : <MdStarBorder size={20} />}
+          {index < rating ? (
+            <StarFillIcon width={19} height={19} />
+          ) : (
+            <StarBlankIcon width={20} height={20} />
+          )}
         </span>
       ))}
     </div>

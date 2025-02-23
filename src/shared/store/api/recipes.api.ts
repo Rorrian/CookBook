@@ -34,9 +34,7 @@ export const recipesApi = api.injectEndpoints({
           is_use_union: !!is_use_union,
         },
       }),
-      providesTags: (result, error, { userId }) => [
-        { type: 'Recipes', userId },
-      ],
+      providesTags: (_, __, { userId }) => [{ type: 'Recipes', userId }],
     }),
 
     getRecipesByIds: builder.query<Recipe[], string[]>({
@@ -46,7 +44,7 @@ export const recipesApi = api.injectEndpoints({
           recipe_ids: recipeIds.join(','),
         },
       }),
-      providesTags: (result, error, recipeIds) =>
+      providesTags: result =>
         result
           ? [
               ...result.map(({ id }) => ({ type: 'Recipes' as const, id })),
@@ -62,11 +60,11 @@ export const recipesApi = api.injectEndpoints({
         body: { input_recipe_id: id },
       }),
       transformResponse: (response: Recipe[]) => response[0],
-      providesTags: (result, error, id) => [{ type: 'Recipe', id }],
+      providesTags: (_, __, id) => [{ type: 'Recipe', id }],
     }),
 
     createRecipe: builder.mutation<null, NewRecipe>({
-      async queryFn(newRecipe, api, extraOptions, baseQuery) {
+      async queryFn(newRecipe, _, __, baseQuery) {
         try {
           const recipeResponse = (await baseQuery({
             url: '/recipes',
@@ -92,36 +90,28 @@ export const recipesApi = api.injectEndpoints({
             )
           }
 
-          if (
-            newRecipe?.macronutrients &&
-            Object.values(newRecipe?.macronutrients).every(value => value > 0)
-          ) {
-            const recipeId = recipeResponse.data[0].id
+          const recipeId = recipeResponse.data[0].id
 
-            const macronutrientsResponse = (await baseQuery({
-              url: '/macronutrients',
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Prefer: 'return=representation',
-              },
-              body: {
-                recipe_id: recipeId,
-                calories: newRecipe?.macronutrients?.calories,
-                proteins: newRecipe?.macronutrients?.proteins,
-                fats: newRecipe?.macronutrients?.fats,
-                carbohydrates: newRecipe?.macronutrients?.carbohydrates,
-              },
-            })) as { data: Macronutrients[] }
+          const macronutrientsResponse = (await baseQuery({
+            url: '/macronutrients',
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Prefer: 'return=representation',
+            },
+            body: {
+              recipe_id: recipeId,
+              calories: newRecipe?.macronutrients?.calories,
+              proteins: newRecipe?.macronutrients?.proteins,
+              fats: newRecipe?.macronutrients?.fats,
+              carbohydrates: newRecipe?.macronutrients?.carbohydrates,
+            },
+          })) as { data: Macronutrients[] }
 
-            if (
-              !macronutrientsResponse.data.length ||
-              !macronutrientsResponse.data[0].calories
-            ) {
-              throw new Error(
-                `Не удалось создать макроэллементы рецепта: ${JSON.stringify(recipeResponse, null, 2)}`,
-              )
-            }
+          if (!macronutrientsResponse.data.length) {
+            throw new Error(
+              `Не удалось создать макроэллементы рецепта: ${JSON.stringify(macronutrientsResponse, null, 2)}`,
+            )
           }
 
           return { data: null }
@@ -135,11 +125,11 @@ export const recipesApi = api.injectEndpoints({
           }
         }
       },
-      invalidatesTags: (result, error) => [{ type: 'Recipes' }],
+      invalidatesTags: (_, __) => [{ type: 'Recipes' }],
     }),
 
     uploadRecipeImage: builder.mutation<string, File>({
-      async queryFn(file, api, extraOptions, baseQuery) {
+      async queryFn(file) {
         try {
           const { data, error } = await supabase.storage
             .from('images')
@@ -167,7 +157,7 @@ export const recipesApi = api.injectEndpoints({
     deleteRecipeImage: builder.mutation<null, string>({
       async queryFn(imagePath) {
         try {
-          const { data, error } = await supabase.storage
+          const { error } = await supabase.storage
             .from('images')
             .remove([imagePath])
 
@@ -189,7 +179,7 @@ export const recipesApi = api.injectEndpoints({
     }),
 
     editRecipe: builder.mutation<null, UpdatedRecipe>({
-      async queryFn(updatedRecipe, api, extraOptions, baseQuery) {
+      async queryFn(updatedRecipe, _, __, baseQuery) {
         try {
           const recipeResponse = (await baseQuery({
             url: `/recipes?id=eq.${updatedRecipe.id}`,
@@ -215,38 +205,28 @@ export const recipesApi = api.injectEndpoints({
             )
           }
 
-          if (
-            updatedRecipe?.macronutrients &&
-            Object.values(updatedRecipe?.macronutrients).every(
-              value => value > 0,
+          const recipeId = recipeResponse.data[0].id
+
+          const macronutrientsResponse = (await baseQuery({
+            url: `/macronutrients?recipe_id=eq.${recipeId}`,
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              Prefer: 'return=representation',
+            },
+            body: {
+              recipe_id: recipeId,
+              calories: updatedRecipe?.macronutrients?.calories,
+              proteins: updatedRecipe?.macronutrients?.proteins,
+              fats: updatedRecipe?.macronutrients?.fats,
+              carbohydrates: updatedRecipe?.macronutrients?.carbohydrates,
+            },
+          })) as { data: Macronutrients[] }
+
+          if (!macronutrientsResponse.data.length) {
+            throw new Error(
+              `Не удалось обновить макроэлементы рецепта: ${JSON.stringify(macronutrientsResponse, null, 2)}`,
             )
-          ) {
-            const recipeId = recipeResponse.data[0].id
-
-            const macronutrientsResponse = (await baseQuery({
-              url: `/macronutrients?recipe_id=eq.${recipeId}`,
-              method: 'PATCH',
-              headers: {
-                'Content-Type': 'application/json',
-                Prefer: 'return=representation',
-              },
-              body: {
-                recipe_id: recipeId,
-                calories: updatedRecipe?.macronutrients?.calories,
-                proteins: updatedRecipe?.macronutrients?.proteins,
-                fats: updatedRecipe?.macronutrients?.fats,
-                carbohydrates: updatedRecipe?.macronutrients?.carbohydrates,
-              },
-            })) as { data: Macronutrients[] }
-
-            if (
-              !macronutrientsResponse.data.length ||
-              !macronutrientsResponse.data[0].calories
-            ) {
-              throw new Error(
-                `Не удалось обновить макроэллементы рецепта: ${JSON.stringify(recipeResponse, null, 2)}`,
-              )
-            }
           }
 
           return { data: null }
@@ -260,7 +240,7 @@ export const recipesApi = api.injectEndpoints({
           }
         }
       },
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_, __, { id }) => [
         { type: 'Recipes' },
         { type: 'Recipe', id },
         { type: 'Macronutrients', id },
@@ -268,7 +248,7 @@ export const recipesApi = api.injectEndpoints({
     }),
 
     deleteRecipe: builder.mutation<null, string>({
-      async queryFn(id, api, extraOptions, baseQuery) {
+      async queryFn(id, _, __, baseQuery) {
         try {
           const { data: recipeData } = (await baseQuery({
             url: `/recipes?id=eq.${id}`,
@@ -315,7 +295,7 @@ export const recipesApi = api.injectEndpoints({
           }
         }
       },
-      invalidatesTags: (result, error, id) => [
+      invalidatesTags: (_, __, id) => [
         { type: 'Recipes' },
         { type: 'Recipe', id },
       ],

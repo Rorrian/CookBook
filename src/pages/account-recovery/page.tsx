@@ -1,12 +1,18 @@
-import { toast } from 'react-toastify'
 import { useState } from 'react'
-import { Button, Card, CardBody, CardFooter, Input } from '@nextui-org/react'
+import {
+  addToast,
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  Input,
+} from '@heroui/react'
 import { Controller, FieldValues, useForm } from 'react-hook-form'
-import { MdOutlineMail } from 'react-icons/md'
 import { motion as m } from 'framer-motion'
 
 import { authApi } from '@shared/store/api'
 import { DEFAULT_PAGE_ANIMATION } from '@shared/utils/constants'
+import { MailIcon } from '@shared/icons'
 
 interface AccountRecoveryFormInputs {
   email: string
@@ -21,11 +27,19 @@ export const AccountRecoveryPage = () => {
     try {
       await authApi.resetPassword(data.email)
 
-      toast.success('Письмо для сброса пароля отправлено!')
+      addToast({
+        title: 'Письмо для сброса пароля отправлено!',
+        color: 'success',
+      })
       setIsRecoveryLetterSended(true)
     } catch (error) {
       console.error(error)
-      toast.error('Не удалось восстановить доступ')
+      addToast({
+        title: 'Не удалось восстановить доступ:',
+        description: error?.toString(),
+        color: 'danger',
+        timeout: 5000,
+      })
     }
   }
 
@@ -66,9 +80,7 @@ export const AccountRecoveryPage = () => {
                     placeholder="Введите ваш email"
                     type="email"
                     variant="bordered"
-                    startContent={
-                      <MdOutlineMail className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                    }
+                    startContent={<MailIcon width={28} height={28} />}
                     onClear={() => reset({ email: '' })}
                   />
                 )}

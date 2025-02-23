@@ -16,7 +16,7 @@ export const categoriesApi = api.injectEndpoints({
         url: `/categories?id=eq.${id}`,
       }),
       transformResponse: (response: Category[]) => response[0],
-      providesTags: (result, error, id) => [{ type: 'Category', id }],
+      providesTags: (_, __, id) => [{ type: 'Category', id }],
     }),
 
     createCategory: builder.mutation<null, NewCategory>({
@@ -29,7 +29,7 @@ export const categoriesApi = api.injectEndpoints({
     }),
 
     uploadCategoryImage: builder.mutation<string, File>({
-      async queryFn(file, api, extraOptions, baseQuery) {
+      async queryFn(file) {
         try {
           const { data, error } = await supabase.storage
             .from('images')
@@ -57,7 +57,7 @@ export const categoriesApi = api.injectEndpoints({
     deleteCategoryImage: builder.mutation<null, string>({
       async queryFn(imagePath) {
         try {
-          const { data, error } = await supabase.storage
+          const { error } = await supabase.storage
             .from('images')
             .remove([imagePath])
 
@@ -84,14 +84,14 @@ export const categoriesApi = api.injectEndpoints({
         method: 'PATCH',
         body: { title, image_url },
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_, __, { id }) => [
         { type: 'Categories' },
         { type: 'Category', id },
       ],
     }),
 
     deleteCategory: builder.mutation<null, string>({
-      async queryFn(id, api, extraOptions, baseQuery) {
+      async queryFn(id, _, __, baseQuery) {
         try {
           const { data: categoryData } = (await baseQuery({
             url: `/categories?id=eq.${id}`,
@@ -141,7 +141,7 @@ export const categoriesApi = api.injectEndpoints({
           }
         }
       },
-      invalidatesTags: (result, error, id) => [
+      invalidatesTags: (_, __, id) => [
         { type: 'Categories' },
         { type: 'Category', id },
       ],

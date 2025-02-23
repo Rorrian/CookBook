@@ -1,5 +1,4 @@
 import { Controller, useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
 import {
   Input,
   Button,
@@ -12,7 +11,8 @@ import {
   Select,
   SelectItem,
   Form,
-} from '@nextui-org/react'
+  addToast,
+} from '@heroui/react'
 
 import { Ingredient } from '@/src/types'
 import { useEditIngredientMutation, useGetUnitsQuery } from '@shared/store/api'
@@ -44,12 +44,16 @@ const EditIngredientModal = ({
     try {
       const updatedIngredient: Ingredient = { ...data, id, recipe_id }
       await editIngredient(updatedIngredient).unwrap()
-      toast.success('Ингредиент успешно обновлен!')
       reset()
       onOpenChange()
     } catch (error) {
       console.error(error)
-      toast.error(`Ошибка при обновлении ингредиента: ${error}`)
+      addToast({
+        title: 'Ошибка при обновлении ингредиента:',
+        description: error?.toString(),
+        color: 'danger',
+        timeout: 5000,
+      })
     }
   }
 
@@ -146,7 +150,7 @@ const EditIngredientModal = ({
                       }
                     >
                       {(units || []).map(unit => (
-                        <SelectItem key={unit.id} value={unit.id}>
+                        <SelectItem key={unit.id} textValue={unit.name}>
                           {unit.name}
                         </SelectItem>
                       ))}

@@ -1,12 +1,19 @@
-import { MdAdd } from 'react-icons/md'
-import { Button, useDisclosure } from '@nextui-org/react'
+import { Button, useDisclosure } from '@heroui/react'
 import { motion as m } from 'framer-motion'
+import { lazy, Suspense } from 'react'
 
 import { useGetCategoriesQuery } from '@shared/store/api'
-import { CategoryItem, CreateCategoryModal } from '@modules/categories'
+import { CategoryItem } from '@modules/categories'
 import { Category } from '@/src/types'
 import { Loader } from '@shared/components'
 import { DEFAULT_PAGE_ANIMATION } from '@shared/utils/constants'
+import { AddIcon } from '@shared/icons'
+
+const CreateCategoryModal = lazy(() =>
+  import('@modules/categories/lazy').then(module => ({
+    default: module.CreateCategoryModal,
+  })),
+)
 
 export function CategoriesPage() {
   const { data: categories, isLoading, isError } = useGetCategoriesQuery()
@@ -27,15 +34,11 @@ export function CategoriesPage() {
           onPress={onOpen}
           color="primary"
           className="absolute right-0 bg-006d77 text-white hover:bg-83c5be transition"
-          startContent={<MdAdd />}
+          startContent={<AddIcon width={20} />}
         >
           Создать ✨
         </Button>
       </div>
-
-      {isOpen && (
-        <CreateCategoryModal isOpen={isOpen} onOpenChange={onOpenChange} />
-      )}
 
       <ul className="flex flex-wrap gap-4 justify-between">
         {!!categories?.length
@@ -49,6 +52,12 @@ export function CategoriesPage() {
             ))
           : 'Категорий не найдено'}
       </ul>
+
+      {isOpen && (
+        <Suspense fallback={<div>Загрузка модалки...</div>}>
+          <CreateCategoryModal isOpen={isOpen} onOpenChange={onOpenChange} />
+        </Suspense>
+      )}
     </m.div>
   )
 }

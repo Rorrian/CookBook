@@ -35,5 +35,8 @@ export const api = createApi({
     'Recipe',
     'Macronutrients',
   ],
-  endpoints: builder => ({}),
+  endpoints: builder => {
+    void builder
+    return {}
+  },
 })

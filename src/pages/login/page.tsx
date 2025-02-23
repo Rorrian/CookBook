@@ -1,6 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import { Spacer } from '@nextui-org/react'
+import { addToast, Spacer } from '@heroui/react'
 import { motion as m } from 'framer-motion'
 
 import { AuthForm } from '@shared/components'
@@ -27,7 +26,10 @@ export const LoginPage = () => {
             token: session.access_token,
           }),
         )
-        toast.success('Успешный вход!')
+        addToast({
+          title: 'Успешный вход!',
+          color: 'success',
+        })
         navigate(RoutePaths.HOME)
       }
     } catch (error) {
@@ -35,7 +37,12 @@ export const LoginPage = () => {
 
       const errorMessage =
         error instanceof Error ? error.message : 'Неизвестная ошибка'
-      toast.error(`Не удалось войти в систему: ${errorMessage}`)
+      addToast({
+        title: 'Не удалось войти в систему:',
+        description: errorMessage,
+        color: 'danger',
+        timeout: 5000,
+      })
     }
   }
 

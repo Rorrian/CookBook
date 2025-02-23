@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Button, Checkbox, Radio, RadioGroup } from '@nextui-org/react'
+import { Button, Checkbox, Radio, RadioGroup } from '@heroui/react'
 
 import { SearchForm, useSearch } from '@modules/search'
 

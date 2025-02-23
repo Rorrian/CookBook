@@ -1,7 +1,6 @@
-import { MdAdd } from 'react-icons/md'
-import { Button, useDisclosure } from '@nextui-org/react'
+import { Button, Image, useDisclosure } from '@heroui/react'
 import { motion as m } from 'framer-motion'
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 
 import { RecipesList } from '@modules/recipes'
 import { useGetRecipesWithSearchAndFiltersQuery } from '@shared/store/api'
@@ -14,9 +13,10 @@ import {
 } from '@modules/filters'
 import { useAuth } from '@shared/hooks'
 import { DEFAULT_PAGE_ANIMATION } from '@shared/utils/constants'
+import { AddIcon } from '@shared/icons'
 
 const CreateRecipeModal = lazy(() =>
-  import('@modules/recipes').then(module => ({
+  import('@modules/recipes/lazy').then(module => ({
     default: module.CreateRecipeModal,
   })),
 )
@@ -72,7 +72,7 @@ export function HomePage() {
           onPress={onOpen}
           color="primary"
           className="absolute right-0 bg-006d77 text-white hover:bg-83c5be transition"
-          startContent={<MdAdd />}
+          startContent={<AddIcon width={20} />}
         >
           Создать ✨
         </Button>
@@ -100,10 +100,11 @@ export function HomePage() {
                 <RecipesList recipes={recipes || []} />
               ) : (
                 <div className="w-full mt-8 text-2xl text-center text-gray-800">
-                  <img
+                  <Image
                     alt=""
                     className="mx-auto mb-4 w-36 h-auto"
-                    src="/no-food.gif"
+                    removeWrapper
+                    src="/no-food_opt.webp"
                   />
                   Не найдено рецептов по заданным фильтрам или поиску
                 </div>
@@ -113,7 +114,12 @@ export function HomePage() {
         </>
       ) : (
         <div className="w-full mt-8 text-2xl text-center text-gray-800">
-          <img alt="" className="mx-auto mb-4 w-36 h-auto" src="/new.gif" />
+          <Image
+            alt=""
+            className="mx-auto mb-4 w-36 h-auto"
+            removeWrapper
+            src="/new_opt.webp"
+          />
           Рецепты пока не добавлены. Начните с создания первого рецепта!
         </div>
       )}

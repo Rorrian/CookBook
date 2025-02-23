@@ -1,4 +1,5 @@
 import { Navigate, Routes, Route } from 'react-router-dom'
+import { Suspense } from 'react'
 
 import { IRoute, RoutePaths, routes } from '@shared/utils/navigation'
 import { useAuth } from '@shared/hooks'
@@ -23,7 +24,15 @@ export const Navigation = () => {
     <Routes>
       <Route element={<Layout />}>
         {filteredRoutes.map(route => (
-          <Route key={route.path} path={route.path} element={route.element} />
+          <Route
+            key={route.path}
+            path={route.path}
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                {route.element}
+              </Suspense>
+            }
+          />
         ))}
 
         {isAuth && (

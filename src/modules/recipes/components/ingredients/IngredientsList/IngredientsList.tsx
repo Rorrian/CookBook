@@ -1,14 +1,14 @@
-import { MdAdd } from 'react-icons/md'
 import {
   Button,
   Card,
   CardBody,
   CardHeader,
   useDisclosure,
-} from '@nextui-org/react'
+} from '@heroui/react'
 import { lazy, Suspense } from 'react'
 
 import { Ingredient } from '@/src/types'
+import { AddIcon } from '@shared/icons'
 
 import { IngredientItem } from '../IngredientItem/IngredientItem'
 
@@ -40,7 +40,7 @@ export const IngredientsList = ({
         <Button
           className="bg-006d77 text-white text-md hover:bg-83c5be transition"
           color="primary"
-          startContent={<MdAdd />}
+          startContent={<AddIcon width={20} />}
           onPress={onOpen}
         >
           Добавить

@@ -1,17 +1,16 @@
 import { Link } from 'react-router-dom'
-import { MdFavorite } from 'react-icons/md'
-import { MdFavoriteBorder } from 'react-icons/md'
-import { Button, Card, CardBody, CardHeader, Image } from '@nextui-org/react'
+import { Button, Card, CardBody, CardHeader, Image } from '@heroui/react'
 
 import { Recipe } from '@/src/types'
 import { useFavorites } from '@shared/hooks'
+import { HeartFillIcon, HeartBlankIcon } from '@shared/icons'
 
 interface RecipeItemProps {
   recipe: Recipe
 }
 
 export const RecipeItem = ({ recipe }: RecipeItemProps) => {
-  const { id, title, description, category_title, image_url, user_id } = recipe
+  const { id, title, description, image_url, user_id } = recipe
 
   const { toggleFavorite, isInFavorites } = useFavorites(user_id)
   const isFavorite = isInFavorites(id)
@@ -42,9 +41,9 @@ export const RecipeItem = ({ recipe }: RecipeItemProps) => {
             onClick={handleFavoriteClick}
           >
             {isFavorite ? (
-              <MdFavorite size={24} />
+              <HeartFillIcon width={24} />
             ) : (
-              <MdFavoriteBorder size={24} />
+              <HeartBlankIcon width={24} />
             )}
           </Button>
         </CardHeader>

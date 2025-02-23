@@ -5,10 +5,10 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Accordion,
+  AccordionItem,
 } from '@heroui/react'
-
 import { Macronutrients } from '@/src/types'
-import { Accordion, AccordionItem } from '@nextui-org/react'
 
 export const NutritionFacts = ({
   macronutrients,
@@ -37,10 +37,10 @@ export const NutritionFacts = ({
 
             <TableBody>
               <TableRow>
-                <TableCell>{calories}</TableCell>
-                <TableCell>{proteins}</TableCell>
-                <TableCell>{fats}</TableCell>
-                <TableCell>{carbohydrates}</TableCell>
+                <TableCell>{calories || ''}</TableCell>
+                <TableCell>{proteins || ''}</TableCell>
+                <TableCell>{fats || ''}</TableCell>
+                <TableCell>{carbohydrates || ''}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>ккал</TableCell>

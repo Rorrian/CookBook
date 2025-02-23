@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react'
-import { toast } from 'react-toastify'
 import { Controller, useForm } from 'react-hook-form'
 import {
   Input,
@@ -11,7 +10,8 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from '@nextui-org/react'
+  addToast,
+} from '@heroui/react'
 
 import { Category } from '@/src/types'
 import {
@@ -56,13 +56,21 @@ const EditCategoryModal = ({
     try {
       const updatedCategory: Category = { ...data, id }
       await editCategory(updatedCategory).unwrap()
-      toast.success('Категория успешно обновлена!')
+      addToast({
+        title: 'Категория успешно обновлена!',
+        color: 'success',
+      })
       imageUploadRef.current?.deletePrevPic()
       reset()
       onOpenChange()
     } catch (error) {
       console.error(error)
-      toast.error(`Ошибка при обновлении категории: ${error}`)
+      addToast({
+        title: 'Ошибка при обновлении категории:',
+        description: error?.toString(),
+        color: 'danger',
+        timeout: 5000,
+      })
     }
   }
 
@@ -75,7 +83,7 @@ const EditCategoryModal = ({
   return (
     <Modal isOpen={isOpen} onOpenChange={handleCancel}>
       <ModalContent>
-        {onClose => (
+        {() => (
           <Form onSubmit={handleSubmit(onUpdate)}>
             <ModalHeader className="flex flex-col gap-1">
               <h3 className="text-2xl font-semibold text-center mb-4">

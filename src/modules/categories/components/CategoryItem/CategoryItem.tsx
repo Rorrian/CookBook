@@ -1,17 +1,17 @@
-import { toast } from 'react-toastify'
-import { MdEdit, MdDelete } from 'react-icons/md'
 import {
+  addToast,
   Button,
   Card,
   CardBody,
   CardHeader,
   Image,
   useDisclosure,
-} from '@nextui-org/react'
+} from '@heroui/react'
 import { lazy, Suspense } from 'react'
 
 import { Category } from '@/src/types'
 import { useDeleteCategoryMutation } from '@shared/store/api'
+import { EditIcon, DeleteIcon } from '@shared/icons'
 
 const EditCategoryModal = lazy(
   () => import('../EditCategoryModal/EditCategoryModal'),
@@ -34,9 +34,17 @@ export const CategoryItem = ({ category }: CategoryItemProps) => {
   const onDelete = async (id: string) => {
     try {
       await deleteCategory(id).unwrap()
-      toast.success('Категория успешно удалена!')
+      addToast({
+        title: 'Категория успешно удалена!',
+        color: 'success',
+      })
     } catch (error) {
-      console.error('Ошибка при удалении категории:', error)
+      addToast({
+        title: 'Ошибка при удалении категории:',
+        description: error?.toString(),
+        color: 'danger',
+        timeout: 5000,
+      })
     }
   }
 
@@ -53,14 +61,14 @@ export const CategoryItem = ({ category }: CategoryItemProps) => {
             onPress={onOpen}
             className="bg-edf6f9 text-83c5be hover:text-006d77 transition-all"
           >
-            <MdEdit size={20} />
+            <EditIcon width={20} />
           </Button>
           <Button
             isIconOnly
             onPress={() => onDelete(id)}
             className="bg-edf6f9 text-e29578 hover:text-red-600 transition-all"
           >
-            <MdDelete size={20} />
+            <DeleteIcon width={20} />
           </Button>
         </div>
       </CardHeader>

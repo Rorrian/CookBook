@@ -1,6 +1,5 @@
-import { MdStar, MdStarBorder } from 'react-icons/md'
-
 import { MAX_COMPLEXITY_LEVEL } from '@modules/recipes'
+import { StarFillIcon, StarBlankIcon } from '@shared/icons'
 
 export const getComplexityLevels = () =>
   Array.from({ length: MAX_COMPLEXITY_LEVEL }, (_, i) => {
@@ -12,9 +11,9 @@ export const getComplexityLevels = () =>
           {[...Array(MAX_COMPLEXITY_LEVEL)].map((_, index) => (
             <span key={index}>
               {index < rating ? (
-                <MdStar size={16} />
+                <StarFillIcon width={11} height={11} />
               ) : (
-                <MdStarBorder size={16} />
+                <StarBlankIcon width={12} height={12} />
               )}
             </span>
           ))}

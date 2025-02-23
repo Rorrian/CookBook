@@ -1,8 +1,6 @@
 import {
   RecipeItem,
   RecipesList,
-  CreateRecipeModal,
-  EditRecipeModal,
   NutritionFacts,
   IngredientsList,
   StepsList,
@@ -12,8 +10,6 @@ import { DEFAULT_MACRONUTRIENTS, MAX_COMPLEXITY_LEVEL } from './utils/constants'
 export {
   RecipeItem,
   RecipesList,
-  CreateRecipeModal,
-  EditRecipeModal,
   NutritionFacts,
   IngredientsList,
   StepsList,

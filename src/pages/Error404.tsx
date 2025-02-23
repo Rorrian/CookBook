@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Button, Card, CardBody, CardHeader } from '@nextui-org/react'
+import { Button, Card, CardBody, CardHeader, Image } from '@heroui/react'
 import { motion as m } from 'framer-motion'
 
 import { RoutePaths } from '@shared/utils/navigation'
@@ -19,7 +19,12 @@ export const Error404 = () => (
 
       <CardBody className="flex flex-col gap-4">
         <div className="w-full mt-8 text-2xl text-center text-gray-800">
-          <img alt="" className="mx-auto mb-4 w-36 h-auto" src="/error.gif" />
+          <Image
+            alt=""
+            className="mx-auto mb-4 w-36 h-auto"
+            removeWrapper
+            src="/error_opt.webp"
+          />
           The page you are looking for does not exist.
         </div>
 

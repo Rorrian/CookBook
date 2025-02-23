@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import { toast } from 'react-toastify'
 import {
   Input,
   Button,
@@ -12,14 +10,15 @@ import {
   Select,
   SelectItem,
   Form,
-} from '@nextui-org/react'
+  addToast,
+} from '@heroui/react'
+import { Controller, useForm } from 'react-hook-form'
 
 import {
   useCreateIngredientMutation,
   useGetUnitsQuery,
 } from '@shared/store/api'
 import { NewIngredient } from '@/src/types'
-import { Controller, useForm } from 'react-hook-form'
 
 interface CreateIngredientModalProps {
   recipe_id: string
@@ -50,7 +49,12 @@ const CreateIngredientModal = ({
       onOpenChange()
     } catch (error) {
       console.error(error)
-      toast.error(`Ошибка при создании ингредиента: ${error}`)
+      addToast({
+        title: 'Ошибка при создании ингредиента:',
+        description: error?.toString(),
+        color: 'danger',
+        timeout: 5000,
+      })
     }
   }
 
@@ -146,7 +150,7 @@ const CreateIngredientModal = ({
                       }
                     >
                       {(units || []).map(unit => (
-                        <SelectItem key={unit.id} value={unit.id}>
+                        <SelectItem key={unit.id} textValue={unit.name}>
                           {unit.name}
                         </SelectItem>
                       ))}

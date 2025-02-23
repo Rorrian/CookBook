@@ -1,5 +1,6 @@
-import { Input } from '@nextui-org/react'
-import { MdSearch } from 'react-icons/md'
+import { Input } from '@heroui/react'
+
+import { SearchIcon } from '@shared/icons'
 
 interface SearchFormProps {
   placeholder?: string
@@ -18,9 +19,7 @@ export const SearchForm = ({
         isClearable
         className="w-full"
         placeholder={placeholder}
-        startContent={
-          <MdSearch className="text-lg text-default-400 pointer-events-none flex-shrink-0" />
-        }
+        startContent={<SearchIcon width={20} />}
         type="search"
         value={searchTerm}
         onChange={e => setSearchTerm(e.target.value)}

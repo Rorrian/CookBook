@@ -8,14 +8,13 @@ export const stepsApi = api.injectEndpoints({
       query: id => ({
         url: `/steps?recipe_id=eq.${id}`,
       }),
-      providesTags: (result, error, id) => [{ type: 'Steps', id }],
+      providesTags: (_, __, id) => [{ type: 'Steps', id }],
     }),
 
     // getStep: builder.query<Step, string>({
     //   query: id => ({
     //     url: `/steps?id=eq.${id}`,
     //   }),
-
     //   transformResponse: (response: Step[]) => response[0],
     //   providesTags: (result, error, id) => [{ type: 'Steps', id }],
     // }),
@@ -26,7 +25,7 @@ export const stepsApi = api.injectEndpoints({
         method: 'POST',
         body: newStep,
       }),
-      invalidatesTags: (result, error, { recipe_id }) => [
+      invalidatesTags: (_, __, { recipe_id }) => [
         { type: 'Steps', id: recipe_id },
       ],
     }),
@@ -38,7 +37,7 @@ export const stepsApi = api.injectEndpoints({
         body: { step_number, description },
       }),
 
-      invalidatesTags: (result, error, { id, recipe_id }) => [
+      invalidatesTags: (_, __, { id, recipe_id }) => [
         { type: 'Steps', recipe_id },
         { type: 'Step', id },
       ],
@@ -49,10 +48,7 @@ export const stepsApi = api.injectEndpoints({
         url: `/steps?id=eq.${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, id) => [
-        { type: 'Steps' },
-        { type: 'Step', id },
-      ],
+      invalidatesTags: (_, __, id) => [{ type: 'Steps' }, { type: 'Step', id }],
     }),
   }),
 })

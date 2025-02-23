@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { toast } from 'react-toastify'
+import { addToast } from '@heroui/react'
 
 import { supabase } from '@libs/supabase'
 
@@ -19,7 +19,12 @@ export const updateSession = async (
     }
   } catch (error) {
     console.error(error)
-    toast.error('Не удалось обновить сессию')
+    addToast({
+      title: 'Не удалось обновить сессию:',
+      description: error?.toString(),
+      color: 'danger',
+      timeout: 5000,
+    })
   }
 }
 

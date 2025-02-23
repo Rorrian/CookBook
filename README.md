@@ -40,3 +40,46 @@ abc2@gmail.com
 
 ## Deployment:
 https://rorrian-cook-book-app.vercel.app/
+
+
+<details>
+	<summary>Настройка кастомных svg в Vite как React-компонентов c TS</summary>
+	
+	- Установить плагин vite-plugin-svgr
+	- Добавить vite-plugin-svgr в vite.config.ts:
+		export default defineConfig({
+			plugins: [
+				react(),
+				svgr(), - тут
+				analyzer(),
+			], ...
+	- Создать папку src/assets/icons с svg
+	- Проверить корректность путей и алиасов к иконкам
+	- Изменить файл vite.env.d.ts:
+		/// <reference types="vite/client" />
+		/// <reference types="vite-plugin-svgr/client" />
+
+		declare module '*.svg?react' {
+			import * as React from 'react'
+			export const ReactComponent: React.FC<React.SVGProps<SVGSVGElement>>
+			export default ReactComponent
+		}
+	- Изменить файл tsconfig.json:
+		{
+			"compilerOptions": {
+				...
+				"types": ["vitest/globals", "vite-plugin-svgr/client"],
+			},
+			"include": [
+				"src/**/*",
+				"src/vite-env.d.ts"
+			], ...
+	- Создать файл для общего импорта svg - src/shared/icons/index.ts:
+		export { default as EditIcon } from '@assets/icons/edit.svg?react';
+		export { default as DeleteIcon } from '@assets/icons/delete.svg?react';
+	- Перезапустить TS server и IDE, проверить на наличие ошибок в дев-режиме и при билде
+	- Пример использования иконок:
+		import { EditIcon, DeleteIcon } from '@shared/icons';
+		...
+		<EditIcon width={20} height={20} />
+</details>

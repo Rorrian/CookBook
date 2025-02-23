@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
+import { Image } from '@heroui/react'
 
 import { useAuth } from '@shared/hooks'
 import { RoutePaths, routes } from '@shared/utils/navigation'
@@ -20,7 +21,12 @@ export const Header = ({ className }: HeaderProps) => {
     >
       <Link to={RoutePaths.HOME} className="inline-block">
         <div className="flex items-end gap-2 bg-[#edf6f9] rounded-xl py-2 px-4">
-          <img alt="Логотип проекта" className="w-8" src="/logo.gif" />
+          <Image
+            alt="Логотип проекта"
+            className="w-8"
+            removeWrapper
+            src="/logo_opt.webp"
+          />
           <span className="text-[#333] text-xl font-heading">
             {PROJECT_NAME}
           </span>

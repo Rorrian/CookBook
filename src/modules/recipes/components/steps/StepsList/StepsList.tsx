@@ -1,14 +1,14 @@
-import { MdAdd } from 'react-icons/md'
 import {
   Button,
   Card,
   CardBody,
   CardHeader,
   useDisclosure,
-} from '@nextui-org/react'
+} from '@heroui/react'
 import { lazy, Suspense } from 'react'
 
 import { Step } from '@/src/types'
+import { AddIcon } from '@shared/icons'
 
 import { StepItem } from '../StepItem/StepItem'
 
@@ -56,7 +56,7 @@ export const StepsList = ({ steps, recipe_id }: StepsListProps) => {
           onPress={onOpen}
           color="primary"
           className="bg-006d77 text-white hover:bg-83c5be transition"
-          startContent={<MdAdd />}
+          startContent={<AddIcon width={20} />}
         >
           Добавить
         </Button>

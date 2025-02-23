@@ -1,9 +1,9 @@
-import { MdEdit, MdDelete } from 'react-icons/md'
-import { Button, Card, CardHeader, useDisclosure } from '@nextui-org/react'
+import { Button, Card, CardHeader, useDisclosure } from '@heroui/react'
 import { lazy, Suspense } from 'react'
 
 import { Ingredient } from '@/src/types'
 import { useDeleteIngredientMutation } from '@shared/store/api'
+import { EditIcon, DeleteIcon } from '@shared/icons'
 
 const EditIngredientModal = lazy(
   () => import('../EditIngredientModal/EditIngredientModal'),
@@ -47,7 +47,7 @@ export const IngredientItem = ({ ingredient }: IngredientItemProps) => {
             size="sm"
             onPress={onOpen}
           >
-            <MdEdit size={20} />
+            <EditIcon width={20} />
           </Button>
 
           <Button
@@ -56,7 +56,7 @@ export const IngredientItem = ({ ingredient }: IngredientItemProps) => {
             size="sm"
             onPress={() => onDelete(id)}
           >
-            <MdDelete size={20} />
+            <DeleteIcon width={20} />
           </Button>
         </div>
       </CardHeader>

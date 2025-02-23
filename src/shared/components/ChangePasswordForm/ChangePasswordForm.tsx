@@ -1,14 +1,20 @@
 import { Controller, FieldValues, useForm } from 'react-hook-form'
-import { Button, Input, Card, CardBody, CardFooter } from '@nextui-org/react'
-import { IoMdEye, IoMdEyeOff } from 'react-icons/io'
+import {
+  Button,
+  Input,
+  Card,
+  CardBody,
+  CardFooter,
+  addToast,
+} from '@heroui/react'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
 import clsx from 'clsx'
 
 import { authApi } from '@shared/store/api'
 import { RoutePaths } from '@shared/utils/navigation'
 import { updateSession, useAuth, usePasswordVisibility } from '@shared/hooks'
+import { EyeIcon, EyeCloseIcon } from '@shared/icons'
 
 const MIN_PASSWORD_LENGTH = 6
 
@@ -62,7 +68,10 @@ export const ChangePasswordForm = ({
         await authApi.updatePassword(data.password)
       }
 
-      toast.success('Пароль успешно обновлен!')
+      addToast({
+        title: 'Пароль успешно обновлен!',
+        color: 'success',
+      })
       if (onSuccessRedirect) {
         setTimeout(() => navigate(RoutePaths.LOGIN), 3000)
       } else {
@@ -73,7 +82,12 @@ export const ChangePasswordForm = ({
       console.error(error)
       const errorMessage =
         error instanceof Error ? error.message : 'Неизвестная ошибка'
-      toast.error(`Не удалось восстановить доступ: ${errorMessage}`)
+      addToast({
+        title: 'Не удалось восстановить доступ:',
+        description: errorMessage,
+        color: 'danger',
+        timeout: 5000,
+      })
     }
   }
 
@@ -135,9 +149,9 @@ export const ChangePasswordForm = ({
                   onClick={togglePasswordVisibility}
                 >
                   {showPasswords ? (
-                    <IoMdEyeOff className="text-2xl text-default-400 pointer-events-none" />
+                    <EyeCloseIcon width={22} height={22} />
                   ) : (
-                    <IoMdEye className="text-2xl text-default-400 pointer-events-none" />
+                    <EyeIcon width={22} height={22} />
                   )}
                 </button>
               }

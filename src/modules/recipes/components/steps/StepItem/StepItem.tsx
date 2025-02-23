@@ -1,9 +1,9 @@
-import { MdEdit, MdDelete } from 'react-icons/md'
-import { Button, Card, CardHeader, useDisclosure } from '@nextui-org/react'
+import { Button, Card, CardHeader, useDisclosure } from '@heroui/react'
 import { lazy, Suspense } from 'react'
 
 import { Step } from '@/src/types'
 import { useDeleteStepMutation } from '@shared/store/api'
+import { EditIcon, DeleteIcon } from '@shared/icons'
 
 const EditStepModal = lazy(() => import('../EditStepModal/EditStepModal'))
 
@@ -44,7 +44,7 @@ export const StepItem = ({ step }: StepItemProps) => {
             onPress={onOpen}
             className="bg-white text-83c5be hover:text-006d77 transition"
           >
-            <MdEdit size={20} />
+            <EditIcon width={20} />
           </Button>
 
           <Button
@@ -52,7 +52,7 @@ export const StepItem = ({ step }: StepItemProps) => {
             onPress={() => onDelete(id)}
             className="bg-white text-e29578 hover:text-red-600 transition"
           >
-            <MdDelete size={20} />
+            <DeleteIcon width={20} />
           </Button>
         </div>
       </CardHeader>

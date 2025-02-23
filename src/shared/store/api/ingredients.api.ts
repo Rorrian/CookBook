@@ -12,7 +12,7 @@ export const ingredientsApi = api.injectEndpoints({
         url: '/rpc/get_ingredients_for_user',
         params: { current_user_id },
       }),
-      providesTags: (result, error, id) => [{ type: 'Ingredients' }],
+      providesTags: () => [{ type: 'Ingredients' }],
     }),
 
     getRecipeIngredients: builder.query<Ingredient[], string>({
@@ -21,7 +21,7 @@ export const ingredientsApi = api.injectEndpoints({
         method: 'POST',
         body: { p_recipe_id: id },
       }),
-      providesTags: (result, error, id) => [{ type: 'Ingredients', id }],
+      providesTags: (_, __, id) => [{ type: 'Ingredients', id }],
     }),
 
     // getIngredient: builder.query<Ingredient, void>({
@@ -32,7 +32,7 @@ export const ingredientsApi = api.injectEndpoints({
     //     url: `/rpc/get_ingredients_with_units?id=eq.${id}`,
     //   }),
     //   transformResponse: (response: Ingredient[]) => response[0],
-    //   providesTags: (result, error, id) => [{ type: "Ingredient", id }],
+    //   providesTags: (_, __, id) => [{ type: "Ingredient", id }],
     // }),
 
     createIngredient: builder.mutation<null, NewIngredient>({
@@ -41,7 +41,7 @@ export const ingredientsApi = api.injectEndpoints({
         method: 'POST',
         body: newIngredient,
       }),
-      invalidatesTags: (result, error, { recipe_id }) => [
+      invalidatesTags: (_, __, { recipe_id }) => [
         { type: 'Ingredients', id: recipe_id },
       ],
     }),
@@ -52,7 +52,7 @@ export const ingredientsApi = api.injectEndpoints({
         method: 'PATCH',
         body: { id, name, quantity, unit_id },
       }),
-      invalidatesTags: (result, error, { id, recipe_id }) => [
+      invalidatesTags: (_, __, { id, recipe_id }) => [
         { type: 'Ingredients', recipe_id },
         { type: 'Ingredient', id },
       ],
@@ -63,7 +63,7 @@ export const ingredientsApi = api.injectEndpoints({
         url: `/ingredients?id=eq.${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, id) => [
+      invalidatesTags: (_, __, id) => [
         { type: 'Ingredients' },
         { type: 'Ingredient', id },
       ],

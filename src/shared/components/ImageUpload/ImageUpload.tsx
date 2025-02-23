@@ -1,7 +1,6 @@
-import { Image, Spinner } from '@nextui-org/react'
+import { addToast, Image, Spinner } from '@heroui/react'
 import clsx from 'clsx'
 import { forwardRef, useImperativeHandle, useState } from 'react'
-import { toast } from 'react-toastify'
 
 interface ImageUploadProps {
   className?: string
@@ -44,7 +43,11 @@ export const ImageUpload = forwardRef(
       if (!file) return
 
       if (!isValidFileSize(file)) {
-        toast.error(`Размер файла не должен превышать ${MAX_FILE_SIZE} МБ`)
+        addToast({
+          title: `Размер файла не должен превышать ${MAX_FILE_SIZE} МБ`,
+          color: 'danger',
+          timeout: 5000,
+        })
         return
       }
 
@@ -57,7 +60,12 @@ export const ImageUpload = forwardRef(
         onImageUploaded(imageUrl.data)
       } catch (error) {
         console.error(error)
-        toast.error('Ошибка при загрузке изображения')
+        addToast({
+          title: 'Ошибка при загрузке изображения:',
+          description: error?.toString(),
+          color: 'danger',
+          timeout: 5000,
+        })
         await deleteHandler(uploadedImagePath)
       } finally {
         setIsImageUploading(false)
@@ -71,7 +79,12 @@ export const ImageUpload = forwardRef(
         await deleteHandler(path)
       } catch (error) {
         console.error(error)
-        toast.error('Ошибка при удалении изображения')
+        addToast({
+          title: 'Ошибка при удалении изображения:',
+          description: error?.toString(),
+          color: 'danger',
+          timeout: 5000,
+        })
       }
     }
 

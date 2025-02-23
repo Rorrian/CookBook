@@ -4,9 +4,8 @@ import {
   SubmitHandler,
   useForm,
 } from 'react-hook-form'
-import { Button, Input, Card, CardBody, CardFooter } from '@nextui-org/react'
-import { MdOutlineMail } from 'react-icons/md'
-import { IoMdEye, IoMdEyeOff } from 'react-icons/io'
+import { Button, Input, Card, CardBody, CardFooter } from '@heroui/react'
+import { MailIcon, EyeIcon, EyeCloseIcon } from '@shared/icons'
 
 import { AuthCredentials } from '@/src/types'
 import { usePasswordVisibility } from '@shared/hooks'
@@ -62,9 +61,7 @@ export const AuthForm = ({ buttonTitle, handleClick }: AuthFormProps) => {
               placeholder="Введите ваш email"
               type="email"
               variant="bordered"
-              startContent={
-                <MdOutlineMail className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-              }
+              startContent={<MailIcon width={28} height={28} />}
               onClear={() => reset({ email: '' })}
             />
           )}
@@ -87,9 +84,9 @@ export const AuthForm = ({ buttonTitle, handleClick }: AuthFormProps) => {
                   onClick={togglePasswordVisibility}
                 >
                   {showPasswords ? (
-                    <IoMdEyeOff className="text-2xl text-default-400 pointer-events-none" />
+                    <EyeCloseIcon width={22} height={22} />
                   ) : (
-                    <IoMdEye className="text-2xl text-default-400 pointer-events-none" />
+                    <EyeIcon width={22} height={22} />
                   )}
                 </button>
               }

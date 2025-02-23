@@ -1,17 +1,39 @@
-import { ReactNode } from 'react'
+import { lazy, ReactNode } from 'react'
 
-import {
-  HomePage,
-  FavoritesPage,
-  SettingsPage,
-  LoginPage,
-  RegisterPage,
-  CategoriesPage,
-  RecipePage,
-  GettingStartedPage,
-  AccountRecoveryPage,
-  ResetPasswordPage,
-} from '../../pages'
+const RegisterPage = lazy(() =>
+  import('../../pages').then(module => ({ default: module.RegisterPage })),
+)
+const LoginPage = lazy(() =>
+  import('../../pages').then(module => ({ default: module.LoginPage })),
+)
+const AccountRecoveryPage = lazy(() =>
+  import('../../pages').then(module => ({
+    default: module.AccountRecoveryPage,
+  })),
+)
+const ResetPasswordPage = lazy(() =>
+  import('../../pages').then(module => ({ default: module.ResetPasswordPage })),
+)
+const GettingStartedPage = lazy(() =>
+  import('../../pages').then(module => ({
+    default: module.GettingStartedPage,
+  })),
+)
+const HomePage = lazy(() =>
+  import('../../pages').then(module => ({ default: module.HomePage })),
+)
+const RecipePage = lazy(() =>
+  import('../../pages').then(module => ({ default: module.RecipePage })),
+)
+const CategoriesPage = lazy(() =>
+  import('../../pages').then(module => ({ default: module.CategoriesPage })),
+)
+const FavoritesPage = lazy(() =>
+  import('../../pages').then(module => ({ default: module.FavoritesPage })),
+)
+const SettingsPage = lazy(() =>
+  import('../../pages').then(module => ({ default: module.SettingsPage })),
+)
 
 export interface IRoute {
   path: string
