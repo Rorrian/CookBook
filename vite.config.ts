@@ -54,10 +54,12 @@ export default defineConfig({
 					}
 					if (id.includes("node_modules/@heroui/react") ||
 						id.includes("node_modules/@heroui") ||
-						id.includes("node_modules/@react-aria") ||
-						id.includes("node_modules/framer-motion/dist")
+						id.includes("node_modules/@react-aria")
 					) {
 						return "heroui";
+					}
+					if (id.includes("node_modules/framer-motion/dist")) {
+						return "framer-motion";
 					}
 
 					if (id.includes('pages/account-recovery')) {
