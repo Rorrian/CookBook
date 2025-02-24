@@ -34,7 +34,7 @@ export default defineConfig({
   },
   build: {
     outDir: "dist",
-    sourcemap: true,
+		sourcemap: process.env.NODE_ENV === "development",
 		emptyOutDir: true,
 		reportCompressedSize: true,
 		rollupOptions: {
@@ -63,15 +63,11 @@ export default defineConfig({
 						return "heroui";
 					}
 					
-					
-					if (id.includes('pages')
+					if (id.includes('pages') || 
+						id.includes("modules/recipes") ||
+						id.includes("modules/categories")
 					) {
-						return 'pages'; 
-					}
-					if (id.includes("modules/recipes")
-						|| id.includes("modules/categories")
-					) {
-						return 'modules'; 
+						return 'app'; 
 					}
 					// if (id.includes('pages/account-recovery')) {
 					// 	return 'account-recovery-page'; 
