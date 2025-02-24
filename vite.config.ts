@@ -54,44 +54,46 @@ export default defineConfig({
 					}
 					if (id.includes("node_modules/@heroui/react") ||
 						id.includes("node_modules/@heroui") ||
-						id.includes("node_modules/@react-aria")
+						id.includes("node_modules/@react-aria") ||
+						id.includes("node_modules/framer-motion/dist")
 					) {
 						return "heroui";
 					}
-					if (id.includes("node_modules/framer-motion/dist")) {
-						return "framer-motion";
-					}
 
-					if (id.includes('pages/account-recovery')) {
-						return 'account-recovery-page'; 
+					
+					if (id.includes('pages')) {
+						return 'pages'; 
 					}
-					if (id.includes('pages/categories')) {
-							return 'categories-page'; 
-					}
-					if (id.includes('pages/favorites')) {
-							return 'favorites-page'; 
-					}
-					if (id.includes('pages/getting-started')) {
-							return 'getting-started-page'; 
-					}
-					if (id.includes('pages/home')) {
-							return 'home-page'; 
-					}
-					if (id.includes('pages/login')) {
-							return 'login-page'; 
-					}
-					if (id.includes('pages/recipe')) {
-						return 'recipe-page'; 
-					}
-					if (id.includes('pages/register')) {
-						return 'register-page'; 
-					}
-					if (id.includes('pages/reset-password')) {
-						return 'reset-password-page'; 
-					}
-					if (id.includes('pages/settings')) {
-						return 'settings-page'; 
-					}
+					// if (id.includes('pages/account-recovery')) {
+					// 	return 'account-recovery-page'; 
+					// }
+					// if (id.includes('pages/categories')) {
+					// 		return 'categories-page'; 
+					// }
+					// if (id.includes('pages/favorites')) {
+					// 		return 'favorites-page'; 
+					// }
+					// if (id.includes('pages/getting-started')) {
+					// 		return 'getting-started-page'; 
+					// }
+					// if (id.includes('pages/home')) {
+					// 		return 'home-page'; 
+					// }
+					// if (id.includes('pages/login')) {
+					// 		return 'login-page'; 
+					// }
+					// if (id.includes('pages/recipe')) {
+					// 	return 'recipe-page'; 
+					// }
+					// if (id.includes('pages/register')) {
+					// 	return 'register-page'; 
+					// }
+					// if (id.includes('pages/reset-password')) {
+					// 	return 'reset-password-page'; 
+					// }
+					// if (id.includes('pages/settings')) {
+					// 	return 'settings-page'; 
+					// }
 
 					// Остальное в отдельный чанк
 					if (id.includes("node_modules")) {
