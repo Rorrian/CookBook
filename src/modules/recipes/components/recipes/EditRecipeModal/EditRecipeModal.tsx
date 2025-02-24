@@ -1,4 +1,4 @@
-import { lazy, Suspense, useRef, useState } from 'react'
+import { Suspense, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import {
   Input,
@@ -29,12 +29,7 @@ import {
 import { ImageUpload } from '@shared/components'
 import { getComplexityLevels } from '@shared/utils/complexityLevels'
 import { AddIcon } from '@shared/icons'
-
-const CreateCategoryModal = lazy(() =>
-  import('@modules/categories/lazy').then(module => ({
-    default: module.CreateCategoryModal,
-  })),
-)
+import { CreateCategoryModal } from '@modules/categories/lazy'
 
 interface EditRecipeModalProps {
   recipe: Recipe

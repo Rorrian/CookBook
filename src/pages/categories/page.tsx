@@ -1,6 +1,6 @@
 import { Button, useDisclosure } from '@heroui/react'
 import { motion as m } from 'framer-motion'
-import { lazy, Suspense } from 'react'
+import { Suspense } from 'react'
 
 import { useGetCategoriesQuery } from '@shared/store/api'
 import { CategoryItem } from '@modules/categories'
@@ -8,12 +8,7 @@ import { Category } from '@/src/types'
 import { Loader } from '@shared/components'
 import { DEFAULT_PAGE_ANIMATION } from '@shared/utils/constants'
 import { AddIcon } from '@shared/icons'
-
-const CreateCategoryModal = lazy(() =>
-  import('@modules/categories/lazy').then(module => ({
-    default: module.CreateCategoryModal,
-  })),
-)
+import { CreateCategoryModal } from '@modules/categories/lazy'
 
 export function CategoriesPage() {
   const { data: categories, isLoading, isError } = useGetCategoriesQuery()

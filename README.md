@@ -68,7 +68,7 @@ https://rorrian-cook-book-app.vercel.app/
 		{
 			"compilerOptions": {
 				...
-				"types": ["vitest/globals", "vite-plugin-svgr/client"],
+				"types": ["vite-plugin-svgr/client"],
 			},
 			"include": [
 				"src/**/*",

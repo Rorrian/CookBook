@@ -9,6 +9,24 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <!-- TODO: !!! УБРАТЬ - костыль проблемы с кешем в хроме -->
+    <script>
+      const removeStyleWithFont = () => {
+        const styleTags = document.querySelectorAll('style')
+        styleTags.forEach(style => {
+          if (style.innerText.includes('-apple-system')) {
+            style.remove()
+          }
+        })
+      }
+
+      const observer = new MutationObserver(removeStyleWithFont)
+      observer.observe(document.head, { childList: true, subtree: true })
+
+      document.addEventListener('DOMContentLoaded', () => {
+        removeStyleWithFont()
+      })
+    </script>
     <script type="module" src="/src/app/main.tsx"></script>
   </body>
 </html>

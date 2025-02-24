@@ -1,4 +1,4 @@
-import { defineConfig } from "vitest/config"
+import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react"
 import path from "path"
 import { analyzer } from 'vite-bundle-analyzer'
@@ -36,10 +36,13 @@ export default defineConfig({
     outDir: "dist",
     sourcemap: true,
 		emptyOutDir: true,
+		reportCompressedSize: true,
 		rollupOptions: {
       output: {
         manualChunks(id) {
-					if (id.includes("node_modules/react") || id.includes("node_modules/react-dom")) {
+					if (id.includes("node_modules/react") ||
+						id.includes("node_modules/react-dom")
+					) {
 						return "react";
 					}
 					if (id.includes("node_modules/redux") ||
@@ -59,10 +62,16 @@ export default defineConfig({
 					) {
 						return "heroui";
 					}
-
 					
-					if (id.includes('pages')) {
+					
+					if (id.includes('pages')
+					) {
 						return 'pages'; 
+					}
+					if (id.includes("modules/recipes")
+						|| id.includes("modules/categories")
+					) {
+						return 'modules'; 
 					}
 					// if (id.includes('pages/account-recovery')) {
 					// 	return 'account-recovery-page'; 
@@ -105,11 +114,5 @@ export default defineConfig({
   },
   esbuild: {
     jsxInject: `import React from 'react'`,
-  },
-  test: {
-    globals: true,
-    environment: "jsdom",
-    setupFiles: "src/setupTests",
-    mockReset: true,
   },
 })

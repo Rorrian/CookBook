@@ -1,3 +1,7 @@
-import CreateCategoryModal from './CreateCategoryModal/CreateCategoryModal'
+import { lazy } from 'react'
+
+const CreateCategoryModal = lazy(
+  () => import('./CreateCategoryModal/CreateCategoryModal'),
+)
 
 export { CreateCategoryModal }

@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { addToast, Button, Image, useDisclosure } from '@heroui/react'
 import { motion as m } from 'framer-motion'
-import { lazy, Suspense } from 'react'
+import { Suspense } from 'react'
 
 import {
   useDeleteRecipeMutation,
@@ -14,12 +14,7 @@ import { RoutePaths } from '@shared/utils/navigation'
 import { Loader, StarRating } from '@shared/components'
 import { DEFAULT_PAGE_ANIMATION } from '@shared/utils/constants'
 import { EditIcon, DeleteIcon } from '@shared/icons'
-
-const EditRecipeModal = lazy(() =>
-  import('@modules/recipes/lazy').then(module => ({
-    default: module.EditRecipeModal,
-  })),
-)
+import { EditRecipeModal } from '@modules/recipes/lazy'
 
 export function RecipePage() {
   const navigate = useNavigate()

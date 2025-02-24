@@ -1,6 +1,6 @@
 import { Button, Image, useDisclosure } from '@heroui/react'
 import { motion as m } from 'framer-motion'
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
 import { RecipesList } from '@modules/recipes'
 import { useGetRecipesWithSearchAndFiltersQuery } from '@shared/store/api'
@@ -14,12 +14,7 @@ import {
 import { useAuth } from '@shared/hooks'
 import { DEFAULT_PAGE_ANIMATION } from '@shared/utils/constants'
 import { AddIcon } from '@shared/icons'
-
-const CreateRecipeModal = lazy(() =>
-  import('@modules/recipes/lazy').then(module => ({
-    default: module.CreateRecipeModal,
-  })),
-)
+import { CreateRecipeModal } from '@modules/recipes/lazy'
 
 // TODO: разделить запросы для списка рецептов и для страницы конкретного рецепта или - повод попробовать GraphQL ?
 

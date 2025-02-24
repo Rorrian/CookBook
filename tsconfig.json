@@ -27,14 +27,14 @@
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
-    "skipLibCheck": true,
     "esModuleInterop": false,
     "isolatedModules": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
     "noEmit": true,
-    "types": ["vitest/globals", "vite-plugin-svgr/client"],
-    "incremental": true
+    "types": ["vite-plugin-svgr/client"],
+    "incremental": true,
+    "skipLibCheck": true
   },
   "include": [
 		"src/**/*",
