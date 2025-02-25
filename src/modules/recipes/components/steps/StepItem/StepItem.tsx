@@ -5,8 +5,7 @@ import { Step } from '@/src/types'
 import { useDeleteStepMutation } from '@shared/store/api'
 import { EditIcon, DeleteIcon } from '@shared/icons'
 
-import EditStepModal from '../EditStepModal/EditStepModal'
-// const EditStepModal = lazy(() => import('../EditStepModal/EditStepModal'))
+const EditStepModal = lazy(() => import('../EditStepModal/EditStepModal'))
 
 interface StepItemProps {
   step: Step

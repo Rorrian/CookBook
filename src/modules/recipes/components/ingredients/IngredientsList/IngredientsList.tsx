@@ -12,10 +12,9 @@ import { AddIcon } from '@shared/icons'
 
 import { IngredientItem } from '../IngredientItem/IngredientItem'
 
-import CreateIngredientModal from '../CreateIngredientModal/CreateIngredientModal'
-// const CreateIngredientModal = lazy(
-//   () => import('../CreateIngredientModal/CreateIngredientModal'),
-// )
+const CreateIngredientModal = lazy(
+  () => import('../CreateIngredientModal/CreateIngredientModal'),
+)
 
 interface IngredientsListProps {
   ingredients: Ingredient[]

@@ -5,10 +5,9 @@ import { Ingredient } from '@/src/types'
 import { useDeleteIngredientMutation } from '@shared/store/api'
 import { EditIcon, DeleteIcon } from '@shared/icons'
 
-import EditIngredientModal from '../EditIngredientModal/EditIngredientModal'
-// const EditIngredientModal = lazy(
-//   () => import('../EditIngredientModal/EditIngredientModal'),
-// )
+const EditIngredientModal = lazy(
+  () => import('../EditIngredientModal/EditIngredientModal'),
+)
 
 interface IngredientItemProps {
   ingredient: Ingredient
