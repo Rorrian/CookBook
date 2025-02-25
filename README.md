@@ -19,6 +19,7 @@ _Кулинарная книга_
 - Supabase
 - Toastify
 - Vite
+- Docker
 <!-- - Jest -->
 
 ## Application functionality:
