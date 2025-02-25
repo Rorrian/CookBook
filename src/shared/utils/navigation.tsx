@@ -1,39 +1,49 @@
+import { AccountRecoveryPage } from '@pages/account-recovery'
+import { CategoriesPage } from '@pages/categories'
+import { FavoritesPage } from '@pages/favorites'
+import { GettingStartedPage } from '@pages/getting-started'
+import { HomePage } from '@pages/home'
+import { LoginPage } from '@pages/login'
+import { RecipePage } from '@pages/recipe'
+import { RegisterPage } from '@pages/register'
+import { ResetPasswordPage } from '@pages/reset-password'
+import { SettingsPage } from '@pages/settings'
 import { lazy, ReactNode } from 'react'
 
-const RegisterPage = lazy(() =>
-  import('../../pages').then(module => ({ default: module.RegisterPage })),
-)
-const LoginPage = lazy(() =>
-  import('../../pages').then(module => ({ default: module.LoginPage })),
-)
-const AccountRecoveryPage = lazy(() =>
-  import('../../pages').then(module => ({
-    default: module.AccountRecoveryPage,
-  })),
-)
-const ResetPasswordPage = lazy(() =>
-  import('../../pages').then(module => ({ default: module.ResetPasswordPage })),
-)
-const GettingStartedPage = lazy(() =>
-  import('../../pages').then(module => ({
-    default: module.GettingStartedPage,
-  })),
-)
-const HomePage = lazy(() =>
-  import('../../pages').then(module => ({ default: module.HomePage })),
-)
-const RecipePage = lazy(() =>
-  import('../../pages').then(module => ({ default: module.RecipePage })),
-)
-const CategoriesPage = lazy(() =>
-  import('../../pages').then(module => ({ default: module.CategoriesPage })),
-)
-const FavoritesPage = lazy(() =>
-  import('../../pages').then(module => ({ default: module.FavoritesPage })),
-)
-const SettingsPage = lazy(() =>
-  import('../../pages').then(module => ({ default: module.SettingsPage })),
-)
+// const RegisterPage = lazy(() =>
+//   import('../../pages').then(module => ({ default: module.RegisterPage })),
+// )
+// const LoginPage = lazy(() =>
+//   import('../../pages').then(module => ({ default: module.LoginPage })),
+// )
+// const AccountRecoveryPage = lazy(() =>
+//   import('../../pages').then(module => ({
+//     default: module.AccountRecoveryPage,
+//   })),
+// )
+// const ResetPasswordPage = lazy(() =>
+//   import('../../pages').then(module => ({ default: module.ResetPasswordPage })),
+// )
+// const GettingStartedPage = lazy(() =>
+//   import('../../pages').then(module => ({
+//     default: module.GettingStartedPage,
+//   })),
+// )
+// const HomePage = lazy(() =>
+//   import('../../pages').then(module => ({ default: module.HomePage })),
+// )
+// const RecipePage = lazy(() =>
+//   import('../../pages').then(module => ({ default: module.RecipePage })),
+// )
+// const CategoriesPage = lazy(() =>
+//   import('../../pages').then(module => ({ default: module.CategoriesPage })),
+// )
+// const FavoritesPage = lazy(() =>
+//   import('../../pages').then(module => ({ default: module.FavoritesPage })),
+// )
+// const SettingsPage = lazy(() =>
+//   import('../../pages').then(module => ({ default: module.SettingsPage })),
+// )
 
 export interface IRoute {
   path: string

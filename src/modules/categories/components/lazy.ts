@@ -1,7 +1,8 @@
-import { lazy } from 'react'
+// import { lazy } from 'react'
 
-const CreateCategoryModal = lazy(
-  () => import('./CreateCategoryModal/CreateCategoryModal'),
-)
+// const CreateCategoryModal = lazy(
+//   () => import('./CreateCategoryModal/CreateCategoryModal'),
+// )
+import CreateCategoryModal from './CreateCategoryModal/CreateCategoryModal'
 
 export { CreateCategoryModal }

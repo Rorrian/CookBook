@@ -12,7 +12,8 @@ import { AddIcon } from '@shared/icons'
 
 import { StepItem } from '../StepItem/StepItem'
 
-const CreateStepModal = lazy(() => import('../CreateStepModal/CreateStepModal'))
+import CreateStepModal from '../CreateStepModal/CreateStepModal'
+// const CreateStepModal = lazy(() => import('../CreateStepModal/CreateStepModal'))
 
 interface StepsListProps {
   steps: Step[]
@@ -66,10 +67,7 @@ export const StepsList = ({ steps, recipe_id }: StepsListProps) => {
         {sortedSteps.length ? (
           <ul className="flex flex-col gap-2 mt-4 text-xl">
             {sortedSteps.map((step: Step) => (
-              <li
-                key={step.id}
-                // className="p-3 border border-83c5be rounded-md shadow-md bg-white"
-              >
+              <li key={step.id}>
                 <StepItem step={step} />
               </li>
             ))}

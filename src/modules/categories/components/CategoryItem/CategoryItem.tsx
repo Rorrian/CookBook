@@ -13,9 +13,10 @@ import { Category } from '@/src/types'
 import { useDeleteCategoryMutation } from '@shared/store/api'
 import { EditIcon, DeleteIcon } from '@shared/icons'
 
-const EditCategoryModal = lazy(
-  () => import('../EditCategoryModal/EditCategoryModal'),
-)
+import EditCategoryModal from '../EditCategoryModal/EditCategoryModal'
+// const EditCategoryModal = lazy(
+//   () => import('../EditCategoryModal/EditCategoryModal'),
+// )
 
 interface CategoryItemProps {
   category: Category
